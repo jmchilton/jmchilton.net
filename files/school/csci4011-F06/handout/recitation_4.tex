@@ -1,0 +1,180 @@
+% Handout Type
+\documentclass[handout]{beamer}
+% Presentation Type
+%\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 4 - Proving Regularity and Nonregularity}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Proving Regularity
+\begin{itemize}
+\item $A^{R}$
+\item $NOPREFIX(A)$
+\end{itemize}
+\item Proving Nonregularity - Pumping Lemma
+\begin{itemize}
+\item $1.47$
+\item $\{w ~|~ |w| \text{ is prime} \}$
+\end{itemize}
+\end{itemize}
+}
+
+\section{Regularity}
+\subsection{Big Idea}
+\frame{
+Give a or describe a construction for a DFA, NFA, or regular expression that recognizes the required language.
+}
+\subsection{$A^R$}
+\frame{
+\begin{itemize}
+\item Alto of people came up with a correct construction, but many failed to prove it or argue why it works.
+\end{itemize}
+}
+\frame{
+Given $w = w_1w_2\hdots w_n \in A$. $w \in LANG(M) \implies \exists r_0r_1r_2\hdots r_n$ such that (P 40):
+\begin{itemize}
+\item $r_0 = q_0$
+\item $r_n \in F$
+\item $r_{i+1} = \delta(r_i, w_{i+1})$ for $i=0,1,\hdots, n-1$
+\end{itemize}
+\pause 
+To show $w^R \in LANG(M')$ need to express $w^R$ as $y=y_1y_2\hdots y_m$ and find sequence of states $s_0s_1\hdots s_m$ such that (Page 54):
+\begin{itemize}
+\item $s_0 = q_0'$
+\item $s_m \in F'$
+\item $s_{i+1} \in \delta'(s_i, y_{i+1})$ for $i=0,1,\hdots, m-1$
+\end{itemize}
+}
+
+\subsection{$NOPREFIX(A)$}
+\frame{
+\begin{itemize}
+\item<1-> If $s$ can be written as $xy$ for strings $x$ and $y$, then $x$ is a \emph{prefix} of $s$.
+\item<2-> If $y \ne \epsilon$, then $x$ is a \emph{proper prefix} of $s$.
+\item<3-> Example: $10$ is a prefix and proper prefix of $1011$.
+\item<4-> Example: $1011$ is a prefix of $1011$, but not a proper prefix.
+\end{itemize}
+}
+\frame{
+Problem 1.40 part a. 
+$$NOPREFIX(A) = \{w \in A ~|~ \text{no proper prefix of $w$ is a member of $A$}\}$$ 
+\pause
+If $A = \{100, 101, 1011\}$, then $NOPREFIX(A) = \{100, 101\}$.
+}
+
+\frame{
+"Solution" from the book. Given NFA $M=(Q,\Sigma, \delta, q_0, F)$ which recognizes $A$, construct the following NFA, $M' = (Q,\Sigma, \delta', q_0, F)$ with:
+$$
+\delta '(r, a) =
+\begin{cases}
+\delta (r,a) & \text{if } r \notin F \\
+\phi         & \text{if } r \in F
+\end{cases}
+$$
+IDEA: If after reading some string, $x$, $M$ is in an accept state and then $M$ continues to read in characters and ends in the same or another accept state then we shouldn't accept that string because $x$ is a proper prefix of the whole string and is in $A$. So drop all outgoing transitions on accept states.
+}
+
+\frame{
+Proof:
+\begin{itemize}
+\item $w \in NOPREFIX(A)$: \bigskip\bigskip
+
+
+\item $w \notin NOPREFIX(A)$ and $w \in A$: \bigskip\bigskip
+
+
+\item $w \notin NOPREFIX(A)$ and $w \notin A$: \bigskip\bigskip
+
+
+\end{itemize}
+}
+
+
+\section{Nonregularity}
+\subsection{Pumping Lemma}
+\frame{
+For every regular language $A$, there exists an integer $p$ (the \emph{pumping length}) such that any string $w \in A$ on length at least $p$ can be expressed as $w = xyz$, with 
+\begin{itemize}
+\item $|xy| \le p$
+\item $|y| \ge 1$ ($y$ isn't empty) 
+\item $xz \in A$, $xyz \in A$, $xy^2z=xyyz \in A$, $xy^3z \in A$
+\end{itemize}
+To show a language is nonregular, pick a string in $A$ of length at least $p$, then show no possible way of assigning $x,y,$ and $z$ results in an assignment that can be pumped.
+}
+\subsection{1.47}
+\frame{
+$\Sigma = \{1, \#\}$
+\bigskip
+\bigskip
+\bigskip
+$$ Y = \{w ~|~ w = x_1 \# x_2 \# \hdots \# x_k \text{ with } x_i=1^* \text{ and } x_i \ne x_j \}$$
+}
+
+\frame{
+\begin{itemize}
+\item<1-> $11111 \in Y$
+\item<2-> $111\#1 \in Y$
+\item<3-> $1\#111 \in Y$
+\item<4-> $1\#11\#111 \in Y$
+\item<5-> $11\#11 \notin Y$
+\item<6-> $11\#1\#11 \notin Y$
+\end{itemize}
+}
+
+\frame{
+\begin{itemize}
+\item One Idea: $1^{p}\#1^{p+1}$
+\end{itemize}
+}
+
+\subsection{$\{w ~|~ |w| \text{ is prime} \}$}
+\frame{
+For $\Sigma=\{0,1\}$, consider $A = \{w ~|~ |w| \text{ is prime} \}$.
+\begin{itemize}
+\item $111 \in A$
+\item $1111 \notin A$
+\end{itemize}
+}
+
+\frame{
+\begin{itemize}
+\item Consider $w = 1^{q}$. Where $q$ is the smallest prime number larger than the $p$.
+\item Assume $A$ is regular and consider some decomposition of $w$ as promised by the pumping lemma: $$w=1^{q} = xyz=1^{k}1^{l}1^{m}$$
+\item For this decomposition we know:
+\begin{itemize}
+\item $q = k + l + m$
+\item $|xy| \le p \implies k+l \le p$
+\item $|y| \ge 1 \implies l \ge 1$
+\item If $A$ is regular, then $xy^{n}z$ should be of prime length for any $n$
+\item Now we need to derive a contradiction, which will show $A$ isn't regular.
+\end{itemize}
+\end{itemize}
+}
+
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

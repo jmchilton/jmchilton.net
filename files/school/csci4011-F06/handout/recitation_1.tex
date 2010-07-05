@@ -1,0 +1,140 @@
+% Handout Type
+\documentclass[handout]{beamer}
+% Presentation Type
+%\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{beamerthemesplit}
+\title{Recitation 1 - Review and the Cardinality of Sets}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+%\section[Outline]{}
+%\frame{\tableofcontents}
+
+\section{Housekeeping}
+\subsection{Contact Info}
+\frame{
+\begin{itemize}
+\item John Chilton
+\item Office Hours: Monday 12:30-1:30 and Wednesday 11:30-12:30 in EE/CS 2-209
+\item E-Mail: chilton at cs dot umn dot edu
+\item Phone: 612-226-9223
+\item Skype: jmchilton
+\item IM Contact Info 
+\begin{itemize}
+\item AIM: johnny4413
+\item Jabber/Google Talk: jmchilton at gmail dot com
+\item Yahoo Messanger: chil0060
+\end{itemize}
+\end{itemize}
+}
+
+\subsection{Recitations}
+\frame{
+\begin{itemize}
+\item<1-> A few words about slides...
+\item<2-> Note cards - at the end of recitation write down one thing that presented clearly and one thing that wasn't. Feel free to not write anything.
+\item<3-> Come with questions and ask questions!
+\end{itemize}
+}
+
+\section{Functions and Cardinality}
+\subsection{Motivation}
+\frame{
+\begin{itemize}
+\item<1-> Cardinality of set $A$, represented as $|A|$, is the "number" of elements in $A$.
+\item<2-> Fairly straight forward for finite sets, try one $\{1,5,9\}$
+\end{itemize}
+}
+
+\subsection{Functions}
+\frame{
+\begin{itemize}
+\item<1-> A \emph{function} or \emph{mapping} is an object that specifies an input-output relationship.
+\item<2-> Notation: $f : D \rightarrow R$
+\item<3-> Some intresting functions: 
+\begin{itemize}
+\item<4-> \emph{One-to-one} : No two elements in the domain map to the same element in the range
+\item<5-> \emph{Onto} : Each element in the range set has an element from the domain mapped to it
+\item<6-> \emph{Bijection} : A function that is both one-to-one and onto
+\end{itemize}
+\end{itemize}
+}
+
+\subsection{Equinumerosity}
+\frame{
+\emph{Equinumerosity} : Sets $A$ and $B$ are equinumerous if there exists a bijection 
+$$ f: A \rightarrow B $$
+\pause An equivalence relation that describes intuitive concept of two sets being the same "size". Works for finite and infinite sets.
+}
+
+\subsection{Cardinality}
+\frame{
+The cardinality of set $A$ is 
+\begin{itemize}
+\item<1-> $n$ if $A$ is equinumerous with $\{1, 2, \hdots, n\}$
+\item<2-> \emph{Countably Infinite} if $A$ is equinumerous with $\mathcal{N}$, we represent this symbolically as $|A| = |\mathcal{N}| = \aleph_0$.
+\item<3-> \emph{Uncountably Infinite} if $A$ is infinite and not equinumerous with $\mathcal{N}$, all such sets are "larger" than $\mathcal{N}$
+\end{itemize}
+}
+
+
+\section{Examples}
+\subsection{Examples of Countably Infinite Sets}
+\frame{
+\begin{itemize}
+\item $A = \{2,3,4,\hdots\}$ \pause \textcolor{red}{$$f(n) = n-2$$}
+\item \pause Set of even natural numbers \pause \textcolor{red}{$$f(n) = n/2$$}
+\item \pause Set of integers $\mathcal{Z}$ \pause 
+\textcolor{red}{$$f(n) = \begin{cases} 2|n| & n \ge 0 \\ 2|n| - 1 & n < 0\end{cases}$$}
+\end{itemize}
+}
+
+\subsection{A more involved example - $\mathcal{N} \times \mathcal{N}$}
+\frame{
+\begin{itemize}
+\item<1-> Question: Is the set $\mathcal{N} \times \mathcal{N}$ ($\{(i,j) | i,j \in \mathcal{N}\}$) countable?
+\item<2-> Answer: Yes, a suitable bijection can be shown to be
+$$ f(i,j) = \frac{(i+j)*(i+j+1)}{2} + i $$ 
+\item<3-> Proof: Show $f$ is a bijection mapping $\mathcal{N} \times \mathcal{N}$ to $\mathcal{N}$. Show it is one-to-one and onto.
+\end{itemize}
+}
+
+\subsection{An uncountable set}
+\frame{
+\begin{itemize}
+\item<1-> Cantor's Theorem: The power set of any set is "larger" than the set itself.
+\item<2-> Consider $\mathit{P}(\mathcal{N})$
+\item<3-> Assume a bijection $f : \mathit{P}(\mathcal{N}) \rightarrow \mathcal{N} $ exists and show a contradiction.
+\end{itemize}
+}
+
+\subsection{Diagonalization}
+\frame{
+\begin{itemize}
+\item<1-> For $i = 0,1,2,\hdots$ let $A_i$ be the element of $\mathit{P}(\mathcal{N})$ that maps to $i$.
+\item<2-> Now consider the set $S = \{ i \in \mathcal{N} ~|~ i \notin A_i\}$. 
+\item<3-> $S$ is a member of $\mathit{P}(\mathcal{N})$ but does not map to any element in $\mathcal{N}$ - a contradiction.
+\end{itemize}
+}
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+
+\end{document}

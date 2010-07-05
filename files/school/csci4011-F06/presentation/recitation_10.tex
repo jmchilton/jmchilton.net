@@ -1,0 +1,257 @@
+% Handout Type
+% \documentclass[handout]{beamer}
+% Presentation Type
+\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 10 - Homework 4 Solutions}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Homework 4
+\item Practice Exam Problems
+\end{itemize}
+}
+
+
+
+
+
+\section{Homework 4}
+\subsection{The Problems}
+
+\frame{
+Problem 2 (Exercise 3.8b). Give an implementation-level description of a Turing machine which decidesthe following language.
+$$\{w~|~w \text{ contains twice as many 0s and 1s}\}$$
+We talked about an approach for doing something like this last week. Take this approach and adapt it.
+}
+
+\frame{
+$$A = \{w ~|~ w \text{ contains twice as many $0$s as $1$s}\}$$
+Implementation level description:
+\begin{itemize}
+\item<2-> Mark off the first unmarked symbol, if all symbols have been marked then accept.
+\item<3-> If the first symbol was a 0, scan through the tape and mark off first 1, return back to the beginning and scan through and mark off the first 0.
+\item<4-> If the first symbol was a 1, scan through the tape and mark off the first two 0s
+\item<5-> If you found a first symbol but the other one or two, \emph{reject}, else return to beginning of the tape and repeat.
+\end{itemize}
+}
+
+% Todo: Draw Diagram....
+
+\frame{
+Problem 3 (Exercise 3.6). Theorem 3.21 states a language is Turing recognizable iff some enumerator enumerates it. Part of the proof was to construct an enumerator to enumerate the language recognized by some Turing machine $M$. \\
+~\\
+\pause
+An enumerator is like a Turing machine, but instead of accepting or rejecting it prints out the strings of the language it enumerates. If $E$ enumerates $A$ it will only print out strings in $A$ and given enough time it will print out any given string in $A$.
+}
+
+\frame{
+$M$ \emph{ recognizes } $A$, $E_{\text{~:(}~}$ doesn't enumerate $A$, but $E_{\text{~:)}~}$ does. Why?
+\begin{tabular}{ll}
+$E_{\text{~:(}~}$ = & Ignore input. \\ 
+ & 1. Repeat for each string $s_i$ = $s_1$, $s_2$, $s_3$, $\hdots$\\ 
+ & 2. ~~~Run $M$ on $s_i$, if it accepts, print $s_i$  
+\end{tabular}
+~\\
+~\\
+~\\
+\begin{tabular}{ll}
+$E_{\text{~:)}~}$ = & Ignore input. \\ 
+ & 1. Repeat for each string $i$ =  $1$, $2$, $3,$, $\hdots$\\ 
+ & 2. ~~~Run $M$ on $s_1$, $s_2$, $\hdots$, $s_i$ for $i$ steps \\
+ & 3. ~~~Print each of the strings that are accepted, if any
+\end{tabular}
+}
+
+\frame{
+Problem 4. Explain why the following is not a description of a legitimate Turing machine.
+
+\begin{center}
+\begin{tabular}{ll}
+$M_{\text{bad}}$ = & The input is a polynomial $p$ over variables $x_1,\hdots,x_k$. \\ 
+ & 1. Try all possible settings of $x_1, \hdots, x_k$ to integer values. \\ 
+ & 2. Evaluate $p$ on all of these settings. \\ 
+ & 3. If any of these settings evaluates to 0, \emph{accept}; else, \emph{reject}.
+\end{tabular}
+\end{center}
+}
+
+
+
+\frame{
+Problem 6. Consider a form of Turing machines where instead of having the head having the options to go left or right at each step, its options are to move to the right or stay put. Show that this variant has less power than Turing machines, and argue about what class of languages it does recognize. (Hint: Argue about the class of languages it recognizes first.)
+}
+
+\frame{
+This variant of turning machine can only recognize regular languages. Why?
+\pause
+No memory. If you move to the left, can't move right, can't bring with you what was on the tape, all you know is the current input and the state you are in. This is just like a DFA. Technically you have one character of memory, but that can simulated in the DFA using the state.
+}
+
+\subsection{Problem 7}
+\frame{
+Problem 7. (Problem 3.16 from text) Show that Turing-recognizable languages are closed under: concatenation (2), star (3), and intersection (1).
+}
+
+\frame{
+Start: Let $A_1$ and $A_2$ be two Turing-recognizable languages, and let $M_1$ and $M_2$ be two Turing-machines that recognize the respective languages.
+\pause
+\begin{itemize}
+\item Construct Turing machine $M$ that recognizes $A_1 \cap A_2$ using $M_1$ and $M_2$.
+\item Construct Turing machine $M$ that recognizes $A_1 \circ A_2$ using $M_1$ and $M_2$.
+\item Construct Turing machine $M$ that recognizes $A_1^*$ using $M_1$. 
+\item Remember $M_1$ and $M_2$ recognize, not decide $A_1$ and $A_2$.
+\end{itemize}
+\pause
+Don't use diagram or implementation level description. Use pseudo code, examples on page 153, and 163 toward bottom.
+}
+
+\frame{
+Let $A_1$ and $A_2$ be two Turing-\emph{decidable} languages, and let $M_1$ and $M_2$ be two Turing-machines that \emph{decide} the respective languages. The following machine $M$ decides $A_1 \cap A_2$, hence Turing-decidable languages are closed under intersection.
+\vspace{.2in}
+
+$M :=$ "On input $w$:
+\begin{itemize}
+\item Run $M_1$ on input $w$, if it rejects, \emph{reject}
+\item Run $M_2$ on input $w$, if it rejects, \emph{reject}
+\item Else, \emph{accept}."
+\end{itemize}
+}
+
+\frame{
+Let $A_1$ and $A_2$ be two Turing-\emph{recognizable} languages, and let $M_1$ and $M_2$ be two Turing-machines that \emph{recognize} the respective languages. The following machine $M$ recognizes $A_1 \cap A_2$, hence Turing-recognizable languages are closed under intersection.
+\vspace{.2in}
+
+$M :=$ "On input $w$:
+\begin{itemize}
+\item Repeat the following for $i=1,2,3,\hdots$
+\item ~~~Run $M_1$ on input $w$ for $i$ steps
+\item ~~~Run $M_2$ on input $w$ for $i$ steps
+\item ~~~If $M_1$ and $M_2$ both accepted, \emph{accept}, else continue"
+\end{itemize}
+}
+
+\frame{
+Let $A_1$ and $A_2$ be two Turing-\emph{decidable} languages, and let $M_1$ and $M_2$ be two Turing-machines that \emph{decide} the respective languages. The following machine $M$ decides $A_1 \circ A_2$, hence Turing-decidable languages are closed under concatenation.
+\vspace{.2in}
+
+$M :=$ "On input $w$:
+\begin{itemize}
+\item For $j = 0,1,..., |w|$
+\item ~~~~Run $M_1$ on the first j symbols of $w$
+\item ~~~~Run $M_2$ on the remaining symbols of $w$
+\item ~~~~If both machines accept for some $j$, \emph{accept}
+\item Else \emph{reject}."
+\end{itemize}
+}
+
+\frame{
+Let $A_1$ and $A_2$ be two Turing-\emph{recognizable} languages, and let $M_1$ and $M_2$ be two Turing-machines that \emph{recognize} the respective languages. The following machine $M$ recognizes $A_1 \circ A_2$, hence Turing-decidable languages are closed under concatenation.
+\vspace{.2in}
+
+$M :=$ "On input $w$:
+\begin{itemize}
+\item For $i = 1,2,3,...$
+\item ~~~~For $j = 0,1,..., |w|$
+\item ~~~~~~~~Run $M_1$ on the first j symbols of $w$ for $i$ steps
+\item ~~~~~~~~Run $M_2$ on the remaining symbols of $w$ for $i$ steps
+\item ~~~~~~~~If both machines accept for some $j$, \emph{accept}
+\end{itemize}
+}
+
+\frame{
+Let $A_1$ be a Turing-\emph{decidable} language, and let $M_1$ be a Turing-machines that \emph{decides} the language. The following machine $M$ decides $A_1^*$, hence Turing-decidable languages are closed under star.
+\vspace{.2in}
+
+$M :=$ "On input $w$:
+\begin{itemize}
+\item For each of the $2^{|w|-1}$ ways to split $w$ into non-empty substrings:
+\item ~~~~Run $M_1$ on each of these substrings
+\item ~~~~If the machine accepts for each substring, \emph{accept}
+\item Else \emph{reject}."
+\end{itemize}
+}
+
+\frame{
+Let $A_1$ be a Turing-\emph{recognizable} language, and let $M_1$ be a Turing-machines that \emph{recognizes} the language. The following machine $M$ recognizes $A_1^*$, hence Turing-recognizable languages are closed under star.
+\vspace{.2in}
+
+$M :=$ "On input $w$:
+\begin{itemize}
+\item For $i=1,2,3,...$
+\item For each of the $2^{|w|-1}$ ways to split $w$ into non-empty substrings:
+\item ~~~~Run $M_1$ on each of these substrings for $i$ steps
+\item ~~~~If the machine accepts for each substring, \emph{accept}
+\end{itemize}
+}
+
+\section{Sample Midterm}
+\subsection{Problem 1}
+\frame{
+Construct a CFG for:
+$$\{w~|~ w = a^{m}b^n \text{ for } n \le m \le 2n\}$$
+Is this grammar ambiguous?
+}
+\subsection{Problem 2}
+\frame{
+Construct a PDA for:
+$$\{w ~|~ \text{the number of $a$s and $b$s equals the number of $c$s and $d$s}\}$$
+\pause
+}
+
+\frame{
+Rules:
+\begin{itemize}
+\item<1->S - generates equal number of $a$s + $b$s as $c$s + $d$s.
+\item<2->E - generates one more $c$+$d$s than $a$+$b$s.
+\item<3->F - generates one more $a$+$b$s than $c$+$d$s.
+\end{itemize}
+
+}
+
+\subsection{Problem 3}
+\frame{
+Show that the following language is not context-free.
+$$A = \{a^{n^2}\}$$
+\pause
+Assume A is context free, and use the pumping lemma to derive contradiction.
+}
+
+\frame{
+Consider $s= a^{p^2}$, and assume some decomposition $s=uvxyz$ as defined by the pumping lemma exists.
+\begin{itemize}
+\item<2->Consider $uv^2xy^2z$.
+\item<3->$|vy| > 0 \implies |uv^2xy^2z| > |s| = p^2$
+\item<4->$|vxy| \le p \implies |uv^2xy^2z| \le |s| + p = p^2+p$
+\item<5->So $p^2 \le |uv^2xy^2z| \le p^2+p  < p^2+2p+1 = (p+1)^2$.
+\item<6->Hence $|uv^2xy^2z|$ lies between two consecutive perfect squares and cannot be in $A$. 
+\end{itemize}
+}
+
+
+
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

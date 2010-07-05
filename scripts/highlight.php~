@@ -1,0 +1,24 @@
+#!/usr/bin/php -q
+<?
+$LANGUAGE_PATH = '/var/plt-www/htdocs/scripts/geshi/geshi';
+ 
+function get_pretty_code( $str, $lang )
+{
+	global $LANGUAGE_PATH;
+	require_once( '/var/plt-www/htdocs/scripts/geshi/geshi.php' );
+	$geshi = new GeSHi( $str, $lang, $LANGUAGE_PATH );
+	if( $lang == 'php' )
+	{
+		 $geshi->enable_strict_mode( true );
+	}
+	$str = $geshi->parse_code();
+	return $str;
+}
+
+$source_code    = file_get_contents( $argv[1] );
+$lang           = $argv[3];
+$colorized_code = get_pretty_code($source_code, $lang);
+
+//file_put_contents($argv[2], $colorized_code); 
+echo $colorize_code;
+?>

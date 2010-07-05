@@ -1,0 +1,220 @@
+% TODO: Read about pareto optimal solutions.
+\documentclass[10pt,twocolumn]{report}
+\usepackage[landscape]{geometry}
+
+\pagestyle{empty}
+
+\setlength{\oddsidemargin}{-0.5in}
+\setlength{\evensidemargin}{-0.5in}
+\setlength{\textwidth}{10in}
+
+\setlength{\topmargin}{-.75in}
+\setlength{\textheight}{7.75in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\leftmargin -2in
+\rightmargin -2in
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\setlength{\parindent}{1pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+
+Matrix Background: $\lambda_{min}(A)x^Tx \le x^TAx \le \lambda_{max}x^Tx$. (Holds for some x)
+
+$\max_{x \ne 0} \Vert Ax \Vert / \Vert X \Vert = \surd \lambda_{max}(A^TA)$ (same for min)
+
+Eigenvalue Decomposition on $S^n$, $X = Q^T\Lambda Q$ = $\sum_i \lambda_iq_iq_i^T$, with $Q^TQ=I$.
+
+$A > B \Rightarrow \forall x \ne 0 ~ x^TAx > x^TBx$ --- $A^TA \ge 0$.
+
+$X = [A B; B^T C]$ and $\det A \ne 0 \Rightarrow S = C-B^TAB$ and $\det X = \det S \det A$.
+
+ $X > 0 \iff A,S > 0$, $A > 0 \Rightarrow (X \ge 0 \iff S \ge 0)$
+
+$min_u u^TAu + 2v^TB^Tu + v^TC^v = v^TSv$  if $\det A \ne 0$
+
+Else if $A \ge 0$ and $Bv \in R(A), v^T(C - B^TA^{\dagger}B)v$ ($-\inf$ without B cond.)
+
+$\nabla( x^TPx + q^Tx + r )  = Px + q$ | $\nabla(\log \det X \in S^n_++) = X^{-1}$
+
+$(a^Ta)(b^Tb) \le (a^Tb)^2$
+
+$\Vert X \Vert_1$ (Max col abs sum, $\infty$ is row) | $\Vert X \Vert_2 = sqrt(\lambda_{max}(X^TX))$
+
+$\sup \{a_i^Tu | \Vert u \Vert_2 \le r\} = r \Vert a_i \Vert_2$
+
+$[x, y; y, z] \in S_+^2 \iff x,z \ge 0, xz \ge y^2$
+
+$ \Vert A \Vert_2 \le s \iff A^TA \le s^2I (s \ge 0)$ --- $A^TA \le t^2I \iff [tI,A;A^T,tI] \ge 0$
+
+~
+
+\hrule
+
+~
+
+Hyperplane: $\{x | a^Tx = b\} = \{x | a^T(x - x_0) = 0\}$ --- Halfspace: $\{x | a^Tx \le b\}$.
+
+Norm Cone: $\{(x,t) | \Vert x \Vert \le t\} $
+
+Polyhedra: $\{x | a_j^T x \le b_j, ... c_j^Tx = d_j\}$
+
+Affine Independence: $\{v_1 - v_0, ..., v_k - v_0\}$ indep $\Rightarrow \{v0,...,v_k\}$ affinely independent. 
+
+Simplex : Convex hull of an affinely independent set.
+
+Operations that preserve convexity of sets: Arbitrary intersection, Affine Transformation, Inverse of affine image, projection on subset of coordinates, set sumation, cartesian product, $\{(x,y_1+y_2) | (x,y_1) \in S_1, (x,y_2) \in S_2 \}$. Perspective projection.
+$K$ proper cone if convex, closed, non empty interior, and $x,-x \in K \Rightarrow x = 0$.
+
+$x \le_K y \Rightarrow y-x \in K$ and $x <_K y \Rightarrow y - x \in int K$
+
+x minimum element if $\forall y \in S ~ x \le_K y $. X minimal element if $\forall y \in S ~ y \le_K x \Rightarrow y = x$.
+
+Below is seperating hyperplane theorem, converse holds if at least one set is open
+
+$C,D$ convex, $C\cap D = \phi \Rightarrow \exists a \ne 0$ s.t. $\forall x \in C ~ a^Tx\le b$ and $\forall x \in D ~ a^Tx \ge b$ 
+
+Supported HP Thm: $C$ convex $\Rightarrow \forall x_0 \in bd C ~ \exists a \ne 0$ s.t. $\forall x \in C ~ a^Tx \le a^Tx_0$.
+
+Every closed convex set $S$ is the intersection of halfspaces.
+
+~
+
+\hrule
+
+~
+
+$f$ differentable with convex domain: 
+
+~$f$ convex (concave) $\iff \forall x,y ~ f(y) \ge (\le) f(x) + \nabla f(x)^T(y-x)$
+
+~$f$ strict convex $\iff \forall x \ne y ~ f(y) > f(x) + \nabla f(x)^T(y-x)$
+
+Convex: $e^{ax}$, $x^a$ : $a \le 0$ or $\ge 1$ (cc. else), $|x|^p$ for $p \ge 1$, $x \log x$, any norm, $x^2/y$ for $y > 0$.
+
+Convex: $\log(\sum e^{x_i})$, $x^TYx$ $Y \in S^n_{++}$, $\lambda_{max}$ on $S^n$, $1/x$
+
+Concave: $\log x$, $\Pi x_i^{1/n}$, $\log \det X$, $\log \int_0^x exp(-t^2)$
+
+Sublevel (superlevel) sets of convex (concave) functions are convex
+
+Ops preserve convexity: Arb. suming or maxing, $g(x,t) = t*f(x/t) s.t. t > 0$,  $\inf_y f(x,y)$
+
+$g$ convex $\Rightarrow: e^{g(x)}, g(x)^p (p\ge 1), -log(-g(x))$ convex.
+
+$g$ concave $\Rightarrow: \log g(x)$ is cc and $1/g(x)$ is cx.
+
+$h(g_i(x))$ cx if $h$ cx, nd (ni) $\forall$ arg, $g_i$ cx (cc) | $h(g_i(x))$ cc if $h$ cc, nd (ni) $\forall$ arg, $g_i$ cc (cx(scalar))
+
+Rank $X$ on $S^n_+$ is quasiconcave - LF is quasilinear, $\Vert x - a\Vert_2/\Vert x - b\Vert_2$ (QCX when $\le 0$)
+
+On $R$, $f$ quasiconvex if noninc., nondec, or noninc then nondec. QCX $\iff$ QCX on all lines.
+
+$QCX$ preserved under max, LF transform of domain, composition with monotonic func, $\inf_x f(x,y)$, sums of QCX not QCX.
+
+$f$ diff w/cx dom $\Rightarrow f$ quasiconvex $\iff \forall x,y f(y) \le f(x) \Rightarrow \nabla f(x)^T(y - x) \le 0$.
+
+$f$ quasiconvex $\Rightarrow$ $y^T\nabla f(x) = 0 \Rightarrow y^T\nabla^2 f(x) y \ge 0$. ($\Leftarrow$ if $> 0$ when $y \ne 0$)
+
+Log convexity: $\log f$ cvx or $f(\theta x +(1-\theta)y) \le f(x)^\theta f(y)^{1-\theta}$.
+
+lcx $\Rightarrow$ cx, positive cc $\Rightarrow$ lcc, lcc $\Rightarrow$ quasicc, lcx $\Rightarrow$ qcx.
+
+sum lcc not lcc, sum lcx is lcx, f,g lcc $\rightarrow$ fg lcc, $\int f(x,y) dy$ lcc if f is
+
+~
+
+\hrule
+
+~
+
+LP Stand. Form: $\min c^Tx$ s.t. $Ax = b, x \ge 0$. Unconstrained vars ($x_i = x_i^+ - x_i^-$, both pos)
+
+$\min \max_i f_i ~\rightarrow~ \min t~$ s.t. $~f_i \le t ~~~ i=1,...,m$ 
+
+$\min (c^Tx + d)/(e^T + f) s.t Gx \le h, Ax = B \rightarrow \min c^Ty + dz s.t. Gy - hz \le 0, Ay-bz = 0, e^Ty + fz = 1, z \ge 0$ because $y=x/(e^Tx + f)$ and $z = 1/(e^T+ f)$.
+
+SOCP: $\min f^tx $ s.t. $\Vert A_ix + b_i\Vert_2 \le c_i^Tx + d_i, Fx=g$
+
+Monimial: $cx_1^{a_1}\cdots x_n^{a_n}$ for $c > 0$. Posynomial are sum of monimials.
+
+GP: $f_0,...f_m$ are posynomials and $h_i$ are monomials. Convex when take $x_i = e^{y_i}$ and log transform problem.
+
+SPD: $\min c^Tx $ s.t. $x_1F_1 + \cdots + x_nF_n + G \le 0, Ax = b$
+
+SDP(SF): $\min tr(CX)$ s.t. $tr(A_iX)=b_i, X \ge 0$ 
+
+$\min \Vert Ax - b \Vert_\infty \Rightarrow \min t$ s.t. $Ax - b \le t1, Ax-b\ge -1t$
+
+$\min \Vert Ax - b \Vert_1 \Rightarrow \min 1^Ty$ s.t. $Ax - b \le y, Ax - b \ge y$.
+
+$\min \Vert Ax - b \Vert^2$ If A Full Rank: $x_{ls} = (A^TA)^{-1}A^Tb$ In general $A^{\dagger}b+v(\in N(A))$.
+
+$\min \Vert x \Vert ^2$ s.t. $Ax = b$. Full Rank A: $A^T(AA^T)^{-1}b$ In genral $A^{\dagger}b$.
+
+$\min c^Tx$ s.t. $x^TA(>0)x \le 1$ $x_{opt} = -A^{-1}c/sqrt(c^TA^{-1}c)$  (Proof $y=A^{1/2}x, \tilde{c} = A^{-1/2}c$)
+
+$\min c^Tx$ s.t. $G + x_1F_F1 +... \le 0 \rightarrow \max tr(GZ)$ s.t. $tr(F_iZ)+c_i = 0, Z \ge 0$
+
+RLP: $\min c^Tx$ s.t. $a_i^Tx \le b_i \forall a_i \in \{\bar{a}_i + F_iu | \Vert u \Vert \le 1\} \rightarrow \min c^Tx$ s.t. $a_i^Tx + \Vert F_ix \Vert \le b_i$
+
+$\min \Vert A(x)= A_0 + x_1A_1+... \Vert = \min t$ s.t. $[tI, A(x); A^T(x), tI] \ge 0$.
+
+$\min (c^Tx)^2/d^Tx$ s.t. $Ax \le b = \min t$ s.t. $[diag(b-Ax),0,0;0,t,c^Tx;0,c^Tx,d^Tx] \ge 0$ (Schur). 
+
+$x^Tx \le yz, y,z \ge 0 \iff \vert [2x; y-z] \Vert_2 \le y + z, y,z \ge 0$
+
+~
+
+\hrule
+
+~
+
+$\min c^Tx$ s.t. $Ax=b, x\ge 0 \Rightarrow g(\lambda, v) = -b^Tv ~$if$~ A^Tv - \lambda(\ge0) + c = 0$ = $-b^Tv ~$if$ A^Tv + c \ge 0$
+
+$\min c^Tx$ s.t. $Ax \le b \rightarrow \max -b^T\lambda$ s.t. $A^T\lambda + c = 0,\lambda \ge 0$
+
+$\min f_0(x)$ s.t. $Ax \le b, Cx=d$ $g(\lambda, v) = -b^Tv - d^Tv - f_0^*(Y)~~~Y = -A^T\lambda-C^Tv \in dom f_0^*$ 
+
+$\min c^Tx$ s.t. $Ax=b,x \ge_K 0 \rightarrow max b^Ty$ s.t. $A^Ty \le_K* c$
+
+$\min x^TP(>0)x$ s.t. $Ax \le b \rightarrow \max -(1/4)\lambda^TAP^{-1}A^T\lambda - b^\lambda$ s.t. $\lambda \ge 0$.
+
+$\min x^Tx$ s.t. $Ax = b \rightarrow \max -1/4v^TAA^Tv-b^Tv$ $~~v*= -2(AA^T)^{-1}b$
+
+$\min \sum x_i \log x_i$ s.t. $Ax<b, 1^Tx = 1 \rightarrow \max -b^T\lambda - \log \sum e^{-a_i^T\lambda}$ s.t. $\lambda \ge 0$.
+
+$\min \log \det X^{-1}$ s.t. $a_i^TXa_i \le 1 \rightarrow \max \log \det(\sum^m \lambda_ia_ia_i^T) -1^T\lambda + n$ 
+
+$\min x^TA_0x + 2b_0^Tx + c_0$ s.t. $x^TA_1x + 2b_1^Tx + c_1 \le 0$ $g(\lambda) = c_0 + \lambda c_1 -(b_0 + \lambda b_1)^T(A_0 + \lambda A_1)^{\dagger}(b_0 + \lambda b_1)$ s.t. $A_0 + \lambda A_1 \ge 0, b_0 + \lambda b_1 \in R(A_0+\lambda A_1) \rightarrow $
+
+$max \gamma$ s.t. $\lambda \ge 0, [A_0 + \lambda A_1, b_0+\lambda b_1; (b_0+\lambda b_1)^T, c_0 + \lambda c_1 - \gamma] \ge 0$
+
+$KKT: f_i \le 0, h_i = 0, \lambda_i \ge 0, \lambda_i f_i = 0, \nabla_x(L(x^*, \lambda^*, v^*) = 0$
+
+All optimals must satifsy KKT if SD holds, for convex converse is true.
+
+Feasibility and ($\lambda \ge 0, g(\lambda, v) > 0$) always at most one true, exactly for convex    
+$K^* = \{y | x^Ty \ge 0 \forall x \in K\}. $
+$f^*(y) = sup_{x \in dom} (y^Tx - f(x))$. Always convex.
+$\log x \rightarrow -1 - log(-y) (y < 0)$, $x^TP(> 0)x \rightarrow 1/4*y^TP^{-1}y$
+
+~
+
+\hrule 
+
+~
+
+Self-concordance: $|f'''(t)| \le 2f''(t)^{3/2}$ (Affinely Invariant).
+
+$f,g SC \Rightarrow f+g SC, \alpha(\ge 1)f SC$. SC: $-log x, -log det X, -log(t^2 - x^Tx)$ (on Cone).
+
+\end{document}

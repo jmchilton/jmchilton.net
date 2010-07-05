@@ -1,0 +1,337 @@
+% Handout Type
+% \documentclass[handout]{beamer}
+% Presentation Type
+\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 6 - Context-Free Languages and Homework 3}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping and Homework}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Homework 3
+\item Converting a CFG to Chomsky Normal Form
+\item Converting a CFG to a PDA
+\end{itemize}
+}
+
+\subsection{Homework 3}
+\frame{
+Problem 1. Provide CFGs for two languages. 
+\begin{itemize}
+\item<1-> Just need show a CFG
+\item<2-> Don't need to prove it works or provide a formal definition
+\item<3-> Use the notation that upper case letters are non-terminals and lower case letters are terminals. 
+\item<4-> These may be challenging, start with simpler grammars
+\end{itemize}
+}
+
+\frame{
+$L_1 = \{a^mb^nc^pd^q | m + n= p + q\}$
+\begin{itemize}
+\item<2-> $aabbcddd \in L_1$, $aaaccd \in L_1$, $ad \in L_1$ $\epsilon \in L_1$
+\item<3-> $abcdd \notin L_1$, $acbd \notin L_1$
+\item<4-> \textbf{Do not} use "rules" like $S \rightarrow  a^mS$, number of terminals appearing in a rule must be constant
+\item<5-> Build up to $L_1$, first try to come up with CFGs that generate $a^nc^n$ and then $\{a^mc^pd^q ~|~m = p + q\}$.
+\end{itemize}
+}
+\frame{
+$L_2 = \{x_1\#x_2\#\hdots\#x_k ~|~ x_i \in \{a,b\}^* $ and for some $i$ and $j$, $x_i = x_j^R\}$
+\begin{itemize}
+\item<1-> $aab\#bbb\#baa\#bab \in L_2$ 
+\item<2-> $baa\#baba\#ababa \notin L_2$
+\item<3-> Is $aba\#baa$ a member of $L_2$
+\item<4-> Build up to solving $L_2$, start with $x\#x^R$, and then 2.6 part c.
+\end{itemize}
+}
+
+\frame{
+Problem 2. Prove 
+\begin{align*}
+S &\rightarrow ~aSb~|~bY~Ya \\
+Y &\rightarrow ~bY ~|~aY ~|~ \epsilon
+\end{align*}
+generates the language. $\{w ~|~ w $ is not of the form $a^nb^n$ for some $n\}$
+}
+
+\frame{
+\begin{align*}
+S &\rightarrow ~aSb~|~bY~Ya \\
+Y &\rightarrow ~bY ~|~aY ~|~ \epsilon
+\end{align*}
+\begin{itemize}
+\item $L := \{w ~|~ w $ is not of the form $a^nb^n$ for some $n\}$
+\item Let $L_S$ be all the strings that can be derived from $S$, and $L_Y$ be all the strings that can derived from $Y$. 
+\item Show $L_S \subseteq L$ and $L \subseteq L_S$.
+\item Use induction on number of steps in derivation to show $L_S \subseteq L$.
+\item Use induction on length of string to show $L \subseteq L_S$.
+\end{itemize}
+}
+
+\frame{
+Problem 3. Convert CFGs from problem 1 into PDAs. Just follow the algorithm laid out on pages 115-118. We will go through this today. Even if you can't get something for problem 1, put something reasonable down and then do this step with that. This is one of the easier problems.
+}
+
+\frame{
+Problem 4. Given a CFG convert it into Chompsky Normal form. Just use the algorithm laid out in Theorem 2.9 on page 107. This algorithm is demonstrated on page 108.
+}
+
+\frame{
+Problem 5. Show that the class of context-free languages is closed under union, concatenation, and start. Experiment with \emph{very simple} grammars to figure out the pattern.
+}
+
+\frame{
+$\rhd$ Let $L_1$ and $L_2$ be two given context-free languages. Because these languages are context-free there exists context-free grammars which generate these languages. Let $G_1 = (V_1, \Sigma, R_1, S_1)$ generate $L_1$, and let $G_2 = (V_2, \Sigma, R_2, S_2)$ generate $L_2$. Now consider with following grammar which generates $L_1 \cup L_2$ ($L_1 \circ L_2)$, $G = (V, \Sigma, R, S)$, with:
+
+\textit{(describe $V$, $R$, and $S$)}
+
+}
+
+
+\frame{
+$\rhd$ Let $L$ a given context-free languages. Because this languages is context-free there exists a context-free grammar which generates $L$. Let $G = (V, \Sigma, R, S)$ generate $L$. Now consider with following grammar which generates $L^*$, $G' = (V', \Sigma, R', S')$, with:
+
+\textit{(describe $V'$, $R'$, and $S'$)}
+
+}
+
+\frame{
+Problem 6. Convert the given CFG to a PDA. See notes for problem 3. Do this problem!
+}
+\frame{
+Problem 7. Consider $A = \{a^mb^nc^n\}$ and $B = \{a^nb^nc^m\}$, use these along with the fact that Example 2.36 ($\{a^nb^nc^n\}$) is not context-free to show that context-free languages are not closed under intersection.
+\newline
+\textit{(Start with this problem.)}
+}
+
+\frame{
+Problem 8. Let $L$ be a given context-free language and $R$ be a given regular language.
+
+\begin{itemize}
+\item Part 1. Show $L - R$ must be context-free. (Use the result that $C \cap S$, is context-free for any context-free C and regular S.)
+
+\item Part 2. Show $R - L$ isn't necessarily context-free. (Use the result that context-free grammars are not closed under complementation.)
+
+\item Hint: In set notation form, recall the definition of $A - B$.
+\end{itemize}
+}
+
+\frame{
+Problem 9. Use the pumping lemma for context-free languages to show three languages are not context-free. I will demonstrate examples of using the pumping lemma for context-free grammars next week.
+}
+
+\frame{
+Problem 10. Let $G$ be a CFG in Chomsky normal form that contains $b$ variables. Show that, if $G$ generates some string with a derivation having at least $2^b$ steps, $L(G)$ contains an infinite number of strings.
+}
+
+\subsection{Our Grammar}
+\frame{
+Construct a grammar that generates the following language:
+$$\{u\#v ~|~ u,v \in \{a,b\}^* \text{ and are even length palindromes}\}$$
+}
+\section{Chomsky Normal Form}
+\subsection{Definition}
+\frame{
+In Chomsky Normal Form, every rule is of the form: $A \rightarrow BC$ or $A \rightarrow d$. Where $B$ and $C$ are variables that are not the start symbol, and $d$ is a terminal. Additionally the rule $S \rightarrow \epsilon$ is allowed if $S$ is the start symbol. 
+}
+\subsection{The Conversion Algorithm}
+\frame{
+\begin{itemize}
+\item Replace the start symbol
+\item Replace $S \rightarrow \epsilon$ rules
+\item Replace unit rules of the form $A \rightarrow B$
+\item Break up all rules of the form $A \rightarrow u_1u_2\hdots u_k$ for $k \ge 3$.
+\item Replace all terminals in rules of the form $A \rightarrow u_1u_2$ with variable
+\end{itemize}
+}
+
+\subsection{Converting our grammar}
+\frame{
+Consider the CFG:
+\begin{align*}
+S &\rightarrow T\#T \\
+T &\rightarrow aTa ~|~ bTb ~|~ \epsilon
+\end{align*}
+}
+
+\frame{
+Replace start symbol.
+\begin{align*}
+S &\rightarrow T\#T \\
+T &\rightarrow aTa ~|~ bTb ~|~ \epsilon
+\end{align*}
+\pause
+\begin{center}
+\large{$\downarrow$}
+\end{center}
+\begin{align*}
+\color{red}{S_0} &\color{red}{\rightarrow S } \\
+S &\rightarrow T\#T \\
+T &\rightarrow aTa ~|~ bTb ~|~ \epsilon
+\end{align*}
+}
+
+\frame{
+Replace $\epsilon$ transitions.
+\begin{align*}
+S_0 &\rightarrow S \\
+S &\rightarrow T\#T \\
+T &\rightarrow aTa ~|~ bTb ~|~ \color{blue}{\epsilon}
+\end{align*}
+\pause
+\begin{center}
+\large{$\downarrow$}
+\end{center}
+\begin{align*}
+S_0 &\rightarrow S \\
+S &\rightarrow T\#T ~|~ \color{red}{\#T ~|~ T\# ~|~ \#} \\
+T &\rightarrow aTa ~|~ bTb ~|~ \color{red}{aa ~|~ bb}
+\end{align*}
+}
+
+\frame{
+Replace unit rules.
+\begin{align*}
+S_0 &\rightarrow \color{blue}{S} \\
+S &\rightarrow T\#T ~|~ \#T ~|~ T\# ~|~ \# \\
+T &\rightarrow aTa ~|~ bTb ~|~ aa ~|~ bb
+\end{align*}
+\pause
+\begin{center}
+\large{$\downarrow$}
+\end{center}
+\begin{align*}
+S_0 &\rightarrow \color{red}{T\#T ~|~ \#T ~|~ T\# ~|~ \#} \\
+S &\rightarrow T\#T ~|~ \#T ~|~ T\# ~|~ \# \\
+T &\rightarrow aTa ~|~ bTb ~|~ aa ~|~ bb
+\end{align*}
+}
+
+\frame{
+Cut each rule to size at most $2$.
+\begin{align*}
+S_0 &\rightarrow \color{blue}{ T\#T }\color{black} ~|~ \#T ~|~ T\# ~|~ \# \\
+S &\rightarrow \color{blue}{T\#T} \color{black}~|~ \#T ~|~ T\# ~|~ \# \\
+T &\rightarrow \color{blue}{aTa} ~|~ \color{blue}{bTb} \color{black} ~|~ aa ~|~ bb
+\end{align*}
+\pause
+\begin{center}
+\large{$\downarrow$}
+\end{center}
+\begin{align*}
+S_0 &\rightarrow \color{red}{ TT_1 }\color{black} ~|~ \#T ~|~ T\# ~|~ \# \\
+S &\rightarrow \color{red}{TT_1} \color{black}~|~ \#T ~|~ T\# ~|~ \# \\
+T &\rightarrow \color{red}{aT_2} ~|~ \color{red}{bT_3} \color{black} ~|~ aa ~|~ bb \\
+\color{red}T_1 &\color{red}\rightarrow \#T \\
+\color{red}T_2 &\color{red}\rightarrow Ta \\
+\color{red}T_3 &\color{red}\rightarrow Tb
+\end{align*}
+}
+
+\frame{ 
+Replace terminals.
+\begin{align*}
+S_0 &\rightarrow TT_1 ~|~ \#T ~|~ T\# ~|~ \# \\
+S &\rightarrow TT_1 ~|~ \#T ~|~ T\# ~|~ \# \\
+T &\rightarrow aT_2 ~|~ bT_3 ~|~ aa ~|~ bb \\
+T_1 &\rightarrow \#T ~~~ T_2 \rightarrow Ta ~~~ T_3 \rightarrow Tb
+\end{align*}
+\pause
+\begin{center}
+\large{$\downarrow$}
+\end{center}
+\begin{align*}
+S_0 &\rightarrow TT_1 ~|~ PT ~|~ TP ~|~ \# \\
+S &\rightarrow TT_1 ~|~ PT ~|~ TP ~|~ \# \\
+T &\rightarrow AT_2 ~|~ BT_3 ~|~ AA ~|~ BB \\
+T_1 &\rightarrow PT ~~~ T_2 \rightarrow TA ~~~ T_3 \rightarrow TB \\
+A &\rightarrow a ~~ B \rightarrow b ~~~ P \rightarrow \#
+\end{align*}
+}
+\subsection{Things to watch out for...}
+\frame{
+A convoluted example to illustrate some perils:
+\begin{align*}
+A &\rightarrow aAa ~|~ B ~|~ \epsilon \\
+B &\rightarrow bBb ~|~ A
+\end{align*}
+Remove $\epsilon$ rules.
+\pause
+
+This could be a problem when removing unit rules like $A \rightarrow B$ also!
+}
+
+\section{Contex-Free Grammar $\Rightarrow$ PDA}
+\subsection{The Algorithm}
+\frame{
+Outline of Lemma 2.21:
+\begin{center}
+\unitlength=4pt
+\begin{picture}(0, 30)(0,0)
+    \gasset{Nw=8,Nh=8,Nmr=8,curvedepth=0}
+    \thinlines
+    \node[Nmarks=i](QS)(6,32){$q_{start}$}
+    \node(QL)(6,16){$q_{loop}$}
+    \node[Nmarks=r](QA)(6,0){$q_{accept}$}
+    \drawedge[ELside=r](QS,QL){$\epsilon, \epsilon \rightarrow S\$ $}
+    \drawloop[loopangle=0](QL){$X$}
+    \drawedge[ELside=r](QL,QA){$\epsilon, \$ \rightarrow \epsilon $}
+\end{picture}
+\end{center}
+
+$X$ includes transitions of the form $\epsilon, A \rightarrow w$ for each rule $A \rightarrow w$, and $a,a \rightarrow \epsilon$ for each terminal $a$.
+}
+
+\subsection{Converting Our Grammar}
+\frame{
+\begin{center}
+\unitlength=4pt
+\begin{picture}(0, 30)(0,0)
+    \gasset{Nw=8,Nh=8,Nmr=8,curvedepth=0}
+    \thinlines
+    \node[Nmarks=i](QS)(6,28){$q_{start}$}
+    \node(QL)(6,14){$q_{loop}$}
+    \node[Nmarks=r](QA)(6,0){$q_{accept}$}
+    \drawedge[ELside=r](QS,QL){$\epsilon, \epsilon \rightarrow S\$ $}
+    \drawloop[loopangle=0](QL){}
+    \drawedge[ELside=r](QL,QA){$\epsilon, \$ \rightarrow \epsilon $}
+\end{picture}
+\end{center}
+Try this for the grammar:
+\begin{align*}
+S &\rightarrow T\#T \\
+T &\rightarrow aTa ~|~ bTb ~|~ \epsilon
+\end{align*}
+} 
+\section{Some More Problems}
+\frame{
+Some other problems:
+$$a^nb^mc^n$$
+$$\{w\#x ~|~ w^R \text{ is a substring of }x\}$$
+$$\{w~|~ |w| \text{ is odd and middle symbol is }0 \}$$ 
+$$\{w ~|~ w \text{ contains at least three $1$s} \}$$
+$$\{w ~|~ w \text{ starts and ends with same character }\}$$ 
+$$\phi$$ 
+}
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

@@ -1,0 +1,5 @@
+`((rel "geek:scheme:index" "index")
+  (rel "geek:scheme:stk_time" "STk Time")
+  (rel "geek:scheme:stk_debug" "STk Debugging Code")
+  ;(abs "http://www.jmchilton.net/scheme/" "CSci 1901 Wiki")
+)

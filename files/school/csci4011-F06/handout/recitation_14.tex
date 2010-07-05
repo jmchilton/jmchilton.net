@@ -1,0 +1,316 @@
+ %Handout Type
+\documentclass[handout]{beamer}
+% Presentation Type
+% \documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 14 - Homework 7 and Time Complexity}
+\author{John Chilton}
+\date{December 6, 2006}
+
+\def\red#1{\textcolor{red}{#1}}
+\def\blue#1{\textcolor{blue}{#1}}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Homework 7 Problems and Examples
+\end{itemize}
+}
+
+
+\section{Homework 7}
+\subsection{Problems 1 and 2}
+
+\frame{
+TRUE or FALSE with explanation.
+~\\
+~\\
+Big-O Problems
+\begin{itemize} 
+ \item $n^2 = O(n)$
+ \item $3^n = 2^{O(n)}$
+ \item $2^{2^n} = O(2^{2^n})$
+\end{itemize}
+~\\
+Little-o Problems
+\begin{itemize} 
+ \item $n = o(2n)$
+ \item $1 = o(1/n)$
+\end{itemize}
+}
+
+\frame{
+\frametitle{Big-O Definition}
+$f(n)=O(g(n))$ if there exists \emph{constants} $n_0$ and $c$ such that:
+$$\text{For all } n \ge n_0, f(n) \le c*g(n)$$
+}
+
+\frame{
+\frametitle{Big-O Examples}
+Some other big-O examples.
+\begin{itemize}
+ \item $n = O(n*log^3 n)$
+ \item $n^2 = O(n*log^3 n)$
+ \item $3^n = O(4^n)$
+ \item $4^n = O(3^n)$
+ \item $4^n = O(3^{2n})$ 
+\end{itemize}
+}
+
+\frame{
+\frametitle{Little-o Definition}
+$f(n)=o(g(n))$ iff
+$$\lim_{n\rightarrow \infty} \frac{f(n)}{g(n)} = 0$$
+}
+
+\frame{
+\frametitle{Little-o Examples}
+Some other little-o examples.
+\begin{itemize}
+ \item $2n = o(n^2)$
+ \item $\frac{1}{2}n^2 = o(n^2)$
+\end{itemize}
+}
+
+\subsection{Problem 3 - Isomorphism and Related Example}
+\frame{
+\frametitle{Graph Isomorphism Examples}
+\begin{center} Some Examples also check out \url{http://en.wikipedia.org/wiki/Graph_isomorphism}
+\end{center}
+}
+
+\frame{
+Two graphs are isomorphic if the nodes of one graph can be relabelled in such a way that the resulting graph is equal to the second graph. 
+\pause
+$$ISO = \{(G,H) ~|~ G \text{ is isomorphic to } H \}$$
+Show $ISO \in NP$.
+}
+
+\frame{
+\frametitle{NP}
+A set is in $NP$ iff an instance can be verified in polynomial time with help of some certificate.
+\begin{itemize}
+\item Certificate for $COMPOSITE$ is two factors
+\item Certificate for $HAMPATH$ is potential path
+\item Certificate for $SUBSET$ is a subset of elements
+\end{itemize}
+}
+
+\frame{
+To show $ISO \in NP$ must figure out what certificate allows you to verify two graphs are isomorphic in polynomial time and describe how do this.
+~\\
+~\\
+\pause
+\begin{tabular}{ll}
+$V$=& On input $((G,H),c)$. \\ 
+& \textsl{\# Use $c$ to verify that $G$ is isomorphic to $H$ is polynomial time.} \\
+\end{tabular}
+}
+
+\frame{
+\begin{center}
+$LPATH=\{(G,a,b,k) ~|~ G$ contains a simple path from $a$ to $b$ of length at least $k\}$
+\end{center}
+\begin{itemize}
+ \item<2-> $(G,a,b,4) \in LPATH$?
+ \item<3-> $(G,a,b,6) \in LPATH$?
+ \item<4-> $(G,a,g,6) \in LPATH$?
+ \item<5-> $(G,c,g,7) \in LPATH$?
+\end{itemize}
+}
+
+\frame{
+\begin{center}
+$LPATH=\{(G,a,b,k) ~|~ G$ contains a simple path from $a$ to $b$ of length at least $k\}$
+\end{center}
+Show $LPATH \in NP$. 
+\pause
+\begin{itemize}
+\item What should the certificate be?
+\item How do you use to verify in polynomial time?
+\end{itemize}
+}
+
+\frame{
+$c$ is a simple path in $G$ from $a$ to $b$ of length at least $k$.
+~\\~\\
+\begin{tabular}{ll}
+$V$=& On input $((G,a,b,k),c)$. \\ 
+& 1. Verify length of $c$ at least $k$\\
+& 2. Verify each pair of nodes is adjacent. \\
+& 3. Verify no node visited twice along path. \\ 
+& 4. Verify path starts with $a$ and end with $b$. \\
+& 5. If any condition not met, \emph{reject}, else \emph{accept}.\\
+\end{tabular}
+}
+
+\frame{
+\frametitle{An aside}
+Why does this verifier make the problem a member of $NP$? The following TM $T$ solves the problem in polynomial time on a nondeterministic TM.
+~\\~\\
+\begin{tabular}{ll}
+$T$=& On input $(G,a,b,k)$. \\ 
+& 1. If $k$ is larger than $|V|$, \emph{reject}.  \\
+& 2. Nondeterministically pick path of length $k$ to $|V|$. \\
+& 3. Call this path $c$, and run $V$ on $((G,a,b,k),c)$ 
+\end{tabular}
+}	
+
+\subsection{Problem 4 - A problem in P}
+\frame{
+$$MODEXP=\{(a,b,c,p)~|~ (a^b\mod p) = (c\mod p) \}$$
+Demonstrate $MODEXP \in P$. That is some deterministic TM decides $MODEXP$ in polynomial time. }
+
+\frame{
+The naive approach:
+~\\
+~\\
+\begin{tabular}{ll}
+$F$=& On input $a,b,c,p$.            \\ 
+& 1. Compute $a^b$ and store on tape \\
+& 2. Compute $a^b$ modulo $p$        \\
+& 3. Compute $c$ modulo $p$.         \\
+& 4. Accept iff results of 2 and 3 are equal.
+\end{tabular}
+\pause
+~\\
+~\\
+Why not polynomial time?
+\pause
+\begin{itemize}
+ \item $a^b$ calculation
+ \item Taking $\mod$ of such a large number
+\end{itemize}
+
+}
+
+\frame{
+Show the following identity holds:
+$$((m * n) \modo p) = (((m \modo p) * (n \modo p)) \modo p)$$
+~\\
+~\\
+\begin{itemize}
+\item Prove this result.
+\item Use it to describe a polynomial time algorithm for deciding $MODEXP$.
+\end{itemize}
+}
+
+\frame{
+May also need the following identity, if $n$ is even:
+$$b^n =  (b^2)^{\frac{n}{2}}$$
+}
+
+\subsection{Problem 5}
+\frame{
+Part a.
+\begin{center}
+$SPATH=\{(G,a,b,k) ~|~ G$ contains a simple path from $a$ to $b$ of length at most $k\}$
+\end{center}
+Show $SPATH \in P$.
+~\\
+~\\
+\begin{itemize}
+\item Show some polynomial time TM decides this set
+\item Think of how to utilize a breadth-first search (BFS)
+\end{itemize}
+}
+
+\frame{
+Part b.
+\begin{center}
+$LPATH=\{(G,a,b,k) ~|~ G$ contains a simple (loopless) path from $a$ to $b$ of length at least $k\}$
+\end{center}
+Show $LPATH$ is NP-Complete.
+~\\~\\
+\begin{itemize}
+\item Show some polynomial time reduction from $UHAMPATH$
+\item This would show if you could solve this problem in $P$ time, you could for $UHAMPATH$ also
+\end{itemize}
+}
+
+\frame{
+$UHAMPATH$ requires there exist a path from a given $a$ to $b$ such that every node is visited exactly once, $LPATH$ requires the path is of length at least $k$ for a a given $k$. Relate these requirement to find a reduction from $UHAMPATH$ to $LPATH$.
+}
+
+
+\subsection{Problem 6}
+\frame{
+Problem 7.28.
+$$SETSPLITTING = \{(S, C=\{C_i\}) ~|~ C_i \subseteq S \text{ \& $(S,C)$ colorable} \}$$
+$S$ can be colored if each element can be chosen to be $red$ or $blue$ such that no $C_i$'s elements are all the same color.
+}
+
+\frame{
+\frametitle{Coloring Examples}
+$$S = \{1,2,3,4,5\}$$
+\begin{itemize}
+ \item\pause C = \{\{1,2\}, \{3,5\}\} \pause $\in SETSPLITTING$
+ \item\pause C = \{\{1,2,3\}, \{3,4,5\}\} \pause $\in SETSPLITTING$
+ \item\pause C = \{\{1,2\}, \{1,3\}, \{1,4\}, \{2,4\}\} \pause $\notin SETSPLITTING$
+ \item\pause C = \{\{1,2,3\}, \{2,3\}, \{1\}\} \pause $\notin SETSPLITTING$
+\end{itemize}
+}
+
+\frame{
+Problem 6. Show $SET\-SPLITTING$ is NP-complete, i.e. give a polynomial time reduction of some NP-complete problem to $SET\-SPLITTING$.
+~\\~\\
+Some NP-complete problems $SAT$, $3SAT$, $HAMPATH$, $UHAMPATH$, $CLIQUE$, $VERTEX\-COVER$, $SUBSET\-SUM$, and $LPATH$.
+~\\~\\
+I would pick $3SAT$. 
+}
+
+\frame{
+$Variables = \{x_1, x_2, x_3\}$
+$$\phi =  \{x_1 \vee x_2 \vee x_3\} \wedge \{\bar{x_2} \vee x_2 \vee x_3\} \wedge \{\bar{x_1} \vee x_3 \vee \bar{x_3}\}$$
+\pause
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}, x_3, \bar{x_3}\}$
+$$C = \{\{x_1 , x_2, x_3\}, \{\bar{x_2}, \bar{x_2}, \bar{x_3}\}, \{\bar{x_1}, x_3, \bar{x_3}\}\}$$
+}
+
+\frame{
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}, x_3, \bar{x_3}\}$
+$$C = \{\{x_1, x_2, x_3\}, \{\bar{x_2}, \bar{x_2}, \bar{x_3}\}, \{\bar{x_1}, x_3, \bar{x_3}\}\}$$
+\pause
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{\red{x_1}, \blue{\bar{x_1}}, \blue{x_2}, \red{\bar{x_2}}, \red{x_3}, \blue{\bar{x_3}}\}$
+$$C = \{\{\red{x_1}, \blue{x_2}, \red{x_3}\}, \{\red{\bar{x_2}}, \red{\bar{x_2}}, \blue{\bar{x_3}}\}, \{\blue{\bar{x_1}}, \red{x_3}, \blue{\bar{x_3}}\}\}$$
+}
+
+
+\frame{
+$\{x_1, x_2\}$
+$$\{x_1 \vee x_1 \vee x_2\} \wedge \{x_1 \vee x_1 \vee \bar{x_2}\} \wedge \{\bar{x_1} \vee \bar{x_1} \vee x_2\} \wedge \{\bar{x_1} \vee \bar{x_1} \vee \bar{x_2}\}\}$$
+\pause
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}\}$
+$$\{\{x_1, x_1, x_2\},  \{x_1, x_1, \bar{x_2}\}, \{\bar{x_1}, \bar{x_1}, x_2\}, \{\bar{x_1} , \bar{x_1}, \bar{x_2}\}\}$$
+}
+
+\frame{
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}\}$
+$$\{\{x_1, x_1, x_2\},  \{x_1, x_1, \bar{x_2}\}, \{\bar{x_1}, \bar{x_1}, x_2\}, \{\bar{x_1} , \bar{x_1}, \bar{x_2}\}\}$$
+\pause
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{\red{x_1}, \red{\bar{x_1}}, \blue{x_2}, \blue{\bar{x_2}}\}$
+$$\{\{\red{x_1}, \red{x_1}, \blue{x_2}\},  \{\red{x_1}, \red{x_1}, \blue{\bar{x_2}\}}, \{\red{\bar{x_1}}, \red{\bar{x_1}}, \blue{x_2}\}, \{\red{\bar{x_1}} , \red{\bar{x_1}}, \blue{\bar{x_2}}\}\}$$
+If you can fix this, than you are half way to a solution, if the coloring ensures $x_i$ and $\bar{x_i}$ have opposite colors, then colorable $\implies$ satisfiable.
+}
+
+\frame{
+There will still be satisfiable formula that are not colorable though. Consider for instance
+$\{x_1 \vee x_1 \vee x_1\}$. It is not colorable, though it is satisfiable.
+~\\~\\
+Think about ways to modify (add, subtract, split, merge, etc.) the or clauses without changing the meaning to handle this situation.
+}
+
+
+
+\end{document}

@@ -1,0 +1,259 @@
+% Handout Type
+\documentclass[handout]{beamer}
+% Presentation Type
+% \documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 9 - Homework 4 and Turing Machine Problems}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Recognizability versus. Decidability
+\item Homework 3
+\item Turing Machine Diagram
+\end{itemize}
+}
+
+\section{Turing-decidable vs. Turing-recognizable}
+\frame{
+Understanding these two concepts and the distinction is important for this assignment.
+}
+
+\subsection{Problem 7}
+\frame{
+Problem 7. (Problem 3.16 from text) Show that Turing-recognizable languages are closed under: concatenation (2), star (3), and intersection (1).
+}
+
+\frame{
+Start: Let $A_1$ and $A_2$ be two Turing-recognizable languages, and let $M_1$ and $M_2$ be two Turing-machines that recognize the respective languages.
+\pause
+\begin{itemize}
+\item Construct Turing machine $M$ that recognizes $A_1 \cap A_2$ using $M_1$ and $M_2$.
+\item Construct Turing machine $M$ that recognizes $A_1 \circ A_2$ using $M_1$ and $M_2$.
+\item Construct Turing machine $M$ that recognizes $A_1^*$ using $M_1$. 
+\item Remember $M_1$ and $M_2$ recognize, not decide $A_1$ and $A_2$.
+\end{itemize}
+\pause
+Don't use diagram or implementation level description. Use pseudo code, examples on page 153, and 163 toward bottom.
+}
+
+\subsection{Union Examples in Scheme}
+\frame{
+Examples of union for Scheme for deciding and recognizing.
+}
+
+\frame{
+Let $A_1$ and $A_2$ be two Turing-\emph{decidable} languages, and let $M_1$ and $M_2$ be two Turing-machines that \emph{decide} the respective languages. The following machine $M$ decides $A_1 \cup A_2$, hence Turing-decidable languages are closed under unioning.
+\vspace{.2in}
+
+$M :=$ "On input $w$:
+\begin{itemize}
+\item Run $M_1$ on input $w$, if it accepts, \emph{accept}
+\item Run $M_2$ on input $w$, if it accepts, \emph{accept}
+\item Else, \emph{reject}."
+\end{itemize}
+}
+
+\frame{
+Let $A_1$ and $A_2$ be two Turing-\emph{recognizable} languages, and let $M_1$ and $M_2$ be two Turing-machines that \emph{recognize} the respective languages. The following machine $M$ recognizes $A_1 \cup A_2$, hence Turing-recognizable languages are closed under unioning.
+\vspace{.2in}
+
+$M :=$ "On input $w$:
+\begin{itemize}
+\item Repeat the following for $i=1,2,3,\hdots$
+\item ~~~Run $M_1$ on input $w$ for $i$ steps, if it accepts, \emph{accept}
+\item ~~~Run $M_2$ on input $w$ for $i$ steps, if it accepts, \emph{accept}"
+\end{itemize}
+\pause 
+~\\
+Could also add "If on $i^{\text{th}}$ step both machines reject and halt, \emph{reject}."
+}
+
+
+
+
+
+
+
+\section{Homework 4}
+\subsection{The Problems}
+
+\frame{
+Problem 1. Take the given implementation level description and construct a Turing machine diagram out of it. Then explicitly describe $Q$, $\Sigma$, $\Gamma$, mention that $\delta$ is described in your diagram, and specify your start, accept, and reject state.
+}
+
+\frame{
+Problem 2 (Exercise 3.8b). Give an implementation-level description of a Turing machine which decidesthe following language.
+$$\{w~|~w \text{ contains twice as many 0s and 1s}\}$$
+We talked about an approach for doing something like this last week. Take this approach and adapt it.
+}
+
+\frame{
+Problem 3 (Exercise 3.6). Theorem 3.21 states a language is Turing recognizable iff some enumerator enumerates it. Part of the proof was to construct an enumerator to enumerate the language recognized by some Turing machine $M$. \\
+~\\
+\pause
+An enumerator is like a Turing machine, but instead of accepting or rejecting it prints out the strings of the language it enumerates. If $E$ enumerates $A$ it will only print out strings in $A$ and given enough time it will print out any given string in $A$.
+}
+
+\frame{
+$M$ \emph{ recognizes } $A$, $E_{\text{~:(}~}$ doesn't enumerate $A$, but $E_{\text{~:)}~}$ does. Why?
+\begin{tabular}{ll}
+$E_{\text{~:(}~}$ = & Ignore input. \\ 
+ & 1. Repeat for each string $s_i$ = $s_1$, $s_2$, $s_3$, $\hdots$\\ 
+ & 2. ~~~Run $M$ on $s_i$, if it accepts, print $s_i$  
+\end{tabular}
+~\\
+~\\
+~\\
+\begin{tabular}{ll}
+$E_{\text{~:)}~}$ = & Ignore input. \\ 
+ & 1. Repeat for each string $i$ =  $1$, $2$, $3,$, $\hdots$\\ 
+ & 2. ~~~Run $M$ on $s_1$, $s_2$, $\hdots$, $s_i$ for $i$ steps \\
+ & 3. ~~~Print each of the strings that are accepted, if any
+\end{tabular}
+}
+
+\frame{
+Problem 4. Explain why the following is not a description of a legitimate Turing machine.
+
+\begin{center}
+\begin{tabular}{ll}
+$M_{\text{bad}}$ = & The input is a polynomial $p$ over variables $x_1,\hdots,x_k$. \\ 
+ & 1. Try all possible settings of $x_1, \hdots, x_k$ to integer values. \\ 
+ & 2. Evaluate $p$ on all of these settings. \\ 
+ & 3. If any of these settings evaluates to 0, \emph{accept}; else, \emph{reject}.
+\end{tabular}
+\end{center}
+}
+
+\frame{
+\begin{itemize}
+\item<1->The difference between the "right" and "wrong" answer is very subtle. 
+\item<2-> Be as precise as possible, and pick your words carefully.
+\item<3-> Don't say the Turing machine cannot do something you could do in Java.
+\item<4-> Don't say the Turing machine cannot do something you cannot do in Java because of memory limitations or limitations on sizes of integers.
+\end{itemize}
+}
+
+\frame{
+Problem 5 and 6 are the hard ones, be sure to do these last.
+}
+
+\frame{
+Problem 5. k-PDAs.
+\begin{itemize}
+\item<1-> A $k$-PDA is just like a PDA, but with $k$ unique stacks.
+\item<2-> At each step, you can pop an item or push and item or both or neither for each stack.
+\item<3-> Still have a set of states, still have just one input.
+\item<4-> When $k=0$, this is just a NFA, $k=1$ its just a normal PDA
+\item<5-> Example?
+\end{itemize}
+}
+
+
+\frame{
+Two steps:
+\begin{itemize}
+\item Show how a TM can simulate a $k$-PDA.
+\item Show a 2-PDA can simulate a Turing-machine
+\end{itemize}
+}
+
+\frame{
+Show a TM can simulate a $k$-PDA
+\begin{itemize}
+\item<1-> Given some $k$-PDA, $P$, describe how to construct a TM, $M$, the recognizes the same language.
+\item<2-> Use a multitape turning machine. How many tapes should you use?
+\item<3-> $k$-PDAs read in input, $M$ will already have its input on first tape, how will you simulate reading input?
+\item<4-> What should the set of states in $M$ be?
+\item<5-> When should you move to an accept state, explain how rejecting will work.
+\item<6-> How do you pop, push, and replace items on a stack.
+\item<7-> Lots of intresting little issues, be sure to fully describe the Turing-machine $M$ and explain or better yet prove why it accepts the same language as $P$.
+\end{itemize}
+}
+
+\frame{
+Show a 2-PDA can simulate a TM.
+\begin{itemize}
+\item<1-> Given some Turning machine $M$, construct a 2-PDA, $P$, that recognizes the same language as $M$.
+\item<2-> PDA uses it stack to simulate the tape, one stack for what is right of the head and one stack for what is left of the head.
+\item<3-> A TM starts with input on tape and PDA reads the input in, so what should it do first?
+\item<4-> How do you simulate left movement, right movement, replacing the symbol under the head.
+\item<5-> Explain how to implement accepting and rejecting.
+\item<6-> Again lots of little issues, be sure to consider every case and argue why it works.
+\end{itemize}
+}
+
+
+\frame{
+Problem 6. Consider a form of Turing machines where instead of having the head having the options to go left or right at each step, its options are to move to the right or stay put. Show that this variant has less power than Turing machines, and argue about what class of languages it does recognize. (Hint: Argue about the class of languages it recognizes first.)
+}
+
+\frame{
+What classes of languages have we seen?
+\pause
+\begin{itemize}
+\item Regular languages
+\item Contex-free languages
+\item Turing-decidable languages
+\item Turing-recognizable languages (Not this one)
+\end{itemize}
+}
+
+\frame{
+Ideally, you will show equivalence by picking one, and doing two constructive proofs. 
+\begin{itemize}
+\item Let $A$ be a [Regular,Contex-free,Turing-decidable] language, and let $M$ be a [DFA,NFA, Regular Expression, CFG, PDA, TM] that [accepts, decides, recognizes] $A$, the following is a Stay-put Turing machines that also [accepts,decides, recognizes] $A$.
+\item Let $A$ be the language [Accepted,decided, recognized] by some Stay-put Turning machines $M$. The following [DFA,NFA, Regular Expression, CFG, PDA, TM] also [accepts, decides, recognizes] $A$, hence $A$ must be [Regular, Context-Free, Turing-Decidable].
+\end{itemize}
+\pause
+A formal construction is great and this is the ideal road, but...
+}
+
+\frame{
+Not sure where to start? Try to construct a Stay-put Turing-machine that accepts each of the following languages:
+\begin{itemize} 
+\item (1) $0^*1^*$
+\item (2) $0^{n}1^{n}$
+\item (3) $0^{n}1^{n}0^{n}$
+\end{itemize}
+JUST SHOWING YOUR EXAMPLE IS NOT A PROOF OR ARGUMENT ABOUT ANYTHING. This step is for your own benefit.
+}
+
+\section{Turing Machine Problems}
+\subsection{Problem and Implementation Description}
+\frame{
+$$A = \{w ~|~ w \text{ has an equal number of $0$s and $1$s}\}$$
+\pause
+Implementation level description:
+\begin{itemize}
+\item Mark off the first unmarked symbol, if all symbols have been marked then accept.
+\item If the first symbol was a 0, scan through the tape and mark off first 1
+\item If the first symbol was a 1, scan through the tape and also mark off first 0
+\item If a 0 or 1 is not found, reject, else return to beginning of the tape and repeat. 
+\end{itemize}
+}
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

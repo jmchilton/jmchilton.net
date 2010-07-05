@@ -1,0 +1,776 @@
+\documentclass{beamer}
+\usepackage{beamerthemesplit}
+\setbeamercovered{dynamic}
+
+
+\AtBeginSection[]
+{
+   \begin{frame}
+       \frametitle{Outline}
+       \tableofcontents[currentsection]
+   \end{frame}
+}
+
+\usetheme{Warsaw}
+\usefonttheme[onlysmall]{structurebold}
+
+% \usepackage[usenames]{color}
+
+\title{Template Metaprogramming for Haskell}
+
+\author{John Chilton}
+\date{March 5, 2007}
+\begin{document}
+
+% \frame{\titlepage}
+\frame{
+\begin{center}
+\LARGE{Template Metaprogramming for Haskell} \\ 
+~\\
+\Large{Tim Sheard and Simon Peyton Jones} \\
+~\\
+~\\
+\Large{Presented by John Chilton} \\
+\Large{March 5, 2007}
+\scriptsize{\url{http://www.jmchilton.net/index.html?page=geek:template_haskell}}
+\end{center}
+}
+
+\frame{\tableofcontents}
+\section{Introduction}
+
+\subsection{Introduction to Haskell, Metaprogramming, and \ttfamily{printf}\sffamily{}}
+\frame{
+\frametitle{Haskell}
+\begin{center}\Large
+See \ttfamily{haskell.hs}\sffamily{ and } \ttfamily{haskell-monad.hs}
+\end{center}
+}
+
+\frame{
+\frametitle{Metaslide}
+The paper is out of date, a lot of code doesn't work and many names and concepts have changed slightly. I will present an up to date version of Template Haskell, with some modified and new examples that actually compile.
+~\\
+\scriptsize{\url{http://www.jmchilton.net/index.html?page=geek:template_haskell}}
+}
+
+
+
+
+
+\frame{
+\frametitle{Metaprogramming}
+\begin{block}{What?}
+Metaprogramming facilities allows the programmer to analyze and compute parts of programs.
+\end{block}
+\begin{block}{Why?}
+\begin{itemize}
+\item Compile-time, programmable optimizations and analysis
+\item Mechanism for creating new abstractions
+\item Application: Embedded domain specific languages
+\end{itemize}
+\end{block}
+}
+
+\frame[<+->]{
+\frametitle{Introducing the \ttfamily{printf}\sffamily{ Example}}
+\begin{alertblock}{The Goal}
+\ttfamily{printf "Error: \%s on line \%d." msg line}
+\end{alertblock}
+\begin{block}{Problems}<2->
+\begin{itemize}
+ \item<2-> Cannot be implemented in ordinary Haskell
+ \item<2-> Interdependence of types
+ \item<2-> Variable number of arguments
+\end{itemize}
+\end{block}
+\begin{block}{Template Haskell Solution}<3->
+Generate appropriate procedure at compile time.
+\end{block}
+}
+
+\subsection{The \ttfamily{\$(...)}\sffamily{ Operator}}
+\frame{
+\frametitle{\ttfamily{\$(...)}\sffamily{ Syntax}}
+\begin{center}
+\ttfamily{\$(...)} \\
+\LARGE{$\Downarrow$}\normalsize \\
+\sffamily{ Must contain valid Haskell expression} \\
+\LARGE{$\Downarrow$}\normalsize \\
+Expression must yield Haskell syntax tree data \\
+\LARGE{$\Downarrow$}\normalsize \\
+Evaluated at runtime and inserted into program
+\end{center}
+}
+
+\frame{
+\frametitle{Two Types of Spliceable Data}
+\begin{description}
+ \item[ExpQ] Syntax trees corresponding to valid Haskell expressions (literals, variables, function application, conditionals, etc.). Called Expr in paper.
+ \item[DecQ] Syntax trees corresponding to a valid Haskell declarations (functions, values, data types, classes, etc.). Called Decl in paper.
+%  \item[TypeQ] AST corresponding to a valid Haskell type. 
+\end{description}
+}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+\section{Building Haskell Syntax Trees}
+\subsection{Example I: \ttfamily{sel}\sffamily{}}
+\frame{
+\frametitle{The Problem}
+\begin{Example}
+\ttfamily{> listSelect 2 [1,2,3,4,5]}  \\
+\ttfamily{3} \\
+\ttfamily{> :type listSelect} \\
+\ttfamily{Int -> [a] -> a}  \\
+\ttfamily{> sel 2 (1,2,3,4,5) --cannot be implemented} \\ 
+\end{Example}
+
+\begin{alertblock}{The Problem}<2->
+\sffamily{No generic tuple, (a), type corresponding to list type, [a]. }
+\end{alertblock}
+}
+
+\frame{
+\frametitle{sel}
+\begin{Example} \Large 
+\ttfamily{> \$(sel 3 5) (1,2,3,4,5)} \\
+\ttfamily{3} \\
+\ttfamily{> ($\backslash$(a1,a2,a3,a4,a5) -> a3) (1,2,3,4,5)} \\
+\ttfamily{3}
+\end{Example}
+% \begin{block}{How sel will work}
+% \ttfamily{\$(sel m n)} \\
+% \sffamily{At compile time will generate} \\
+% \ttfamily{($\backslash$(a1,a2,a3,\textbf{...},an) -> am)}
+% \end{block}
+}
+
+\frame{
+\frametitle{Implementing \ttfamily{sel}\sffamily{}}
+\begin{Example}
+\begin{center}\ttfamily
+(\textbackslash (a1, a2, a3, a4) -> a2)
+\end{center}
+\end{Example}
+\begin{itemize}
+\item \ttfamily{lamE :: [PatQ] -> ExpQ -> ExpQ}
+\item \ttfamily{tupP :: [PatQ] -> PatQ}
+\item \ttfamily{varP :: Name -> PatQ}
+\item \ttfamily{varE :: Name -> ExpQ}
+\item \ttfamily{mkName :: String -> Name}
+\end{itemize}
+\begin{block}{Implementation}\sffamily
+See \ttfamily Sel.hs
+\end{block}
+}
+
+\subsection{Example II: \ttfamily{printf}\sffamily{}}
+\frame[<+->]{
+\frametitle{printf}
+\begin{block}{Type}
+Implement printf with type - \ttfamily{String -> ExpQ}
+\end{block}
+
+\begin{Example}
+\ttfamily{\$(printf "Error: \%s on line \%d.") msg line} \\
+\end{Example}
+
+\begin{block}{Compile Time Expansion}
+\ttfamily{(\textbackslash s0 -> \textbackslash n1 -> \\
+~~~"Error: " ++ s ++ " on line " ++ show n) \\
+~msg line}
+\end{block}
+}
+
+
+
+\frame{
+\begin{center}\ttfamily{appE :: ExpQ -> ExpQ -> ExpQ}\end{center}
+\begin{block}{Example}<2->
+\ttfamily{showE :: ExpQ -> ExpQ} \\
+\ttfamily{showE e = appE (varE (mkName "show")) e}
+\end{block}
+}
+
+\frame{
+\begin{center}\ttfamily{infixE::(Maybe ExpQ) -> ExpQ -> (Maybe ExpQ) -> ExpQ}\end{center}
+\begin{block}{Haskell's Maybe Type}<2->
+\ttfamily{data Maybe a = Nothing | Just a}
+\end{block}
+\begin{Example}<2->
+\ttfamily{> map (+ 2) [1..5]} \\
+\ttfamily{[3,4,5,6,7]} \\
+\end{Example}
+\begin{block}{concatE}<3->
+\ttfamily{concatE :: ExpQ -> ExpQ -> ExpQ} \\
+\ttfamily{concatE e1 e2 =}\\
+\ttfamily{~~~~infixE (Just e1) (varE (mkName "++")) (Just e2)}
+\end{block}
+}
+
+\frame{
+\begin{block}{\ttfamily{printf}\sffamily{ Implementation - See }\ttfamily{Printf1.hs}}
+\ttfamily
+data Format = D | S | L String \\
+~\\
+printf :: String -> ExpQ \\
+printf s = gen (parse s) (litE (StringL "")) \\
+~\\
+parse :: String -> [Format] \\
+... \\
+gen :: [Format] -> ExpQ -> ExpQ \\
+...
+\end{block}
+\begin{Example}
+\ttfamily
+> parse "Error: \%s on line \%d." \\
+~[L "Error: ", S, L " on line ", D, L "."]
+\end{Example}
+}
+
+
+\frame{
+\begin{block}{main1.hs}\ttfamily
+module Main where \\
+import Printf1 \\
+~\\
+errorAt :: String -> Int -> String  \\
+errorAt msg line =\\
+~~~~\$(printf "Error: \%s on line \%d") msg line \\
+~\\
+main = putStrLn (errorAt "Undeclared variable" 314)
+\end{block}
+\begin{Example}\ttfamily
+@jl \% ghc --make -fth main1.hs \\
+@jl \% main1 \\
+Error: Undeclared variable on line 314 \\
+\end{Example}
+}
+
+\frame{
+\begin{block}{main2.hs}\ttfamily
+module Main where \\
+import Printf1 \\
+~\\
+errorVar :: String -> String -> String \\
+errorVar msg var = \\
+~~~~ \$(printf "Error \%s with variable \%s") msg var \\
+~\\
+main = putStrLn (errorVar "Undeclared variable" "fo")
+\end{block}
+\begin{Example}<2->\ttfamily
+@jl \% ghc --make -fth main2.hs \\
+@jl \% main2 \\
+Error fo with variable fo \\
+\end{Example}
+}
+
+\frame{
+\begin{block}{main2.hs}\ttfamily
+module Main where \\
+import Printf1 \\
+~\\
+errorVar :: String -> String -> String \\
+errorVar msg var = \\
+~~~~ \$(printf "Error \%s with variable \%s") msg var \\
+~\\
+main = putStrLn (errorVar "Undeclared variable" "fo")
+\end{block}
+\begin{alertblock}{Problem - Generated Code}\ttfamily
+(\textbackslash s -> \textbackslash s -> \\
+~~~"" ++ "Error: " ++ s ++ " with variable " ++ s) \\
+~msg var
+\end{alertblock}
+}
+
+\frame{
+\frametitle{gensym operator}\sffamily
+\begin{itemize}
+\item Common in Lisp \& Scheme dialects
+\item Generates a fresh variable name, not clashing with any existing variables
+\item Can be used to simulate lexical scoping
+\item Template Haskell now calls it \ttfamily{qNewName}
+\end{itemize}
+\begin{center}\ttfamily
+qNewName :: String -> Q Name
+\end{center}
+}
+
+\frame{
+\frametitle{Using gensym}
+\begin{alertblock}{Broken - \ttfamily{Printf1.hs}}\ttfamily
+gen (D : xs) x = \\
+~~let body = concatE x (showE (varE (mkName "n"))) \\
+~~in lamE [varP (mkName "n")] (gen xs body)
+\end{alertblock}
+
+\begin{block}{Fixed - \ttfamily{Printf2.hs}}\ttfamily
+gen (D : xs) x = \\
+~~do \{ n <- qNewName "n"; \\ 
+~~~~~~~let body = concatE x (showE (varE n)) \\ 
+~~~~~~~in lamE [varP n] (gen xs body) \} 
+\end{block}
+}
+
+\frame{
+\begin{block}{main3.hs}\ttfamily
+module Main where\\
+import Printf2\\
+~\\
+errorVar :: String -> String -> String \\
+errorVar msg var = \\
+~~~\$(printf "Error \%s with variable \%s") msg var \\
+~\\
+main = putStrLn (errorVar "Undeclared variable" "fo")\\
+\end{block}
+
+\begin{Example}\ttfamily
+@jl \% ghc --make -fth main3.hs\\
+@jl \% main3\\
+Error Undeclared variable with variable fo
+\end{Example}
+}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+\section{Some Additonal Features}
+\subsection{The Quasi-Quote}
+\frame{
+\begin{itemize} \ttfamily\Large
+\item ~\$(~) $\widetilde{::}$ ExpQ -> "Haskell code"
+\item ~[\textbar ~ \textbar] $\widetilde{::}$ "Haskell Code" -> ExpQ
+\end{itemize}
+}
+
+
+\frame{
+\frametitle{Toy Example}
+\begin{Example}\ttfamily
+[| let x = 7\\
+~~~in show x |]
+\end{Example}
+
+\begin{block}{Result}\ttfamily
+Q (LetE [ValD (VarP x\_0) \\
+~~~~~~~~~~~~~~(NormalB (LitE (IntegerL 7)))\\ 
+~~~~~~~~~~~~~~[]\\
+~~~~~~~~] \\
+~~~~~~~~(AppE (VarE GHC.Show.show) (VarE x\_0)) \\
+~~~)
+\end{block}
+}
+
+\frame{
+\frametitle{More Examples}
+\begin{block}{\ttfamily{showE}}\ttfamily
+\ttfamily{showE :: ExpQ -> ExpQ} \\
+% \ttfamily{--showE e = appE (varE (mkName "show")) e}\\
+\ttfamily{showE e = [| show \$(e) |]}
+\end{block}
+\begin{block}{\ttfamily{concatE}}\ttfamily
+\ttfamily{concatE :: ExpQ -> ExpQ -> ExpQ} \\
+\ttfamily{concatE e1 e2 = }\\
+\ttfamily{~~~~[| \$(e1) ++ \$(e2) |]}
+\end{block}
+}
+
+\frame{
+\frametitle{\ttfamily{printf}\sffamily{ with Quasi-Quotes}}
+\begin{block}{\ttfamily gen}\ttfamily
+gen [] x = x \\
+gen (D : xs) x = \\
+~~~~[| \textbackslash n -> \$(gen xs [| \$(x)++show n |]) |] \\
+gen (S : xs) x = \\
+~~~~[| \textbackslash s -> \$(gen xs [| \$(x)++s |]) |] \\
+gen (L s : xs) x = \\
+~~~~gen xs [| \$(x) ++ \$(lift s) |] 
+\end{block}
+\begin{alertblock}{Scoping}<2->
+Variables in the Quasi-Quote are statically scoped.
+\end{alertblock}
+}
+
+\frame{
+\frametitle{Other Quasi-Quotes}
+\begin{itemize} \ttfamily\Large
+\item ~\$(~) $\widetilde{::}$ ExpQ -> "Haskell code"
+\item ~[\textbar ~ \textbar] $\widetilde{::}$ "Haskell Code" -> ExpQ
+\item ~[d\textbar ~ \textbar] $\widetilde{::}$ "Haskell Code" -> DecQ
+\item ~[t\textbar ~ \textbar] $\widetilde{::}$ "Haskell Code" -> TypeQ
+\item ~[p\textbar ~ \textbar] is not implemented, breaks a lot of code from the paper
+\end{itemize}
+}
+
+\subsection{Splicing Declarations}
+\frame{
+\frametitle{\sffamily{Splicing Declarations - }\ttfamily{gen\_sels}}
+\begin{block}{\ttfamily mainsel2.hs}\ttfamily
+module Main where \\
+import Sel \\
+~\\
+\$(gen\_sels 7) \\
+-- Defines procedures sel1of7, sel2of7, ..., sel7of7 \\
+~\\
+main = putStrLn (sel4of7 (1,"b",3,"d",sqrt,"f",1))
+\end{block}
+\begin{Example}\ttfamily\small
+@jl \% ghc -fth --make mainsel2.hs \\
+@jl \% mainsel2 \\
+d
+\end{Example}
+}
+
+\subsection{Reification}
+\frame{
+\frametitle{reify}
+\begin{center}
+\ttfamily{reify :: Name -> InfoQ}
+\end{center}
+\begin{block}{\ttfamily reify}\sffamily
+Lookups up the compiler's information about Name. The name can be the name of a variable, data type, class, etc.
+\end{block}
+\begin{alertblock}{Note}
+Everything about reification in the paper is out of date. \ttfamily{reify}\sffamily{ encapsulates many of the procedures mentioned, and other functionality such as }\ttfamily{reifyOpt}\sffamily{ or }\ttfamily{reifyLocn}\sffamily{ are not implemented.}
+\end{alertblock}
+}
+
+% TyConI (DataD [] RLP.Point [] [NormalC RLP.Pt [(NotStrict,ConT GHC.Real.Rational),(NotStrict,ConT GHC.Real.Rational)]] [])
+% DataConI RLP.Pt (AppT (AppT ArrowT (ConT GHC.Real.Rational)) (AppT (AppT ArrowT (ConT GHC.Real.Rational)) (ConT RLP.Point))) RLP.Point (Fixity 9 InfixL)
+% VarI RLP.x (ConT GHC.Float.Double) Nothing (Fixity 9 InfixL)
+% VarI RLP.foo (ForallT [a_1627397870] [AppT (ConT GHC.Num.Num) (VarT a_1627397870)] (AppT (AppT ArrowT (VarT a_1627397870)) (VarT a_1627397870))) Nothing (Fixity 9 InfixL)
+
+\frame{
+\frametitle{Info (1 / 4)}
+\begin{block}{The \ttfamily{Info}\sffamily{ Data Type}}\ttfamily
+data Info = \bfseries{\textit{TyConI Dec}} \textbar  \\
+~~~~~~~~~~~ DataConI Name Type Name Fixity \textbar \\ 	
+~~~~~~~~~~~ VarI Name Type (Maybe Dec) Fixity \textbar	... \\
+\end{block}
+
+\begin{Example}\ttfamily\small
+-- data Point = Pt Rational Rational \\
+TyConI (DataD [] \\
+~~~~~~~~~~~~~~Main.Point \\ 
+~~~~~~~~~~~~~~[] \\
+~~~~~~~~~~~~~~[NormalC Main.Pt\\ 
+~~~~~~~~~~~~~~~~~~~~~~~[(NotStrict, ConT Rational), \\
+~~~~~~~~~~~~~~~~~~~~~~~~(NotStrict, ConT Rational)]]  \\
+~~~~~~~~~~~~~~[])
+\end{Example}
+}
+
+\frame{
+\frametitle{Info (2 / 4)}
+\begin{block}{The \ttfamily{Info}\sffamily{ Data Type}}\ttfamily
+data Info = TyConI Dec \textbar  \\
+~~~~~~~~~~~ \textit{DataConI Name Type Name Fixity} \textbar \\ 	
+~~~~~~~~~~~ VarI Name Type (Maybe Dec) Fixity \textbar ... \\
+\end{block}
+
+\begin{Example}\ttfamily
+-- data Point = Pt Rational Rational \\
+DataConI Main.Pt \\ 
+~~~~~~~~~(AppT (AppT ArrowT (ConT Rational))  \\
+~~~~~~~~~~~~~~~(AppT (AppT ArrowT (ConT Rational)) \\ 
+~~~~~~~~~~~~~~~~~~~~~(ConT Main.Point)))  \\
+~~~~~~~~~Main.Point \\
+~~~~~~~~~(Fixity 9 InfixL) \\
+\end{Example}
+}
+
+\frame{
+\frametitle{Info (3 / 4)}
+\begin{block}{The \ttfamily{Info}\sffamily{ Data Type}}\ttfamily
+data Info = TyConI Dec \textbar  \\
+~~~~~~~~~~~ DataConI Name Type Name Fixity \textbar \\ 	
+~~~~~~~~~~~ \textit{VarI Name Type (Maybe Dec) Fixity} \textbar	... \\
+\end{block}
+
+\begin{Example}\ttfamily
+-- x = 2.0 \\
+VarI Main.x  \\
+~~~~~(ConT Double) \\ 
+~~~~~Nothing  \\
+~~~~~(Fixity 9 InfixL)
+\end{Example}
+}
+
+\frame{
+\frametitle{Info (4 / 4)}
+\begin{block}{The \ttfamily{Info}\sffamily{ Data Type}}\ttfamily
+data Info = TyConI Dec \textbar  \\
+~~~~~~~~~~~ DataConI Name Type Name Fixity \textbar \\ 	
+~~~~~~~~~~~ \textit{VarI Name Type (Maybe Dec) Fixity} \textbar ... \\
+\end{block}
+
+\begin{Example}\ttfamily
+-- foo x = x ++ "bar"\\
+VarI Main.foo \\ 
+~~~~~(AppT (AppT ArrowT (ConT GHC.Base.String)) \\
+~~~~~~~~~~~(ConT GHC.Base.String)) \\
+~~~~~Nothing \\ 
+~~~~~(Fixity 9 InfixL)
+\end{Example}
+}
+
+
+
+
+
+\section{Odds and Ends}
+\subsection{Embedded DSLs and Metaprogramming}
+\frame{
+\frametitle{Embedded DSLs}
+Template Haskell can be used to aid in the construction of embedded DSLs for Haskell.
+\begin{itemize}
+ \item Automatic creation of data types and functions
+ \item Changing semantics of Haskell code
+\end{itemize}
+}
+
+\frame{
+\frametitle{Automatic creation of data types and functions (1/2)}
+Reify data types and classes and automatically generate domain specific code.
+\begin{itemize}
+ \item Writing XML
+ \item Network Transmission
+ \item GUI Creation
+ \item ...
+\end{itemize}
+}
+
+\frame{
+\frametitle{Automatic creation of data types and functions (2/2)}
+At compile time you can generate data types and functions from domain specific declarations.
+\begin{itemize}
+\item Generate data type and functions from XML declarations (paper example)
+\item Generate data types and functions for interacting with a database from a DB schema (ala Ruby on Rails)
+\item Generate type safe functions for writing XML (tags and attributes) from declarative descriptions valid tags and attributes.
+\end{itemize}
+}
+
+\frame{
+\frametitle{Changing semantics of Haskell code}
+Can use Quasi-quote to ensure type-safe syntactically valid Haskell is written, and then interpret it as you wish.
+\begin{itemize}
+ \item "Compiling" portions of Haskell programs to other programming languages such as JavaScript
+ \item Randomized Linear Perturbations
+\end{itemize}
+}
+
+\frame{
+\frametitle{Randomized Linear Perturbations}
+\begin{Example}\ttfamily
+func :: Double -> Double -> Double -> IO Double \\
+func x y z = \$(rlpTransform [\textbar ~x + 2 * y * z \textbar])
+\end{Example}
+
+\begin{block}{Spliced Body Is}\ttfamily\scriptsize
+do zRand <- randomUniform01 \\
+~~~yRand <- randomUniform01 \\
+~~~xRand <- randomUniform01 \\
+~~~return \\
+~~~~~(let r = x + (2.0 * (y * z)) \\
+~~~~~~in if not (r == (0\%1)) then r \\
+~~~~~~~~~else let r = xRand + ((2.0 * (yRand * z)) + \\
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(2.0 * (y * zRand))) \\
+~~~~~~~~~~~~~~in if not (r == (0\%1)) then r \\
+~~~~~~~~~~~~~~~~~else let r = 2.0 * (yRand * zRand) \\
+~~~~~~~~~~~~~~~~~~~~~~in if not (r == (0\%1)) then r else 0\%1)
+\end{block}
+}
+
+\subsection{Scheme/Lisp Macros, MetaML, and Liskell}
+\frame{
+Metaprogramming is a common paradigm in functional programming, and is spreading to other scripting languages such as Python and Ruby.
+\begin{itemize}
+\item Lisp/Scheme have builtin procedures, very integral parts of the languages
+\item MetaML is a metaprogramming extension to Standard ML
+\item Liskell is another extension to Haskell to allow metaprogramming
+\end{itemize}
+}
+
+\frame{
+\frametitle{Lisp Programs are Lisp Data (1/2)}
+\begin{example}\ttfamily
+[d\textbar ~euclidDist (Pt x1 y1) (Pt x2 y2) = \\
+~~~~~~let dx = (x1 - x2) \\
+~~~~~~~~~~dy = (y1 - y2) \\
+~~~~~~in sqrt( dx * dx + dy * dy ) \textbar]
+\end{example}
+
+\begin{block}{Haskell Syntax Tree}\ttfamily\scriptsize
+~[FunD euclidDist [Clause [ConP Main.Pt [VarP x1\_0,VarP y1\_1],ConP Main.Pt [VarP x2\_2,VarP y2\_3]] (NormalB (LetE [ValD (VarP dx\_5) (NormalB (InfixE (Just (VarE x1\_0)) (VarE GHC.Num.-) (Just (VarE x2\_2)))) [],ValD (VarP dy\_4) (NormalB (InfixE (Just (VarE y1\_1)) (VarE GHC.Num.-) (Just (VarE y2\_3)))) []] (AppE (VarE GHC.Float.sqrt) (InfixE (Just (InfixE (Just (VarE dx\_5)) (VarE GHC.Num.*) (Just (VarE dx\_5)))) (VarE GHC.Num.+) (Just (InfixE (Just (VarE dy\_4)) (VarE GHC.Num.*) (Just (VarE dy\_4)))))))) []]]
+\end{block}
+}
+
+\frame{
+\frametitle{Lisp Programs are Lisp Data (2/2)}
+\begin{example}\ttfamily
+\textquoteleft(define (euclid-dist p1 p2)\\
+~~~(let ((dx (- x1 x2))\\
+~~~~~~~~~(dy (- y1 y2)))\\
+~~~~~(sqrt (+ (* dx dx) (* dy dy)))))
+\end{example}
+
+\begin{block}{Scheme Syntax Tree}\ttfamily
+(define (euclid-dist p1 p2) (let ((dx (- x1 x2)) (dy (- y1 y2))) (sqrt (+ (* dx dx) (* dy dy)))))
+\end{block}
+Scheme/Lisp syntax trees are are trivial to parse, construct, interpret, and composed entirely of normal scheme data types.
+}
+
+\frame{
+\frametitle{Call Site Syntactic Baggage}
+\begin{block}{Haskell}\ttfamily
+func x y z = \$(rlpTransform [| (x + (2 * y * z)) |])
+\end{block}
+
+\begin{block}{Scheme}\ttfamily
+(define (func x y z) (rlpTransform (+ x (* 2 y z))))
+\end{block}
+}
+
+% \frame{
+% \frametitle{Freedom (1/2)}
+% Template Haskell, (\ttfamily{\$(...)}\sffamily{ and }\ttfamily{[\textbar ...\textbar]}\sffamily{), requires syntatically valid constructions. Scheme macros merely require parseablility. This allows for extension of the semantics of the language in many more intresting ways.}
+% }
+
+\frame{
+\frametitle{Freedom}
+Template Haskell, (\ttfamily{\$(...)}\sffamily{ and }\ttfamily{[\textbar ...\textbar]}\sffamily{), requires syntactically valid constructions. Scheme macros merely require parseablility. This allows for extension of the semantics of the language in many more intresting ways.}
+
+\begin{block}{Haskell - requires syntactic correctness}\ttfamily
+func x y z = \$(rlpTransform [| (x + (2 * y * z)) |])
+\end{block}
+
+\begin{block}{Scheme}\ttfamily
+(define (func x y z) (rlpTransform x + 2 * y * z))
+\end{block}
+
+\begin{block}{Scheme}\ttfamily
+(postfix (y z * 2 * x +))
+\end{block}
+
+% \begin{block}{Scheme}<3->\ttfamily
+% (printf Error: \%s at line \%d msg line)
+% \end{block}
+}
+
+\frame{
+\frametitle{MetaML}
+\begin{itemize}
+ \item ML has similar syntax to Haskell, but is not lazy and is not purely functional
+ \item MetaML also features a Quasi-Quoting feature, type-safety, static scoping.
+ \item MetaML can build and execute code at run-time.
+ \item Template Haskell can generate type unsafe programs but they won't compile, MetaML will only generate type safe programs (Necessary for run-time type safe execution) 
+\end{itemize}
+}
+
+\frame{
+\frametitle{Liskell}
+http://clemens.endorphin.org/liskell - Syntax frontend over Haskell aimed at providing Lisp-like Syntax and metaprogramming facilities for Haskell programming.
+
+\begin{block}{Liskell Example}\ttfamily
+(defdata Point2DType (Point2D Rational Rational)) \\
+~~\\
+(define (distance2D (Point2D x1 y1) (Point2D x2 y2))\\
+~~(let ((dx (- x1 x2))\\
+~~~~~~~~(dy (- y1 y2)))\\
+~~~~(sqrt (+ (* dx dx) (* dy dy)))))
+\end{block}
+}
+
+\subsection{Questions}
+\frame{
+\frametitle{Questions}
+\begin{center}
+\LARGE{Questions...}
+{\color{white} {\href{http://www.jmchilton.com/}{link}}}
+\end{center}
+}
+
+\frame{
+\frametitle{Three Levels of Abstraction}
+Three levels of abstraction:
+\begin{itemize}
+ \item Ordinary algebraic data types represents Haskell syntax trees.
+ \item Q monad wrappers over algebraic data types for generating fresh names and interacting with the compilers symbol table
+ \item Quasi-Quote
+\end{itemize}
+
+\begin{Example}<2->\ttfamily
+data Exp = AppE Exp Exp \textbar ~... \\
+~\\
+appE :: ExpQ -> ExpQ -> ExpQ \\
+appE e1 e2 = do \{ a <- e1; b <- e2; return (AppE a b) \}
+\end{Example}
+}
+
+\frame{
+\frametitle{Typing Template Haskell}
+Type checking and code execution must become interleaved.
+\begin{Example}
+\ttfamily{\$(printf "Error: \%s on line \%d.") msg line} \\
+\end{Example}
+When type checker encounters \$, it does the following
+\begin{itemize}
+ \item Type check body of splice
+ \item Compile and execute body
+ \item Splice in the resulting code
+ \item Continue to type check result
+\end{itemize}
+}
+
+\frame{
+\frametitle{Cross-stage Persistence}
+\begin{block}{}\ttfamily
+module T( genSwap ) where \\
+~~swap (a,b) = (b,a) \\
+~~genSwap x = [\textbar swap x \textbar]
+\end{block}
+
+\begin{block}{}\ttfamily
+module Foo where \\
+~~import T(genSwap) \\\
+~~swap = True \\
+~~foo = \$(genSwap (4,5))
+\end{block}
+
+\begin{block}{swap}\sffamily
+Quasi-Quote are lexically scoped, and \ttfamily{swap}\sffamily{ will be bound to the }\ttfamily{swap}\sffamily{ in scope at occurrence site in T even though it is not exported or in scope while in module }\ttfamily{Foo}.
+\end{block}
+}
+
+\frame{
+\frametitle{Lift}
+\begin{block}{}\ttfamily
+module T( genSwap ) where \\
+~~swap (a,b) = (b,a) \\
+~~genSwap x = [\textbar swap x \textbar]
+\end{block}
+
+\begin{block}{x}
+x is a free variable and is inferred to be of class \ttfamily{Lift}.
+\end{block}
+
+\begin{block}{Lift}\ttfamily
+class Lift t where \\
+~~lift :: t -> ExpQ \\
+instance Lift Int \\
+~~lift n = litE (IntegerL t) \\
+instance Lift (Lift a, Lift b) => Lift (a,b) where \\
+~~lift(a,b) = tupE [lift a, lift b]
+\end{block}
+}
+
+
+\end{document}

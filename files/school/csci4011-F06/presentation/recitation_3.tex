@@ -1,0 +1,231 @@
+% Handout Type
+% \documentclass[handout]{beamer}
+% Presentation Type
+\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 3 - Homework 1}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+Questions and examples related to homework 1.
+
+
+Example Conversions: Regular Expression to/from NFAs and NFAs to DFAs.
+}
+
+\subsection{Questions?}
+\frame{
+\begin{center}
+\LARGE{Questions?}
+\end{center}
+}
+
+% \section{}
+% \subsection{}
+% \frame{
+% \begin{center}
+% \unitlength=4pt
+% \begin{picture}(60, 24)(0,-2)
+%     \gasset{Nw=10,Nh=5,Nmr=2.5,curvedepth=0}
+%     \thinlines
+%     \node[Nmarks=i](A1)(0,6){$q_{1}$}
+%     \node(A2)(14,12){$q_{2}$}
+%     \node[Nmarks=r](A3)(28,12){$q_{3}$}
+%     \node(A4)(14,0){$q_{4}$}
+%     \drawedge(A1,A2){$a$}
+%     \drawedge(A1,A4){$b$}
+%     \drawedge[syo=-1,eyo=-1,ELside=r](A2,A3){$b$}
+%     \drawedge[syo=1,eyo=1,ELside=r](A3,A2){$a$}
+%     \drawloop[loopangle=0](A3){$b$}
+%     \drawloop[loopangle=0](A4){$a,b$}
+% \end{picture}
+% \end{center}
+% }
+
+\section{Problems}
+\subsection{1.15}
+\frame{
+\pause
+\begin{center}
+% \unitlength=4pt
+% \begin{picture}(0, 0)(10,-12)
+%     \gasset{Nw=6,Nh=5,Nmr=2.5,curvedepth=0}
+%     \thinlines
+%     \node[Nmarks=i](A1)(0,0){$1$}
+%     \node(A2)(12,0){$2$}
+%     \node[Nmarks=r](A3)(24,0){$3$}
+%     \drawedge(A1,A2){$1$}
+%     \drawedge(A2,A3){$0$}
+% %     \drawedge[syo=-1,eyo=-1,ELside=r](A2,A3){$b$}
+% %     \drawedge[syo=1,eyo=1,ELside=r](A3,A2){$a$}
+%     \drawloop[loopangle=0](A3){$1$}
+%     \drawloop[loopangle=270](A2){$1$}
+% \end{picture}
+\begin{tabular}{c|ccc}
+$\delta_1$   & $0$      & $1$     & $\epsilon$ \\
+\hline 
+$1$        & $\phi$   & $\{2\}$ & $\phi$       \\ 
+$2$        & $\{3\}$  & $\{2\}$ & $\phi$       \\
+$3$        & $\phi$   & $\{3\}$ & $\phi$
+\end{tabular}
+\pause
+$$\Downarrow\Downarrow\Downarrow$$
+
+\begin{tabular}{c|ccc}
+\textcolor{red}{$\delta$}   & $0$      & $1$     & $\epsilon$ \\
+\hline 
+$1$        & $\phi$   & $\{2\}$ & $\phi$       \\ 
+$2$        & $\{3\}$  & $\{2\}$ & $\phi$       \\
+$3$        & $\phi$   & $\{3\}$ & $\phi$ \textcolor{red}{$\cup \{1\} = \{1\}$}
+\end{tabular}
+\end{center}
+}
+
+\frame{
+\begin{itemize}
+\item This construction works for this example.
+\item Problem 1.15 ask for an example where this doesn't work.
+\end{itemize}
+}
+
+\subsection{1.31}
+\frame{
+\begin{itemize}
+\item If language $A$ is regular, prove $A^R$ is regular.
+\item Given DFA $M$ which recognizes $A$, construct DFA or NFA $M_{1}$ which recognizes $A^{R}$.
+\item Remember to prove both ways:
+\begin{itemize}
+\item Given $w \in A$, show $M_1$ accepts $w^R$, and given $w \notin A$, show $w^R$ not accepted by $M_1$.
+\item -or- Given $w \in A$, show $M_1$ accepts $w^R$, and given $w$ accepted by $M_1$ show $w^R \in A$.
+\end{itemize}
+\end{itemize}
+}
+
+\section{Convert Methods}
+\subsection{Regular Expression $\rightarrow$ NFA}
+\frame{
+$$1 \cup (01^*0) \pause =  (1)\cup(0(((1)^*)0))$$
+}
+\subsection{NFA $\rightarrow$ Regular Expression}
+\frame{
+\begin{center}
+\unitlength=4pt
+\begin{picture}(10, 24)(0,-12)
+    \gasset{Nw=6,Nh=5,Nmr=2.5,curvedepth=0}
+    \thinlines
+    \node(A1)(0,12){$q_{i}$}
+    \node(A2)(12,12){$q_{j}$}
+    \node(A3)(6,0){$q_{r}$}
+    \drawedge(A1,A2){$R_4$}
+    \drawedge[ELside=r](A1,A3){$R_1$}
+    \drawedge[ELside=r](A3,A2){$R_3$}
+    \drawloop[loopangle=270](A3){$R_2$}
+\end{picture}
+
+Remove $R_1$ and $R_3$ and replace $R_4$ with $R_1R_2^{*}R_3 \cup R_4$.
+\end{center}
+}
+
+\subsection{NFA $\rightarrow$ DFA}
+\frame{
+\begin{center}
+\unitlength=4pt
+\begin{picture}(60, 24)(0,-2)
+    \gasset{Nw=6,Nh=5,Nmr=2.5,curvedepth=0}
+    \thinlines
+    \node[Nmarks=i](A1)(0,6){$1$}
+    \node(A2)(14,12){$2$}
+    \node[Nmarks=r](A3)(28,12){$3$}
+    \node(A4)(14,0){$4$}
+    \node(A5)(28,0){$5$}
+    \drawedge(A1,A2){$b$}
+    \drawedge(A1,A4){$a,\epsilon$}
+    \drawedge(A2,A3){$b$}
+    \drawedge[syo=-1,eyo=-1,ELside=r](A4,A5){$a$}
+    \drawedge[syo=1,eyo=1,ELside=r](A5,A4){$a$}
+    \drawloop[loopangle=90](A2){$a,b$}
+    \drawloop[loopangle=270](A4){$b$}
+    \drawloop[loopangle=270](A5){$b$}
+\end{picture}
+\end{center}
+}
+
+\frame{
+\begin{center}
+\unitlength=4pt
+\begin{picture}(85, 24)(0,-2)
+    \gasset{Nw=12,Nh=5,Nmr=2.5,curvedepth=0}
+    \thinlines
+
+    \node[Nmarks=i](A1)(20,0){$\{1,4\}$}
+    \node(A2)(50,0){$\{4,5\}$}
+    \node(A3)(20,12){$\{2,4\}$}
+    \node(A4)(50,12){$\{2,5\}$}
+    \node[Nmarks=r](A5)(20,24){$\{2,3,4\}$}
+    \node[Nmarks=r](A6)(50,24){$\{2,3,5\}$}
+    \drawedge(A1,A2){$a$}
+    \drawedge(A1,A3){$b$}
+    \drawedge[syo=1,eyo=1](A3,A4){$a$}
+    \drawedge(A3,A5){$b$}
+    \drawedge(A5,A4){$a$}
+    \drawedge(A6,A3){$a$}
+    \drawedge[syo=-1,eyo=-1](A4,A3){$a$}
+    \drawedge(A4,A6){$b$}
+    \drawloop[loopangle=90](A5){$b$}
+    \drawloop[loopangle=90](A6){$b$}
+    \drawloop[loopangle=270](A2){$a,b$}
+\end{picture}
+\end{center}
+}
+
+
+
+
+
+% \frame{
+% Let $M_1=(Q, \Sigma, \delta, q_0, F)$ be a DFA that recoginizes $A$. The following NFA recoginizes $M=(Q, \Sigma, \delta', q_0, F)$ recoginizes $NOPREFIX(A)$, where $\delta'$ is defined as follows:
+% 
+% \begin{align*}
+% \delta'(r,a) = 
+% \begin{cases}
+% \{\delta(r,a)\}& \text{if $r \notin F$} \\
+% \{\} & \text{if $r \in F$}
+% \end{cases}
+% \end{align*}
+% }
+% 
+% \frame{
+% If $w\notin A$, then no path exists in $M_1$ to a final state on input $w$, so clearly $w\notin L(M)$ because we have only removed possible transitions.
+% 
+% If $w\in A$, then there exists a sequence of states $r_0,r_1,\hdots,r_n$ s.t. 
+% \begin{itemize}
+% \item $r_0 = q_0$ 
+% \item For $i=1,2,\hdots,n-1$, $r_{i+1} = \delta(r_i, w_{i+1})$
+% \item $r_n \in F$
+% \end{itemize}
+% }
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

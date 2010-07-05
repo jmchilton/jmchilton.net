@@ -1,0 +1,21 @@
+ITLabs Tips and Tricks - Maintained by John Chilton (chil0060@umn.edu)
+
+TIP: The ITLabs has two kind of UNIX computers Solaris and Linux. If
+you have a funky keyboard you are at a Solaris machine, the linux
+machines are nicer and becoming rarer. Some Linux machines can be
+found in 2-170 and 2-172 labs (these machines may be logged into
+Windows, but you can just reboot them into linux.) Before you login
+click the session button and chose Gnome, it is a nicer environment.
+
+TRICK: To make your Solaris experience nicer you can run the command
+'/opt/local/bin/resetenv' (without the quotes) from a Solaris machine
+shell window. It will set you up with a nicer window manager.  TRICK:
+With your ITLabs account you have an ITLabs e-mail address
+(internetid@itlabs.umn.edu), to get this forwarded automatically to
+another e-mail just create a text file called '.forward' (without the
+quotes) in your home directory and put one line in the e-mail, just
+the e-mail address you would like your ITLabs e-mail forwarded to.
+
+TIP: Here is a link explaining how to setup your ITLabs website -
+http://www.itlabs.umn.edu/help/web/homepage.php
+

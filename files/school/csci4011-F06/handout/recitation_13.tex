@@ -1,0 +1,297 @@
+% Handout Type
+\documentclass[handout]{beamer}
+% Presentation Type
+% \documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 13 - Homework 6 and More Reduction Examples}
+\author{John Chilton}
+\date{November 29, 2006}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Homework 6 Problems and Examples
+\end{itemize}
+}
+
+\section{Homework 6 and Examples}
+\subsection{Problems 1 and 2}
+\frame{
+Problem 1. Show $EQ_{CFG}$ is undecidable.
+\begin{itemize}
+\item<1-> Pick a problem you know is undecidable, $ALL_{CFG}$ seems relevent
+\item<2-> Direct Reduction: Show how deciding $EQ_{CFG}$ allows for deciding $ALL_{CFG}$, by describing a TM for deciding $ALL_{CFG}$ using a decider for $EQ_{CFG}$
+\item<3-> Mapping Reduction: Show $ALL_{CFG} \le_M EQ_{CFG}$. For a given grammar $G$, describe how to make pair $(G_1, G_2)$ such that $G$ generates all strings iff $L(G_1) = L(G_2)$.
+\end{itemize}
+}
+
+\frame{
+Problem 2. If $A \le_M B$ and $B$ is regular, does that imply $A$ is regular? Why or why not?
+\begin{itemize}
+ \item Consider carefully the power of a computable mapping function
+ \item Consider a simple regular language $B$, such as $\{1\}$.
+\end{itemize}
+}
+
+\subsection{Problem 3 and Rice's Theorem}
+\frame{
+Problem 3. Show that $T$ is undecidable in two ways.
+$$T = \{M ~|~ M \text{ accepts } w^R \text{ whenever } M \text{ accepts } w\}$$
+Show two ways.
+\begin{itemize}
+\item Do this by applying Rice's Theorem.
+\item Do this by a reduction
+\end{itemize}
+}
+
+\frame{
+$$T = \{M ~|~ M \text{ accepts } w^R \text{ whenever } M \text{ accepts } w\}$$
+Prove $T$ is undecidable by Rice's Theorem. Do this by showing two things:
+\begin{itemize}
+\item Show $T$ is non-empty and does not contain all possible Turing machines
+\item Show whenever $L(M_1) = L(M_2)$, $M_1 \in T$ iff $M_2 \in T$
+\end{itemize}
+}
+
+\frame{
+$$T = \{M ~|~ M \text{ accepts } w^R \text{ whenever } M \text{ accepts } w\}$$
+Prove $T$ is undecidable by reduction. Show $A \le_M T$ for some undecidable language $A$ or explicitly lay out a reduction proof like 5.2 or 5.3.
+~~\\
+~~\\
+Read through proof that $REGULAR_{TM}$ is undecidable.
+}
+
+\frame{
+$$SEVEN_{TM} = \{M~|~ M \text{ accepts some } w \text{ such that } |w| = 7 \}$$
+Show $SEVEN_{TM}$ is undecidable. Will do this using reduction and Rice's Theorem.
+}
+
+\frame{
+By contradiction and reduction. Assume $SEVEN_{TM}$ is decidable, then the following decides $A_{TM}$, a contradiction:
+~\\~\\ \pause
+\begin{tabular}{ll}
+$T$=& On input $(M,w)$ where $M$ is a TM. \\ 
+& 1. Construct the following TM, $S$: \\
+&\begin{tabular}{ll}
+$S$=& On input x: \\
+& 1. If $|x| \ne 7$, \emph{accept}.  \\
+& 2. Else, Simulate $M$ on $w$, accept if it does.
+\end{tabular} \\
+& 2. Run $SEVEN_{TM}$ decider on $S$. \\
+& 3. If decider accepted, \emph{accept}, else \emph{reject}. 
+\end{tabular}
+~\\~\\ \pause
+$S$ will accept a string of length $7$ iff $M$ accepts $w$, hence deciding $SEVEN_{TM}$ would allow us to decide $A_{TM}$. Since $A_{TM}$ is undecidable, $SEVEN_{TM}$ must be undecidable.
+}
+
+\frame{
+By Rice's Theorem. Let $P$ be the property that a given TM accepts some string of length 7.
+~\\
+~\\
+\pause
+TMs can decide $\{0\}$ and $\{0000000\}$, so some TMs posses property $P$, but not all \\ 
+~~~~~$\therefore P$ is non-trivial
+~\\
+~\\
+\pause
+If $M_1$ and $M_2$ are TMs s.t. $L(M_1)=L(M_2)$, then $w\in L(M_1)$ iff $w \in L(M_2)$, so $M_2$ accepts some string of length 7 iff $M_1$ does\\
+~~~~~$\therefore P$ is property of languages not machines
+~\\
+~\\
+\pause
+Since $P$ is a non-trivial property of languages of Turing machines it is undecidable by Rice's Theorem.
+
+% \begin{itemize}
+% \item TMs could be constructed to decide the following sets: $\{0\}$ and $\{0000000\}$.
+% \begin{itemize}
+% \item TMs that decide $\{0\}$ accept no strings of length 7.
+% \item TMs that decide $\{0000000\}$ accept a string of length 7. 
+% \item $\therefore P$ is non-trivial, because some, but not all, TMs have property.
+% \end{itemize}
+% \item<2-> Let $M_1$ and $M_2$ be two TMs such that $L(M_1) = L(M_2)$.
+% \begin{itemize}
+% \item If $M_1$ accepts a string of length 7, then $M_2$ must accept that string.
+% \item If $M_1$ accepts no strings of length 7, then $M_2$ accepts no such strings.
+% \item $\therefore M_1$ posses property $P$ iff $M_2$ does.
+% \end{itemize}
+% ~~\\
+% \pause\pause
+% \item Since $P$ is a non-trivial property of languages of Turing machines it is undecidable by Rice's Theorem.
+% \end{itemize}
+}
+
+\subsection{Problems 4,5, and 6 - More Reductions}
+\frame{
+Problem 4. Consider
+$$A = \{(M,w) ~|~ M \text{ moves left on left most tape pos. on } w\}$$
+Show $A$ is undecidable.
+\begin{itemize}
+ \item<2-> Rice's Theorem valid?
+ \item<3-> One Approach: Reduce a simple undecidable problem about Turing machines such as $A_{TM}$ to $A$
+ \item<4-> How would a decider for this problem allow you to decide $A_{TM}$
+ \item<5-> Key Idea: When simulating a Turing machine, is it ever necessary to move left on the left most tape position?
+\end{itemize}
+}
+
+\frame{
+Here is a somewhat similar problem. Show the following language is undecidable:
+$$NO\$_{TM} = \{(M,w) ~|~ M \text{ never writes a $\$$ to the tape on $w$ }\}$$
+Will show that a decider for $NO\$_{TM}$, would allow for construction of a decider for $A_{TM}$. Since $A_{TM}$ is undecidable, the decider for $NO\$_{TM}$ cannot exist and $NO\$_{TM}$ must be undecidable.
+}
+
+\frame{
+If $NO\$_{TM}$ were decidable then some deciding TM would decide it and the following TM would decide $A_{TM}$.
+~\\~\\
+\begin{tabular}{ll}
+$T$=& On input $(M,w)$ where $M$ is a TM. \\ 
+& 1. $M':=$ Replace $\$$ with $\$'$ in formal def. of $M$\\
+& 2. $w':=$ Replace $\$$ with $\$'$ in $w$ \\
+& 3. Construct the following TM, $S$: \\
+&\begin{tabular}{ll}
+$S$=& On input y: \\
+& 1. Simulate modified $M'$ on $y$.  \\
+& 2. If $M'$ accepts, write a $\$$ to the tape halt. 
+\end{tabular} \\
+& 4. Run $NO\$$ decider on $(S,w')$, if it accepts, \emph{reject}, else \emph{accept}. 
+\end{tabular}
+}
+
+\frame{
+Problem 5. Consider
+$$A = \{(M,w) ~|~ M's \text{ head ever moves left on } w\}$$
+Show $A$ is decidable.~\\~\\
+}
+
+\frame{
+$$A = \{(M,w) ~|~ M's \text{ head ever moves left on } w\}$$
+
+The following TM $T$ \emph{recognizes} $A$.
+~\\~\\
+\begin{tabular}{ll}
+$T$=& On input $(M,x)$ where $M$ is a TM. \\ 
+& 1. Simulate $M$ on input $x$.  \\
+& 2. If at any point $M$ moves left, \emph{accept}. \\
+& 3. If $M$ halts, \emph{reject}.
+\end{tabular}
+~\\~\\
+Only recognizes $A$, because it does not halt if $M$ just continues to move to the right forever. A decider will need to know when this is happening. How can it tell?
+}
+
+\frame{
+Problem 6.
+$$J = \{w ~|~ w = 0x \text{ for some } x \in A_{TM} \text{ or } w = 1y \text{ for some } y \in \overline{A_{TM}}\}$$
+Show $J$ and $\overline{J}$ are not Turing-\emph{recognizable}.
+~\\
+The only not Turing-recognizable language we have seen is $\overline{A_{TM}}$, so try to give a reduction from this to $J$ and then to $\overline{J}$. This should be fairly straight-forward.
+}
+
+\subsection{Problem 7 - A PCP Problem}
+\frame{
+Problem 7. Read through pages 199-204. If everything makes sense, this problem should be pretty straight forward. If not, reread until the problem seems straight forward.
+}
+
+\frame{
+Post correspondence problem.
+\pause
+$$ 
+\left\{
+\bmat{cac \\ c},
+\bmat{b \\ abb}, 
+\bmat{bba \\ b}
+\right\} $$
+\pause 
+Solution:
+\begin{description}
+\item<2->[PCP] $\bmat{bba \\ b}\bmat{bba \\ b}\bmat{b \\ abb} \bmat{b \\ abb}$ \\
+\item<3->[MPCP] Needs to start with $\matb{cac \\ c}$, no solution exists.
+\end{description}
+}
+
+\frame{
+A MPCP instance, called $P'$, is described on page 200-204 which reduces $A_{TM}$ to $MPCP$. Show that $P'$ always has a trivial match if we have no requirements about the first domino in a match, i.e. if we treat $P'$ as PCP problem and not a MPCP problem.
+}
+
+\frame{
+Some other things to talk about.
+\begin{itemize}
+ \item Show $J$ is undecidable.
+ \item Show $E_{TM}$ is not Turing recognizable.
+ \item Show $EQ_{CFG}$ is co-Turing recognizable.
+ \item A computation history problem
+ \item Talk some more about the PCP problem.
+\end{itemize}
+
+
+}
+
+
+\frame{
+Reducing $A_{TM}$ to $MPCP$. Given some $(M,w)$ create an instance of $MPCP$ that has a match iff $(M,w)$ has some accepting computation history.
+}
+
+\frame{
+Big Idea:
+$$
+\bmat{
+\# C_1 \# C_2 \# C_3 \# \hdots \# C_n \# \\
+\# C_1 \# C_2 \# C_3 \# \hdots \# C_n \#
+}
+$$
+}
+
+\frame{
+Part 1. First domino requires bottom starts with a computation history.
+$$\bmat{
+\# \\ \# q_0 w_1 w_2 \hdots w_n \#
+}$$
+}
+
+\frame{
+Part 2\&3. 
+$$\delta(q,a) = (r,b,R) \text{ add } \bmat{qa  \\ br}$$
+$$\delta(q,a) = (r,b,L) \text{ add } \bmat{cqa \\ rcb} (\forall c \in \Gamma) $$ 
+}
+
+\frame{
+Part 4\&5
+For all $\forall a \in \Gamma$ add $\bmat{a \\ a}$. Add $\bmat{\# \\ \#}$ and $\bmat{\# \\ \sqcup\#}$
+}
+
+
+% \frame{
+% A $2DFA$ that has two read heads instead of one, they start from both ends of the input and work toward the other end.
+% }
+% 
+% 
+% \frame{
+% $$ \$ C_1 \$ $$ 
+% $$ \# C_1 \$ C_2 \$ C_2^R \# $$
+% $$ \# C_1 \# C_3  \$ C_3 \$ C_2^R \# C_2^R \# $$
+% $$ \# C_1 \# C_3  \# C_3 \$ C_4 \$ C_4^R \# C_2^R \# C_2^R \# $$
+% $$ \# C_1 \# C_3  \# C_3 \# C_5 \$ C_5 \$ C_4^R \# C_4^R \# C_2^R \# C_2^R \# $$
+% $$\vdots$$
+% $$ \# C_1 \# C_3  \# C_3 \# \hdots \# C_n \$ C_n \$ C_{n-1}^R \# C_{n-1}^R \# \hdots \# C_4^R  \# C_2^R \# C_2^R \# $$
+% $$ \# C_1 \# C_3  \# C_3 \# \hdots \# C_{n-1} \$ C_{n-1} \$ C_{n} \# C_{n}^R \# \hdots \# C_4^R \# C_4^R \# C_2^R \# C_2^R \# $$
+% $$\vdots$$
+% }
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

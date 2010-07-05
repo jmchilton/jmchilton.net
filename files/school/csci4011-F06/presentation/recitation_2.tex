@@ -1,0 +1,416 @@
+% Handout Type
+% \documentclass[handout]{beamer}
+% Presentation Type
+\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 2 - Deterministic Finite Automata}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+We will be reviewing how to construct DFAs. We will start with some simple ones and use regular operations to construct more complicated ones.
+}
+
+\subsection{Last Week}
+\frame{
+\begin{itemize}
+\item<1->Motivation and relevancy
+\item<2->Use of Whiteboard/Chalkboard
+\item<3->Slides
+\end{itemize}
+}
+
+\section{Some Simple Examples}
+\subsection{$R_1$}
+\frame{
+\begin{itemize}
+\item<1->For alphabet $\Sigma = \{a,b\}$, $R_1 = \{w ~|~ w$ has an odd number of $b$'s$\}$. Find a DFA, $M_1 = (Q_1,\Sigma, \delta_1, q_1, F_1)$, that accepts $R_1$
+\item<2->How many and which states are required?
+\item<3->What should happen when $a$ is read?
+\item<4->What should happen when $b$ is read?
+\item<5->Label start and accept states.
+\end{itemize}
+}
+
+\frame{
+$$M_1 = (Q_1, \Sigma, \delta_1, q_1, F_1) = (\{q_{odd},q_{even}\}, \Sigma, \delta_1, q_{even}, \{q_{odd}\})$$
+with $\delta_1$ as follows
+\begin{center} 
+\begin{tabular}{c|cc}
+$\delta_1$   & $a$       & $b$    \\
+\hline
+$q_{odd}$    & $q_{odd}$ & $q_{even}$ \\ 
+$q_{even}$   & $q_{even}$  & $q_{odd}$
+\end{tabular}
+\end{center}
+}
+
+% \subsection{$R_2$}
+% \frame{
+% \begin{itemize}
+% \item<1->For alphabet $\Sigma = \{a,b\}$, $R_2 = \{w ~|~ w$ ends with an $b\}$. Find a DFA, $M_2 = (Q_2,\Sigma, \delta_1, q_1, F_1)$, that accepts $R_2$
+% \item<2->How many and which states are required?
+% \item<3->What should happen when $a$ is read?
+% \item<4->What should happen when $b$ is read?
+% \item<5->Label start and accept states.
+% \end{itemize}
+% }
+% 
+% \frame{
+% $$M_2 = (Q_2, \Sigma, \delta_2, q_2, F_2) = (\{q_{nb}, q_{b}\}, \Sigma, \delta_2, q_{nb}, \{q_{b}\} )$$
+% with $\delta_2$ as follows
+% \begin{center} 
+% \begin{tabular}{c|cc}
+%           & $a$       & $b$    \\
+% \hline
+% $q_{nb}$ & $q_{nb}$ & $q_{b}$ \\ 
+% $q_{b}$   & $q_{nb}$ & $q_{b}$
+% \end{tabular}
+% \end{center}
+% }
+
+\subsection{$R_2$}
+\frame{
+\begin{itemize}
+\item<1->For alphabet $\Sigma = \{a,b\}$, $R_3 = \{w ~|~ w$ contains at least three $a$'s$\}$. Find a DFA, $M_2 = (Q_2,\Sigma, \delta_2, q_2, F_2)$, that accepts $R_2$
+\item<2->How many and which states are required?
+\item<3->What should happen when $a$ is read?
+\item<4->What should happen when $b$ is read?
+\item<5->Label start and accept states.
+\end{itemize}
+}
+
+\frame{
+\begin{align*}
+M_2 
+=& (Q_2, \Sigma, \delta_2, q_2, F_2) \\
+=& (\{q_{20}, q_{21}, q_{22}, q_{23}\}, \Sigma, \delta_2, q_{20}, \{q_{23}\} )
+\end{align*}
+with $\delta_2$ as follows
+\begin{center} 
+\begin{tabular}{c|cc}
+$\delta_2$  & $a$      & $b$    \\
+\hline
+$q_{20}$    & $q_{21}$ & $q_{20}$ \\ 
+$q_{21}$    & $q_{22}$ & $q_{21}$ \\
+$q_{22}$    & $q_{23}$ & $q_{22}$ \\ 
+$q_{23}$    & $q_{23}$ & $q_{23}$
+\end{tabular}
+\end{center}
+}
+
+\subsection{$R_3$}
+\frame{
+\begin{itemize}
+\item<1->For alphabet $\Sigma = \{a,b\}$, $R_3 = \{w ~|~ w$ starts with a $b$ and ends with an $a\}$. Find a DFA, $M_3 = (Q_3,\Sigma, \delta_3, q_3, F_3)$, that accepts $R_3$
+\end{itemize}
+}
+
+\frame{
+\begin{align*}
+M_3 
+=& (Q_3, \Sigma, \delta_3, q_3, F_3) \\
+=& (\{q_{3start}, q_{3dead}, q_{3a}, q_{3b}\}, \Sigma, \delta_3, q_{3start}, \{q_{3a}\} )
+\end{align*}
+with $\delta_3$ as follows
+\begin{center} 
+\begin{tabular}{c|cc}
+$\delta_3$   & $a$       & $b$    \\
+\hline
+$q_{3start}$ & $q_{3dead}$ & $q_{3b}$ \\ 
+$q_{3dead}$  & $q_{3dead}$ & $q_{3dead}$ \\
+$q_{3a}$     & $q_{3a}$    & $q_{3b}$ \\
+$q_{3b}$     & $q_{3a}$    & $q_{3b}$ 
+\end{tabular}
+\end{center}
+}
+
+\section{Union, Intersection, and Complement}
+\subsection{Union - $R_1 \cup R_2$}
+\frame{
+Given 
+\begin{align*}
+M_1 
+=& (Q_1, \Sigma, \delta_1, q_1, F_1) \\
+=& (\{q_{odd},q_{even}\}, \Sigma, \delta_1, q_{even}, \{q_{odd}\}) \\
+M_2
+=& (Q_2, \Sigma, \delta_2, q_2, F_2) \\
+=& (\{q_{20}, q_{21}, q_{22}, q_{23}\}, \Sigma, \delta_2, q_{20}, \{q_{23}\} ) \\
+\end{align*}
+Construct DFA which accepts $R_1 \cup R_2 = (Q_\cup, \Sigma, \delta_\cup, q_0, F_\cup)$.
+}
+
+\frame{
+$Q_\cup$
+\pause
+\begin{align*}
+Q_\cup =&  Q_1 \times Q_2 \\ 
+=&\{(q_{odd}, q_{20}),(q_{odd}, q_{21}), (q_{odd}, q_{22}), (q_{odd}, q_{23}), \\
+ &(q_{even}, q_{20}),(q_{even}, q_{21}), (q_{even}, q_{22}), (q_{even}, q_{23}) \}
+\end{align*}
+}
+
+\frame{
+  \begin{center}
+    \unitlength=4pt
+    \begin{picture}(60, 24)(0,-2)
+    \gasset{Nw=16,Nh=5,Nmr=2.5,curvedepth=0}
+    \thinlines
+    \node(A1)(0,12){$(q_{odd}, q_{20})$}
+    \node(A2)(20,12){$(q_{odd}, q_{21})$}
+    \node(A3)(40,12){$(q_{odd}, q_{22})$}
+    \node(A4)(60,12){$(q_{odd}, q_{23})$}
+    \node(A5)(00,00){$(q_{even}, q_{20})$}
+    \node(A6)(20,00){$(q_{even}, q_{21})$}
+    \node(A7)(40,00){$(q_{even}, q_{22})$}
+    \node(A8)(60,00){$(q_{even}, q_{23})$}
+    \end{picture}
+  \end{center}
+}
+
+\frame{ 
+$q_0$ and $F_\cup$
+\pause
+\begin{align*}
+q_0  
+=&  (q_1, q_2) \\ 
+=&  (q_{even}, q_{20}) \\
+\end{align*}
+\pause
+\begin{align*}
+F_\cup 
+=& \{(r_1, r_2) ~|~ r_1 \in F_1 \text{ or } r_2 \in F_2\} \\
+=& \{(q_{odd},q_{20}), (q_{odd},q_{21}), (q_{odd},q_{22}), (q_{odd},q_{23}), (q_{even},q_{23})\}
+\end{align*}
+}
+
+\frame{
+  \begin{center}
+    \unitlength=4pt
+    \begin{picture}(60, 24)(0,-2)
+    \gasset{Nw=16,Nh=5,Nmr=2.5,curvedepth=0}
+    \thinlines
+    \node[Nmarks=r](A1)(0,12){$(q_{odd}, q_{20})$}
+    \node[Nmarks=r](A2)(20,12){$(q_{odd}, q_{21})$}
+    \node[Nmarks=r](A3)(40,12){$(q_{odd}, q_{22})$}
+    \node[Nmarks=r](A4)(60,12){$(q_{odd}, q_{23})$}
+    \node[Nmarks=i](A5)(00,0){$(q_{even}, q_{20})$}
+    \node(A6)(20,0){$(q_{even}, q_{21})$}
+    \node(A7)(40,0){$(q_{even}, q_{22})$}
+    \node[Nmarks=r](A8)(60,0){$(q_{even}, q_{23})$}
+    \end{picture}
+  \end{center}
+}
+
+\frame{
+
+\begin{center}
+\begin{tabular}{ccc}
+\begin{tabular}{c|cc}
+$\delta_1$             & $a$       & $b$    \\
+\hline
+$q_{odd}$    & $q_{odd}$ & $q_{even}$ \\ 
+$q_{even}$   & $q_{even}$  & $q_{odd}$
+\end{tabular}
+&~~~~~~~~~~~~~~~~&
+\begin{tabular}{c|cc}
+$\delta_2$         & $a$      & $b$    \\
+\hline
+$q_{20}$ & $q_{21}$ & $q_{20}$ \\ 
+$q_{21}$ & $q_{22}$ & $q_{21}$ \\
+$q_{22}$ & $q_{23}$ & $q_{22}$ \\ 
+$q_{23}$ & $q_{23}$ & $q_{23}$
+\end{tabular}
+\end{tabular}
+\pause
+\bigskip
+\begin{tabular}{c|cc}
+$\delta_\cup$         & $a$      & $b$    \\
+\hline
+$(q_{odd}, q_{20})$  & $(q_{odd},q_{21})$ & $(q_{even},q_{20})$ \\ 
+$(q_{odd}, q_{21})$  & $(q_{odd},q_{22})$ & $(q_{even},q_{21})$ \\
+$(q_{odd}, q_{22})$  & $(q_{odd},q_{23})$ & $(q_{even},q_{22})$ \\ 
+$(q_{odd}, q_{23})$  & $(q_{odd},q_{23})$ & $(q_{even},q_{23})$ \\
+$(q_{even}, q_{20})$ & $(q_{even},q_{21})$ & $(q_{odd},q_{20})$ \\ 
+$(q_{even}, q_{21})$ & $(q_{even},q_{22})$ & $(q_{odd},q_{21})$ \\
+$(q_{even}, q_{22})$ & $(q_{even},q_{23})$ & $(q_{odd},q_{22})$ \\ 
+$(q_{even}, q_{23})$ & $(q_{even},q_{23})$ & $(q_{odd},q_{23})$ 
+\end{tabular}
+\end{center}
+}
+
+\frame{
+  \begin{center}
+    \unitlength=4pt
+    \begin{picture}(60, 24)(0,-2)
+    \gasset{Nw=16,Nh=5,Nmr=2.5,curvedepth=0}
+    \thinlines
+    \node[Nmarks=r](A1)(0,12){$(q_{odd}, q_{20})$}
+    \node[Nmarks=r](A2)(20,12){$(q_{odd}, q_{21})$}
+    \node[Nmarks=r](A3)(40,12){$(q_{odd}, q_{22})$}
+    \node[Nmarks=r](A4)(60,12){$(q_{odd}, q_{23})$}
+    \node[Nmarks=i](A5)(00,0){$(q_{even}, q_{20})$}
+    \node(A6)(20,0){$(q_{even}, q_{21})$}
+    \node(A7)(40,0){$(q_{even}, q_{22})$}
+    \node[Nmarks=r](A8)(60,0){$(q_{even}, q_{23})$}
+
+    \drawedge(A1,A2){$a$}
+    \drawedge[sxo=-1,exo=-1,ELside=r](A1,A5){$b$}
+    \drawedge(A2,A3){$a$}
+    \drawedge[sxo=-1,exo=-1,ELside=r](A2,A6){$b$}
+    \drawedge(A3,A4){$a$}
+    \drawedge[sxo=-1,exo=-1,ELside=r](A3,A7){$b$}
+    \drawloop(A4){$a$}
+    \drawedge[sxo=-1,exo=-1,ELside=r](A4,A8){$b$}
+
+    \drawedge(A5,A6){$a$}
+    \drawedge[sxo=1,exo=1,ELside=r](A5,A1){$b$}
+    \drawedge(A6,A7){$a$}
+    \drawedge[sxo=1,exo=1,ELside=r](A6,A2){$b$}
+    \drawedge(A7,A8){$a$}
+    \drawedge[sxo=1,exo=1,ELside=r](A7,A3){$b$}
+    \drawloop[loopangle=270](A8){$a$}
+    \drawedge[sxo=1,exo=1,ELside=r](A8,A4){$b$}
+    \end{picture}
+  \end{center}
+}
+
+\subsection{Intersection - $R_1 \cap R_2$}
+\frame{
+Intersection. 
+\pause
+$F_\cap = \{(r_1, r_2) ~|~ r_1 \in F_1 \text{ and } r_2 \in F_2\}$
+\pause
+  \begin{center}
+    \unitlength=4pt
+    \begin{picture}(60, 24)(0,-2)
+    \gasset{Nw=16,Nh=5,Nmr=2.5,curvedepth=0}
+    \thinlines
+    \node(A1)(0,12){$(q_{odd}, q_{20})$}
+    \node(A2)(20,12){$(q_{odd}, q_{21})$}
+    \node(A3)(40,12){$(q_{odd}, q_{22})$}
+    \node[Nmarks=r](A4)(60,12){$(q_{odd}, q_{23})$}
+    \node[Nmarks=i](A5)(00,0){$(q_{even}, q_{20})$}
+    \node(A6)(20,0){$(q_{even}, q_{21})$}
+    \node(A7)(40,0){$(q_{even}, q_{22})$}
+    \node(A8)(60,0){$(q_{even}, q_{23})$}
+
+    \drawedge(A1,A2){$a$}
+    \drawedge[sxo=-1,exo=-1,ELside=r](A1,A5){$b$}
+    \drawedge(A2,A3){$a$}
+    \drawedge[sxo=-1,exo=-1,ELside=r](A2,A6){$b$}
+    \drawedge(A3,A4){$a$}
+    \drawedge[sxo=-1,exo=-1,ELside=r](A3,A7){$b$}
+    \drawloop(A4){$a$}
+    \drawedge[sxo=-1,exo=-1,ELside=r](A4,A8){$b$}
+
+    \drawedge(A5,A6){$a$}
+    \drawedge[sxo=1,exo=1,ELside=r](A5,A1){$b$}
+    \drawedge(A6,A7){$a$}
+    \drawedge[sxo=1,exo=1,ELside=r](A6,A2){$b$}
+    \drawedge(A7,A8){$a$}
+    \drawedge[sxo=1,exo=1,ELside=r](A7,A3){$b$}
+    \drawloop[loopangle=270](A8){$a$}
+    \drawedge[sxo=1,exo=1,ELside=r](A8,A4){$b$}
+    \end{picture}
+  \end{center}
+}
+
+%TODO
+\subsection{Via NFAs}
+\frame{
+Producing an NFA that is that accepts the union of two regular languages given by DFAs (or NFAs) is even easier.
+\pause
+  \begin{center}
+    \unitlength=4pt
+    \begin{picture}(54, 30)(0,-10)
+    \gasset{Nw=10,Nh=5,Nmr=2.5,curvedepth=0}
+    \thinlines
+    \node[Nmarks=i](A0)(0,10){$q_{new}$}
+    \node[Nmarks=r](A1)(48,10){$q_{odd}$}
+    \node(A2)(32,10){$q_{even}$}
+    \node(A5)(0,0){$q_{20}$}
+    \node(A6)(16,0){$q_{21}$}
+    \node(A7)(32,0){$q_{22}$}
+    \node[Nmarks=r](A8)(48,0){$q_{23}$}
+
+    \drawedge(A0,A2){$\epsilon$}
+    \drawedge(A0,A5){$\epsilon$}
+
+    \drawedge[syo=1,eyo=1,ELside=r](A1,A2){$b$}
+    \drawedge[syo=-1,eyo=-1,ELside=r](A2,A1){$b$}
+    \drawloop[loopangle=90](A1){$a$}
+    \drawloop[loopangle=90](A2){$a$}
+
+
+    \drawedge(A5,A6){$a$}
+    \drawedge(A6,A7){$a$}
+    \drawedge(A7,A8){$a$}
+    \drawloop[loopangle=270](A5){$b$}
+    \drawloop[loopangle=270](A6){$b$}
+    \drawloop[loopangle=270](A7){$b$}
+    \drawloop[loopangle=270](A8){$a,b$}
+
+    \end{picture}
+  \end{center}
+\pause
+How about intersection?
+}
+
+\subsection{Complement - $\bar{R_3}$}
+\frame{ 
+\begin{itemize}
+\item<1->Reminder: $R_3 = \{w ~|~ w$ starts with a $b$ and ends with an $a\}$
+\item<2->What is the complement of $R_3$
+\item<3->Design a DFA which accepts $\bar{R_3}$.
+\item<4->Does the same trick work for NFAs?
+\end{itemize}
+}
+
+
+
+\section{Star and Concatenation}
+\subsection{Star and Concatenation}
+\frame{
+\begin{itemize}
+\item<1->Easy, straightforward methods given to compute union, intersection, and complement of regular languages
+\item<2->Star and concatenation are are slightly more complicated general...
+\item<3->$R_4 = \{w ~|~ w \text{ contains exactly 2 } a$'s$\}$ 
+\item<3->$R_5 = \{w ~|~ w \text{ contains exactly 2 } b$'s$\}$
+\item<3->$R_4\circ R_5$ - consider \textbf{$baabbab$} and \textbf{$baabab$}
+\item<4->$(R_4\cup R_5)^\ast$ - difficult for same reason
+\end{itemize}
+}
+
+\subsection{Some Examples}
+\frame{
+\begin{itemize}
+\item<1->Consider $R_6 = baa^\ast$.
+\item<2->Design a DFA which accepts $R_6^\ast$
+\item<3->Design a DFA which accepts $R_6\circ R_1$
+\end{itemize}
+}
+
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

@@ -1,0 +1,10 @@
+#!/usr/bin/mzscheme -r
+
+(require (lib "xml.ss" "xml"))
+
+(define xml (with-input-from-file (vector-ref argv 0) read-xml/element))
+
+(with-output-to-file
+	(vector-ref argv 1)
+	(lambda ()
+		(write (xml->xexpr xml))))

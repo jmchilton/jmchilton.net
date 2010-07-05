@@ -1,0 +1,170 @@
+% Handout Type
+\documentclass[handout]{beamer}
+% Presentation Type
+% \documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 15 - Homework 6 and 7 Answers and Questions}
+\author{John Chilton}
+\date{December 6, 2006}
+
+\def\red#1{\textcolor{red}{#1}}
+\def\blue#1{\textcolor{blue}{#1}}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Extra Monday (12/18) Office Hours
+\begin{itemize}
+\item 12:30-1:30pm
+\item 5:00-7:00pm
+\end{itemize}
+\item Homework 6 Answers 
+\item Homework 7 Answers
+\item Wrap-Up
+\end{itemize}
+}
+
+\section{Homework 6}
+\frame{
+Problem 1. Show $EQ_{CFG}$ is undecidable.
+}
+
+\frame{
+Problem 2. If $A \le_M B$ and $B$ is regular, does that imply $A$ is regular? Why or why not?
+}
+
+\frame{
+$$T = \{M ~|~ M \text{ accepts } w^R \text{ whenever } M \text{ accepts } w\}$$
+Problem 3. Show that $T$ is undecidable in two ways.
+}
+
+\frame{
+Problem 4. Consider
+$$A = \{(M,w) ~|~ M \text{ moves left on left most tape pos. on } w\}$$
+Show $A$ is undecidable.
+}
+
+\frame{
+Problem 5. Consider
+$$A = \{(M,w) ~|~ M's \text{ head ever moves left on } w\}$$
+Show $A$ is decidable.~\\~\\
+}
+
+\frame{
+Problem 6.
+$$J = \{w ~|~ w = 0x \text{ for some } x \in A_{TM} \text{ or } w = 1y \text{ for some } y \in \overline{A_{TM}}\}$$
+}
+
+\section{Homework 7}
+\frame{
+Big-O Problems
+\begin{itemize} 
+ \item $n^2 = O(n)$
+ \item $3^n = 2^{O(n)}$
+ \item $2^{2^n} = O(2^{2^n})$
+\end{itemize}
+~\\
+Little-o Problems
+\begin{itemize} 
+ \item $n = o(2n)$
+ \item $1 = o(1/n)$
+\end{itemize}
+}
+
+\frame{
+Two graphs are isomorphic if the nodes of one graph can be relabelled in such a way that the resulting graph is equal to the second graph. 
+$$ISO = \{(G,H) ~|~ G \text{ is isomorphic to } H \}$$
+Show $ISO \in NP$.
+}
+
+\frame{
+$$MODEXP=\{(a,b,c,p)~|~ (a^b\mod p) = (c\mod p) \}$$
+Demonstrate $MODEXP \in P$. That is some deterministic TM decides $MODEXP$ in polynomial time. }
+
+\frame{
+Problem 5. Part a.
+\begin{center}
+$SPATH=\{(G,a,b,k) ~|~ G$ contains a simple path from $a$ to $b$ of length at most $k\}$
+\end{center}
+Show $SPATH \in P$.
+}
+
+\frame{
+Problem 5. Part b.
+\begin{center}
+$LPATH=\{(G,a,b,k) ~|~ G$ contains a simple (loopless) path from $a$ to $b$ of length at least $k\}$
+\end{center}
+Show $LPATH$ is NP-Complete.
+}
+
+\frame{
+Problem 6. Problem 7.28.
+$$SETSPLITTING = \{(S, C=\{C_i\}) ~|~ C_i \subseteq S \text{ \& $(S,C)$ colorable} \}$$
+$S$ can be colored if each element can be chosen to be $red$ or $blue$ such that no $C_i$'s elements are all the same color. Show $SETSPLITTING$ is NP-complete.
+}
+
+\frame{
+$Variables = \{x_1, x_2, x_3\}$
+$$\phi =  \{x_1 \vee x_2 \vee x_3\} \wedge \{\bar{x_2} \vee x_2 \vee x_3\} \wedge \{\bar{x_1} \vee x_3 \vee \bar{x_3}\}$$
+\pause
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}, x_3, \bar{x_3}\}$
+$$C = \{\{x_1 , x_2, x_3\}, \{\bar{x_2}, \bar{x_2}, \bar{x_3}\}, \{\bar{x_1}, x_3, \bar{x_3}\}\}$$
+}
+
+\frame{
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}, x_3, \bar{x_3}\}$
+$$C = \{\{x_1, x_2, x_3\}, \{\bar{x_2}, \bar{x_2}, \bar{x_3}\}, \{\bar{x_1}, x_3, \bar{x_3}\}\}$$
+\pause
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{\red{x_1}, \blue{\bar{x_1}}, \blue{x_2}, \red{\bar{x_2}}, \red{x_3}, \blue{\bar{x_3}}\}$
+$$C = \{\{\red{x_1}, \blue{x_2}, \red{x_3}\}, \{\red{\bar{x_2}}, \red{\bar{x_2}}, \blue{\bar{x_3}}\}, \{\blue{\bar{x_1}}, \red{x_3}, \blue{\bar{x_3}}\}\}$$
+}
+
+
+\frame{
+$\{x_1, x_2\}$
+$$\{x_1 \vee x_1 \vee x_2\} \wedge \{x_1 \vee x_1 \vee \bar{x_2}\} \wedge \{\bar{x_1} \vee \bar{x_1} \vee x_2\} \wedge \{\bar{x_1} \vee \bar{x_1} \vee \bar{x_2}\}\}$$
+\pause
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}\}$
+$$\{\{x_1, x_1, x_2\},  \{x_1, x_1, \bar{x_2}\}, \{\bar{x_1}, \bar{x_1}, x_2\}, \{\bar{x_1} , \bar{x_1}, \bar{x_2}\}\}$$
+}
+
+\frame{
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}\}$
+$$\{\{x_1, x_1, x_2\},  \{x_1, x_1, \bar{x_2}\}, \{\bar{x_1}, \bar{x_1}, x_2\}, \{\bar{x_1} , \bar{x_1}, \bar{x_2}\}\}$$
+\pause
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{\red{x_1}, \red{\bar{x_1}}, \blue{x_2}, \blue{\bar{x_2}}\}$
+$$\{\{\red{x_1}, \red{x_1}, \blue{x_2}\},  \{\red{x_1}, \red{x_1}, \blue{\bar{x_2}\}}, \{\red{\bar{x_1}}, \red{\bar{x_1}}, \blue{x_2}\}, \{\red{\bar{x_1}} , \red{\bar{x_1}}, \blue{\bar{x_2}}\}\}$$
+}
+
+\frame{
+$\{x_1, x_2\}$
+$$\{x_1 \vee x_1 \vee x_2\} \wedge \{x_1 \vee x_1 \vee \bar{x_2}\} \wedge \{\bar{x_1} \vee \bar{x_1} \vee x_2\}\}$$
+$$\Downarrow\Downarrow\Downarrow $$
+$S = \{x_1, \bar{x_1}, x_2, \bar{x_2}\}$
+$$\{\{x_1, \bar{x_1}\}, \{x_2, \bar{x_2}\}, \{x_1, x_1, x_2\},  \{x_1, x_1, \bar{x_2}\}, \{\bar{x_1}, \bar{x_1}, x_2\}\}$$
+}
+
+\section{Wrap-Up}
+\frame{
+\begin{itemize}
+ \item Content of recitations?
+ \item Pace of recitations?
+ \item Accessible?
+ \item Grading?
+ \item Obtaining help?
+\end{itemize}
+}
+
+
+\end{document}

@@ -1,0 +1,307 @@
+% Handout Type
+\documentclass[handout]{beamer}
+% Presentation Type
+%\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 12 - Homework 5}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Homework 5 Problems
+\item Reduction
+\end{itemize}
+}
+
+% \section{Homework 5 }
+% \subsection{Problems 1 and 2}
+% 
+% \frame{
+% Problem 1 (Exercise 4.6). Let $\mathcal{B}$ be the set of all infinite sequences of $0$s and $1$s.  Show $\mathcal{B}$ is not countable using a proof by diagnolization.
+% }
+% 
+% \frame{
+% Assume some $f$ exists that is a one-to-one and onto mapping between $\mathcal{B}$ and $\mathcal{N}$.
+% \begin{center} 
+% \begin{tabular}{c|c}
+% $n$   & $f(n)$    \\
+% \hline
+% $1$ & $\textbf{\underline{0}}01010101...$  \\ 
+% $2$ & $1\textbf{\underline{0}}0101001...$  \\
+% $3$ & $10\textbf{\underline{1}}111011...$  \\
+% $4$ & $001\textbf{\underline{0}}01010...$  \\
+% $5$ & $1010\textbf{\underline{1}}1101...$  \\
+% $6$ & $11100\textbf{\underline{1}}010...$  \\
+% \vdots & \vdots
+% \end{tabular}
+% \end{center}
+% Construct a new infinite sequence $b$ such that if the $i^{th}$ element of $f(i)$ if 0 then the $i^{th}$ element of $b$ should be 1, and 0 otherwise.
+% }
+% 
+% 
+% \frame{
+% Problem 2. (Exercise 4.7) Show the following set $T$ is countable.
+% $$T = \{(i,j,k) ~|~ i,j,k \in \mathcal{N}\}$$
+% }
+% 
+% \subsection{Problems 3-7}
+% \frame{
+% Problem 3. (Problem 4.10)
+% $$INFINITE_{PDA} = \{M~|~ M \text{ is a PDA and $L(M)$ is an infinite language }\} $$
+% Show $INFINITE_{PDA}$ is decidable.
+% 
+% \begin{tabular}{ll}
+% $T$=& On input $M$ where $M$ is a PDA. \\ 
+% & 1. Calculate pumping length $p$ of $L(M)$ from an equivlent CFG. \\
+% & 2. Construct a DFA, $A$, which accepts a given $w$ iff $|w| \ge p$.\\
+% & 3. Construct a PDA, $B$, which recoginizes $L(M) \cap L(A)$ \\
+% & 4. Run $E_{CFG}$ with a CFG created from $B$. \\
+% & 5. If it rejects, \emph{accept}, else \emph{reject}. \\
+% \end{tabular}
+% }
+% 
+% \frame{
+% Problem 4. (Problem 4.25)
+% $$E = \{M~|~M\text{ is a DFA that accepts some string with more 0s than 1s}\}$$
+% Show $E$ is decidable.
+% ~\\
+% \pause
+% We will need the following CFG G which generates the set of all strings that contain more 0s than 1s.
+% ~\\
+% \begin{align*}
+% S &\rightarrow 0T ~|~ 0S ~|~ 1SS\\
+% T &\rightarrow 0U ~|~ 1V ~|~ \epsilon \\
+% U &\rightarrow 0UU ~|~ 1T \\
+% V &\rightarrow 0T ~|~ 1VV
+% \end{align*}
+% }
+% 
+% \frame{
+% \begin{tabular}{ll}
+% $T$=& On input $M$ where $M$ is a DFA. \\ 
+% & 1. Construct $G$ described above and convert it into PDA $P$. \\
+% & 2. Construct a PDA, $B$, which recoginizes $L(M) \cap L(P)$ \\
+% & 3. Run $E_{CFG}$ with a CFG created from $B$. \\
+% & 4. If it rejected, \emph{accept}, else \emph{reject}. \\
+% \end{tabular}
+% }
+% 
+% \frame{
+% Problem 5. (Problem 4.26)
+% $C = \{(G,x)~|~G $ is CFG that generates some string $w$ where $x$ is a substring  of $w\}$
+% \pause
+% ~\\
+% ~\\
+% \begin{tabular}{ll}
+% $T$=& On input $<G,x>$ where $G$ is a CFG. \\ 
+% & 1. Construct a DFA $M$ from reg. exp. $\Sigma^*x\Sigma^*$. \\
+% & 2. Construct a PDA $B$ which recognizes $L(M) \cap L(G)$ \\
+% & 3. Run $E_{CFG}$ with a CFG created from $B$. \\
+% & 4. If it rejected, \emph{accept}, else \emph{reject}. \\
+% \end{tabular}
+% }
+% 
+% \frame{
+% Problem 6.
+% $A$ is Turing recognizable language of deciding Turing machines $\{M_1, M_2, M_3,\hdots\}$. Need to show there exists a Turing decidable language $D$ such that $L(D) \ne M_i$ for all $i$.
+% \pause
+% \begin{center} 
+% \begin{tabular}{c||c|c}
+% $n$   & $w$ & $E$     \\
+% \hline
+% $1$ &  $\epsilon$ & $M_{7893}$\\ 
+% $2$ &  0  & $M_{7}$           \\
+% $3$ &  1  & $M_{3234}$        \\
+% $4$ &  00 & $M_{7}$           \\
+% $5$ &  01 & $M_{13}$          \\
+% $6$ &  10 & $M_{1}$           \\
+% $7$ &  11 & $M_{12}$          \\
+% $8$ & 000 & $M_{3233}$        \\
+% \vdots & \vdots & \vdots
+% \end{tabular}
+% \end{center}
+% }
+% 
+% \frame{
+% \begin{tabular}{ll}
+% $T$=& On input $w$. \\
+% & 1. Determine index $i$ of $w$. \\
+% & 2. Run enumerator $E$ until $i^{th}$ TM printed. \\
+% & 3. Run $w$ on this $i^{th}$ machine. \\
+% & 4. If it rejects, \emph{accept}, else \emph{reject}. \\
+% \end{tabular}
+% \pause
+% ~\\
+% ~\\
+% Since $E$ will eventually print any given $M_i$, $T$ will decide a different language than each $M_i$, so $D = L(T)$ is diffent than each $L(M_i)$. 
+% }
+% 
+% \frame{
+% \begin{center}
+% Problem 7. $C$ is Turing recognizable iff it can be expressed as $\{x ~|~ \text{for some } y, (x,y) \in D\}$ for some decidable language $D$.
+% \end{center}
+% }
+% 
+% \frame{
+% Problem 7. $C$ is Turing recognizable iff it can be expressed as $\{x ~|~ \text{for some } y , (x,y) \in D\}$ for some decidable language $D$.
+% ~\\
+% ~\\
+% Assume there exists a $D$ such that:
+% $$C = \{x ~|~ \text{for some } y, (x,y) \in D\}$$. 
+% Need to show $C$ is Turing recognizable. 
+% }
+% 
+% \frame{
+% $D$ is decidable, so some deciding TM $M$ decides it. We will use $M$ to build a TM, $T$, that recognizes $\{x ~|~ \text{for some } y, (x,y) \in D\}$. Then $C = L(T)$ is the desired Turing recognizable language.
+% ~\\
+% ~\\
+% \pause
+% \begin{tabular}{ll}
+% $T$=& On input $x$. \\ 
+% & 1. Foreach $y$ in $\epsilon, 0,1,00,01,10,11,000,\hdots$ \\
+% & 2. ~~~~ Run $(x,y)$ on $M$, \emph{accept} if $M$ does. \\
+% \end{tabular}
+% }
+% 
+% \frame{
+% Problem 7. 
+% $C$ is Turing recognizable iff it can be expressed as $\{x ~|~ \text{for some } y, (x,y) \in D\}$ for some decidable language $D$.
+% ~\\
+% ~\\
+% Assume $C$ is Turing recognizable. Show $C=\{x ~|~ \text{for some } y, (x,y)\in D \}$ for some Turing decidable $D$. 
+% ~\\
+% ~\\
+% \pause
+% $C$ is Turing recognizable some TM, $M$, recognizes it. For each $x\in C$, $M$ will accept it in some number of steps, say $y$. Let $D = \{(x,y) ~|~ M \text{ accpets } x \text{ in } y \text{ steps }\}$.
+% \begin{itemize}
+%  \item $D$ is decidable.
+%  \item $C = \{x ~|~ \exists y, (x,y) \in D\}$
+% \end{itemize}
+% }
+% 
+\section{Reducibility}
+\frame{
+Section 5.1 informal reductions. The book shows many problems are undecidable using the same method. If being able to decide some set $A$ lets you decide $A_{TM}$. Then $A$ must not be decidable, because $A_{TM}$ is not.
+~~\\
+Some undecidable problems: $A_{TM}, HALT_{TM}, E_{TM}, REGULAR_{TM}, EQ_{TM}, E_{LBA}, ALL_{CFG}$.
+}
+
+\frame{
+Section 5.3 introduces a mathematical formalism for this concept.
+~\\~\\
+Mapping reducibility: Given two languages $A$ and $B$, $A$ is mapping reducible to $B$ ($A \le_M B$) if there is a \emph{computable} function $f$ such that:
+$$w \in A \iff f(w) \in B$$
+Computable function $f$ means some Turing machine can take in $w$ and leave $f(w)$ on the tape for all $w$.
+}
+
+\frame{
+$$A = \{w \in \Sigma^* ~|~ w \text{ contains an even number of 0s}\}$$
+$$B = \{w \in 0^* ~|~ w \text{ contains an even number of 0s}\}$$
+~\\
+Describe a mapping reduction.
+}
+
+\frame{
+$$A = \{w \in \Sigma^* ~|~ w \text{ contains an even number of 0s}\}$$
+$$B = \{w \in 0^* ~|~ w \text{ contains an \emph{odd} number of 0s}\}$$
+~\\
+Describe a mapping reduction.
+}
+
+\frame{
+Consider a reduction from $ALL_{DFA}$ to $E_{DFA}$.
+}
+
+\frame{
+$ALL_{DFA} \le_M E_{DFA}$ and $E_{DFA}$ is Turing decidable, so $ALL_{DFA}$ is Turing decidable. In general $A \le_{M} B$ and $B$ decidable implies $A$ is decidable. What can we conclude if $A \le_M B$:
+\begin{itemize}
+\item $A$ is decidable $\implies$ ?
+\item $B$ is undecidable $\implies$ ?
+\item $A$ is undecidable $\implies$ ?
+\end{itemize}
+}
+
+\frame{
+If $A \le_M B$, then 
+\begin{itemize}
+\item $A$ is decidable $\implies$ nothing about $B$
+\item $B$ is decidable $\implies A$ is decidable
+\item $A$ is undecidable $\implies B$ is undecidable
+\item $B$ is undecidable $\implies$ nothing about $A$
+\end{itemize}
+}
+
+\frame{
+Describe a mapping reduction from $A_{TM}$ to $E_{TM}$.
+}
+
+\frame{
+Need to describe a computable process, $f$, such that: 
+$$(M, w) \in A_{TM} \iff f((M,w)) \in E_{TM}$$
+\pause
+$E_{TM}$ expects as input a Turing machine, so we must describe how to construct a new Turing machine $M'$ from $(M,w)$ such that:
+$$(M, w) \in A_{TM} \iff M' \in E_{TM}$$
+}
+
+\frame{
+The following Turing machine takes in $(M,w)$ and converts it a suitable $M'$.
+~\\
+~\\
+\begin{tabular}{ll}
+$T$=& On input $(M,w)$. \\ 
+& 1. Construct the following Turing machine: \\
+& \begin{tabular}{ll}
+$S$=& On input $x$: \\ 
+& 1. If $x \ne w$, \emph{reject}.\\
+& 2. Else, run $M$ and $w$ and accept if it does.
+\end{tabular}
+\end{tabular}
+\pause
+~\\
+If we could decide $E_{TM}$, then we could decide $A_{TM}$ by taking its input and constructing $S$ and then running our decider for $E_{TM}$ on $S$. $A_{TM}$ cannot be decided though, so a decider for $E_{TM}$ cannot exist. $E_{TM}$ is undecidable.
+\pause
+~\\
+or $A_{TM} \le_M E_{TM}$ and $A_{TM}$ is undecidable so $E_{TM}$ is undecidable.
+}
+
+
+
+% \frame{
+% A $2DFA$ that has two read heads instead of one, they start from both ends of the input and work toward the other end.
+% }
+% 
+% 
+% \frame{
+% $$ \$ C_1 \$ $$ 
+% $$ \# C_1 \$ C_2 \$ C_2^R \# $$
+% $$ \# C_1 \# C_3  \$ C_3 \$ C_2^R \# C_2^R \# $$
+% $$ \# C_1 \# C_3  \# C_3 \$ C_4 \$ C_4^R \# C_2^R \# C_2^R \# $$
+% $$ \# C_1 \# C_3  \# C_3 \# C_5 \$ C_5 \$ C_4^R \# C_4^R \# C_2^R \# C_2^R \# $$
+% $$\vdots$$
+% $$ \# C_1 \# C_3  \# C_3 \# \hdots \# C_n \$ C_n \$ C_{n-1}^R \# C_{n-1} \# \hdots \# C_4^R  \# C_2^R \# C_2^R \# $$
+% $$ \# C_1 \# C_3  \# C_3 \# \hdots \# C_{n-1} \$ C_{n-1} \$ C_{n} \# C_{n}^R \# \hdots \# C_4^R \# C_4^R \# C_2^R \# C_2^R \# $$
+% $$\vdots$$
+% }
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

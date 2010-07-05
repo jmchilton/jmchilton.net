@@ -1,0 +1,6 @@
+'((rel "geek:index" "index")
+  (rel "geek:art" "digital_art")
+  (rel "geek:scheme:index" "scheme/")
+  (rel "geek:template_haskell" "template_haskell")
+  (rel "geek:php_bibtex" "php_bibtex")
+  (rel "geek:site" "about_this_site"))

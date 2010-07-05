@@ -1,0 +1,280 @@
+% Handout Type
+% \documentclass[handout]{beamer}
+% Presentation Type
+\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 7 - Pumping Lemma for Contex-Free Languages}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping and Homework}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Homework 3 Questions
+\item The Pumping Lemma 
+\item Pumping Lemma Examples
+\end{itemize}
+}
+
+\subsection{Homework 3}
+\frame{
+Problem 1. Provide CFGs for: 
+$$L_1 = \{a^mb^nc^pd^q | m + n= p + q\}$$
+$$L_2 = \{x_1\#x_2\#\hdots\#x_k ~|~ x_i \in \{a,b\}^* \text{ and for some $i$ and $j$,    }x_i = x_j^R\}$$
+}
+
+\frame{
+Problem 2. Prove 
+\begin{align*}
+S &\rightarrow ~aSb~|~bY~Ya \\
+Y &\rightarrow ~bY ~|~aY ~|~ \epsilon
+\end{align*}
+generates the language. $\{w ~|~ w $ is not of the form $a^nb^n$ for some $n\}$
+}
+
+\frame{
+Problem 3. Convert CFGs from problem 1 into PDAs. Just follow the algorithm laid out on pages 115-118.
+}
+
+\frame{
+Problem 4. Given a CFG convert it into Chompsky Normal form.
+}
+
+\frame{
+Problem 5. Show that the class of context-free languages is closed under union, concatenation, and start.
+}
+
+\frame{
+Problem 6. Convert the given CFG to a PDA. 
+}
+
+\frame{
+Problem 7. Context-free languages are not closed under intersection.
+}
+
+\frame{
+Problem 8. Let $L$ be a given context-free language and $R$ be a given regular language.
+
+\begin{itemize}
+\item Part 1. Show $L - R$ must be context-free.
+\item Part 2. Show $R - L$ isn't necessarily context-free.
+\end{itemize}
+}
+
+\frame{
+Problem 10. Let $G$ be a CFG in Chomsky normal form that contains $b$ variables. Show that, if $G$ generates some string with a derivation having at least $2^b$ steps, $L(G)$ contains an infinite number of strings.
+
+\textit{Hint}: Look at the proof of the pumping lemma.
+}
+
+\frame{
+Some printings of the book containing errors while proving pumping lemma.
+}
+
+\frame{
+Problem 9. Use the pumping lemma for context-free languages to show three languages are not context-free.
+}
+
+\frame{
+$$ A = \{ a^q ~|~ q \text{ is prime}\}$$
+\begin{itemize}
+\item<1-> $aaa \in A$
+\item<2-> $aaaa \notin A$
+\item<3-> Pick a string of at least length $p$ where $p$ is the pumping length, and pump to a string that is not of prime length.
+\item<4-> How do you show the pumped string is not of prime length?
+\item<5-> Somewhat analogous to proof that it is not regular found at the end of these slides.
+\end{itemize}
+}
+
+\frame{
+$$B = \{ 0^n1^n0^n1^n ~|~ n \ge 0\}$$
+\begin{itemize}
+\item This is similar to examples from the book. Start with this one.
+\end{itemize}
+}
+
+\frame{
+$$C = \{t_1\#t_2\#\hdots\#t_k ~|~ t_i \in \{a,b\}^* \text{ and for some $i \ne j$, } x_i = x_j\}$$
+\begin{itemize}
+\item Somewhat similar to the examples from the book, and second example in these slides
+% \item $a^p\#a^p \in C$. Is this string pumpable?
+\end{itemize}
+}
+
+\section{The Pumping Lemma}
+\subsection{Definition and Explanation}
+\frame{
+For a given context-free language, say $A$, there exists a number $p$ called the pumping length of the language. Any string $s\in A$, of length at least $p$ can be divided into $s=uvxyz$ such that:
+\begin{itemize}
+\item<1-> $uv^ixy^iz \in A$ for any $i \ge 0$
+\begin{itemize}
+\item<2-> $u$ and $z$ prefix and suffix, not intresting. 
+\item<3-> Intresting part is $vxy$, $v$ and $y$ can be pumped around $x$
+\end{itemize}
+\item<3-> $|vxy| \le p$
+\begin{itemize}
+\item<4-> Intresting part is a window of length at most $p$
+\item<5-> Need to make an argument for every such possible window, not just all windows in the first $p$ symbols.
+\end{itemize}
+\item<6-> $|vy| > 0$
+\begin{itemize}
+\item<7-> Either $v$ or $y$ needs to be non-empty, but either one of them could be.
+\end{itemize}
+\end{itemize}
+}
+
+
+\subsection{Common mistakes}
+\frame{
+\begin{itemize}
+\item<1-> Cannot choose decomposition
+\begin{itemize}
+\item<1-> NEED to argue about every possible decomposition
+\end{itemize} 
+\item<2-> Cannot use the pumping lemma to prove a language is context-free
+\item<3-> When using PL, pick a specific, explicitly stated string.
+% \begin{itemize}
+% \item<3-> The only variable appearing in the string should be $p$. 
+% \end{itemize}
+\item<4-> Make sure your string is at least of length $p$.
+\item<5-> $w \in A$ cannot be pumped and $w \in B$, does not imply $B$ is not context-free. 
+\end{itemize}
+}
+
+
+\section{Pumping Lemma Examples}
+\subsection{D}
+\frame{
+$$D = 0^n\#0^{2n}\#0^{3n}$$
+\begin{itemize}
+\item $0\#00\#000 \in D$
+\item $0\#00\#00 \notin D$
+\end{itemize}
+}
+
+\frame{
+Assume $D$ is context-free with pumping length $p$
+$$0^p\#0^{2p}\#0^{3p}$$
+\begin{itemize}
+\item<1-> $vxy$ cannot lie completely in first group 0s. $uv^2xy^2z = 0^{p+i}\#0^{2p}\#0^{3p}$ for $i > 0$. NOT IN D.
+\item<2-> $vxy$ cannot lie completely in second group of 0s. $uv^2xy^2z = 0^{p}\#0^{2p+i}\#0^{3p}$ for $i > 0$. NOT IN D.
+\item<3-> $vxy$ cannot lie completely in third group of 0s. $uv^2xy^2z = 
+0^{p}\#0^{2p}\#0^{3p+i}$ for $i > 0$. NOT IN D.
+\end{itemize}
+}
+
+\frame{
+$$0^p\#0^{2p}\#0^{3p}$$
+\begin{itemize}
+\item<1-> So we know vxy must contain a $\#$. 
+\item<2-> v and y cannot contain the $\#$, because then $uv^2xy^2z$ would have more than two $\#$s, and thus cannot be contained in $D$.
+\item<3-> So $x$ must contain the $\#$.
+\item<4-> $vxy$ cannot contain 0s from more than two of the groups because $|vxy| \le p$.
+\item<5-> So $uv^2xy^2z$ is of the form $0^{p+i}\#0^{2p+j}\#0^{3p}$ or $0^{p}\#0^{2p+i}\#0^{3p+j}$
+\begin{itemize}
+\item<5-> $i$ and $j$ cannot both be 0, since $v$ and $y$ cannot both be empty.
+\item<5-> Any such string is not a member of $D$.
+\end{itemize}
+\item<6-> Hence $D$ cannot be pumped and is not context-free
+\end{itemize}
+}
+
+\subsection{E}
+\frame{
+2.30 Part C. Show the following string is not context-free:
+$$E = \{w\#t ~|~ w \text{ is a substring of t}\}$$
+\vspace*{-.4cm}
+\begin{itemize}
+\item<2-> $00\#1001 \in E$ 
+\item<2-> $1001\#00 \notin E$
+\item<3-> Some candidate strings for pumping:
+\begin{itemize}
+\item<3-> a) $0^p\#1^p0^p$ 
+\item<3-> b) $0^p\#0^p$
+\item<3-> c) $1^p0^p\#1^p0^p$
+\item<3-> d) $0^p\#0^{p+1}$
+\end{itemize}
+\end{itemize}
+}
+
+\frame{
+$$E = \{w\#t ~|~ w \text{ is a substring of t}\}$$
+\begin{itemize}
+\item Consider $s = 1^p0^p\#1^p0^p$.
+\item<2-> If $vxy$ lies completely on the left side of the $\#$, then $uv^2xy^2z$ will have more symbols on the left side then right, so the left couldn't be a substring of the right. Result not in $E$!
+\item<3-> If $vxy$ lies completely on the right side, then what can be said about $uv^2xy^2z$?
+\item<4-> If $vxy$ lies completely on the right side, then $uv^0xy^0z = uxz$ has more symbols to the left of $\#$ than the right. Result not in $E$!
+\end{itemize}
+}
+
+\frame{
+$$E = \{w\#t ~|~ w \text{ is a substring of t}\}$$
+$$s = 1^p0^p\#1^p0^p$$
+\begin{itemize}
+\item<1-> $vxy$ must contain the $\#$.
+\item<2-> Because $|vxy| \le p$, $|vxy|$ must lie completely between the first 0 and last 1 in $s$.
+\item<3-> As before $v$ and $y$ cannot contain the $\#$, $v$ may contain some 0s and $y$ may contain some 1s.
+\item<4-> What is the form of $uv^2xy^2z$?
+\item<5-> $1^p0^{p+i}\#1^{p+j}0^p$ where $i$ and $j$ cannot both be 0
+\item<6-> Done?
+\end{itemize}
+}
+
+\frame{
+$$E = \{w\#t ~|~ w \text{ is a substring of t}\}$$
+$$s = 1^p0^p\#1^p0^p$$
+\begin{itemize}
+\item<1-> If $v$ is $\epsilon$, then this has the form $1^p0^p\#1^{p+j}0^p$, which is in $E$
+\item<2-> Well, if $v$ is $\epsilon$, consider $uv^0xy^0z = uxz = 1^p0^p\#1^{p-k}0^p$. 
+\item<3-> This is not in $E$, so this string cannot be pumped 
+\end{itemize}
+}
+
+\subsection{A is not regular}
+\frame{
+Consider  $A = \{a^p ~|~ \text{p is prime}\}$.
+\begin{itemize}
+\item Homework 3 asks you to show $A$ is context-free.
+\item I will show how to prove it is not regular with the pumping lemma for regular languages.
+\item You should repeat this exercise with the context-free pumping lemma, to show it is not context-free.
+\begin{itemize}
+\item Remember: Not regular does not imply not context-free. 
+\end{itemize}
+\end{itemize}
+}
+
+\frame{
+Consider $w = 1^q$ where $q$ is the smallest prime strictly larger the pumping length,$p$, of $A$. Now consider some decomposition $s=xyz$ as promised by the pumping lemma. So $s = 1^a1^b1^c$.
+\begin{itemize}
+\item<2-> $|xy| \le p \Rightarrow a+b \le p$
+\item<3-> $|y| \ge 0 \Rightarrow b \ge 0$
+\item<4-> $|s| > p \Rightarrow c > 0$
+\item<5-> $xy^mz \in A \Rightarrow a+c+m*b$ is prime for any $m \ge 0$
+\item<6-> Call $a' = a+c$, and note $a' > 0$.
+\item<7-> $xy^{a'}z = 1^{a'*b + a'} = 1^{a'(1+b)}$
+\item<8-> $xy^{a'+b+1}z = 1^{a' + b(a' + b + 1)} = 1^{a'(1+b)+b(1+b)} = 1^{(a'+1)(b+1)}$
+\end{itemize}
+}
+
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

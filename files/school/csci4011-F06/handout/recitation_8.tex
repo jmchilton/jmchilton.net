@@ -1,0 +1,466 @@
+% Handout Type
+\documentclass[handout]{beamer}
+% Presentation Type
+% \documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 8 - Review of Homework 3 and Turing Machine Example}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Homework 3 Questions
+\item Turing Machine Example 
+\end{itemize}
+Take notes, these slides won't be posted.
+}
+
+\section{Homework 3}
+\subsection{Problem 1}
+\frame{
+Problem 1. Provide CFGs for: 
+$$L_1 = \{a^mb^nc^pd^q | m + n= p + q\}$$
+$$L_2 = \{x_1\#x_2\#\hdots\#x_k ~|~ x_i \in \{a,b\}^* \text{ and for some $i$ and $j$,    }x_i = x_j^R\}$$
+}
+
+\frame{
+$$a^mc^pd^q$$
+with $m = p+q$. \pause 
+$$a^mc^pd^q = a^qa^pc^pd^q$$
+\pause
+This can be seen as  $a^qTd^q$ where $T$ is variable that generates an equal number of as and cs.
+\pause
+\begin{align*}
+S &\rightarrow ~aSd ~|~T \\
+T &\rightarrow ~aTc~|~\epsilon
+\end{align*}
+}
+
+\frame{
+Now lets apply the same trick to $a^mb^nc^pd^q$. Start by matching the outer $a$s and $d$s. We don't know if there are more $a$s or $d$s though.
+\begin{itemize}
+\item<2->$m>q$ : $a^qa^{m-q}b^nc^pd^q$.
+\begin{itemize}
+\item<3->$a^qTd^q$
+\item<4->Generated all the $d$s, T needs equal number of $a$s plus $b$s as $c$s.
+\end{itemize}
+\item<5->$q>m$ : $a^mb^nc^pd^{q-m}d^m$.
+\begin{itemize}
+\item<6->$a^mUd^m$
+\item<7->Generated all the $a$s, U needs equal number of $c$s plus $d$s as $b$s.
+\end{itemize}
+\end{itemize}
+}
+
+\frame{
+\begin{align*}
+S &\rightarrow ~aSd ~|~ T ~|~ U \\
+T &\rightarrow ~aTc ~|~ V \\
+U &\rightarrow ~bUd ~|~ V \\
+V &\rightarrow ~bVc ~|~ \epsilon
+\end{align*}
+}
+
+
+
+\frame{
+$$\{x_1\#x_2\#\hdots\#x_k ~|~ x_i \in \{a,b\}^* \text{ and for some $i$ and $j$,    }x_i = x_j^R\}$$
+Big Idea: Assume $i <= j$. $x_i$ doesn't depend on anything before it and $x_j$ doesn't depend on anything after it. Each part is independent, so break it up:
+\pause
+$$S \rightarrow ETB$$
+\pause
+$E$ will generate everything before $x_i$, $B$ will generate everything after $x_j$, and $T$ will generate everything from $x_i$ to $x_j$.
+}
+
+\frame{
+$$X \rightarrow ~ 0X ~|~ 1X ~|~ \epsilon$$
+We can use this rule to generate individual $x_k$ that don't matter. Shouldn't use it to generate $x_i$ or $x_j$ though.
+}
+
+\frame{
+$$S \rightarrow ETB$$
+Consider $E$.
+\begin{itemize}
+\item<2-> $x_i$ could be $x_1$ so $E \rightarrow ~\epsilon$ must be a rule.
+\item<3-> If $E$ isn't $\epsilon$ then it better be a sequence of $x_k$s separated by $\#$s.
+\begin{itemize}
+\item<4> $E \rightarrow ~ \#XE ~|~ \epsilon$
+\item<4-5> $E \rightarrow ~ X\#E ~|~ \epsilon$
+\item<4> $E \rightarrow ~ \#X\#E ~|~ \epsilon$
+\end{itemize}
+\end{itemize}
+}
+
+\frame{
+Where we are at...
+\begin{align*}
+S &\rightarrow ETB \\
+X &\rightarrow 0X ~|~ 1X ~|~ \epsilon \\
+E &\rightarrow  X\#E  ~|~ \epsilon \\
+B &\rightarrow \#XB ~|~ \epsilon \\
+T &\rightarrow \textit{generate everything from $x_i$ to $x_j$}
+\end{align*}
+}
+
+\frame{
+Since $x_j$ is the reverse of $x_i$, whenever we a symbol to the front of $x_i$ we need to add the same symbol to the end of $x_j$. So $T$ will include at least
+$$T \rightarrow ~ 0T0 ~|~ 1T1 $$
+Two cases for how to end $x_i$ and $x_j$. $i=j$ and $i\ne j$.
+\begin{itemize}
+\item<2-> If $i = j$, then the base case is the middle symbol, which could be $0$, $1$, or $\epsilon$ if $|x_i|$ is even. Add rules $T \rightarrow 0 ~|~ 1 ~|~ \epsilon$.
+\item<3-> If $i \ne j$. There are a couple ways to think about this.
+\end{itemize}
+}
+
+\frame{
+$$T \rightarrow 1T1 ~|~ 0T0 ~|~ 1 ~|~ 0 ~|~ \epsilon ~|~ ...$$
+First attempt. Break $i \ne j$ into two cases. 
+\pause
+\begin{itemize}
+\item<2-> If $j = i+1$ : $x_i$ and $x_j$ are separated by $\#$, so add the rule $T \rightarrow \#$.
+\item<3-> Else: $\#$ comes after $x_i$ and before $x_j$ and between there can be as many $x_k$s separated by $\#$ as there need to be
+\begin{itemize}
+\item<4-> $T \rightarrow \#U\#$ 
+\item<5-> $U \rightarrow X\#U ~|~ X$
+\end{itemize}
+\end{itemize}
+}
+
+\frame{
+Easier way to end $T$ when $x_i \ne x_j$. A pound separates $x_i$ and $x_j$. If more than this separates them its a pound followed by a series of $x_k$s ending in another $\#$. So add the rule
+$$T \rightarrow \#E$$
+}
+
+\frame{
+So one answer could be:
+\begin{align*}
+S &\rightarrow ETB \\
+X &\rightarrow 0X ~|~ 1X ~|~ \epsilon \\
+E &\rightarrow  X\#E  ~|~ \epsilon \\
+B &\rightarrow \#XB ~|~ \epsilon \\
+T &\rightarrow 1T1 ~|~ 0T0 ~|~ 1 ~|~ 0 ~|~ \epsilon ~|~ \#E
+\end{align*}
+}
+
+\frame{
+Another less structured approach:
+\begin{align*}
+S &\rightarrow T ~|~ J\#T ~|~ T\#J ~|~ J\#T\#J \\
+J &\rightarrow 0J ~|~ 1J ~|~ \#J ~|~ \epsilon \\
+T &\rightarrow 1T1 ~|~ 0T0 ~|~ 1 ~|~ 0 ~|~ \epsilon ~|~ \# ~|~ \#J\#
+\end{align*}
+}
+
+\subsection{Problem 3 w/o shorthand}
+\frame{
+Converting a CFG to a PDA, the last few steps. Consider
+\begin{align*}
+S &\rightarrow ~aSd~|~ T\\
+T &\rightarrow ~aTc~|~ \epsilon\\
+\end{align*}
+Convert to PDA.
+}
+
+\subsection{Problem 9a}
+\frame{
+Problem 9 part a.
+$$ A = \{ a^q ~|~ q \text{ is prime}\}$$
+\begin{itemize}
+\item<1-> $aaa \in A$
+\item<2-> $aaaa \notin A$
+\end{itemize}
+}
+
+\frame{
+Consider $w = 1^q$ where $q$ is the smallest prime strictly larger the pumping length,$p$, of $A$. Now consider some decomposition $s=uvxyz$ as promised by the pumping lemma. So $s = 1^a1^b1^c1^d1^e$.
+\begin{itemize}
+\item<2-> $|vxy| \le p \Rightarrow b+c+d \le p$
+\item<3-> $|vy| > 0 \Rightarrow b+d > 0$
+\item<4-> $|s| > p \Rightarrow a+c+e > 0$
+\item<5-> $uv^mxy^mz \in A \Rightarrow a+c+e+m*(b+d)$ is prime for any $m \ge 0$
+\item<6-> Call $a' = a+c+e$, and note $a' > 0$.
+\item<7-> Call $b' = b+d$, and note $b' > 0$.
+\item<8-> $uv^{a'+b'+1}xy^{a'+b'+1}z = 1^{a' + b'(a' + b' + 1)} = 1^{a'(1+b')+b'(1+b')} = 1^{(a'+1)(b'+1)}$. Contradiction!
+\end{itemize}
+}
+
+\subsection{Problem 10}
+\frame{
+Problem 10. Let $G$ be a CFG in Chomsky normal form that contains $b$ variables. Show that, if $G$ generates some string with a derivation having at least $2^b$ steps, $L(G)$ contains an infinite number of strings.
+}
+
+\frame{
+Big Idea: We can show that a grammar in Chompsky normal form with $b$ variables can generate an infinite number of strings if it has some derivation with a parse tree that has some branch with $b+1$ variables.
+\pause
+\begin{itemize}
+\item Step 1) Argue why this is the case
+\item Step 2) Show that if some parse tree corresponds to $2^b$ steps in a derivation, than it must have a branch with $b+1$ variables.
+\end{itemize}
+}
+
+\section{A Turing Machine Example}
+\subsection{Problem and Implementation Description}
+\frame{
+$$A = \{w ~|~ w \text{ has an equal number of $0$s and $1$s}\}$$
+\pause
+Implementation level description:
+\begin{itemize}
+\item Mark off the first unmarked symbol, if all symbols have been marked then accept.
+\item If the first symbol was a 0, scan through the tape and mark off first 1
+\item If the first symbol was a 1, scan through the tape and also mark off first 0
+\item If a 0 or 1 is not found, reject, else return to beginning of the tape and repeat. 
+\end{itemize}
+}
+
+\subsection{Example Run}
+\frame{
+\huge{
+$$q010011\sqcup$$}
+}
+
+\frame{
+\huge{
+$$xq10011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$qxx0011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xqx0011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxq0011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxq011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxx0q11\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxq0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxqx0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xqxx0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$qxxx0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xqxx0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxqx0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxq0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxxqx1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxxxq1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxxqxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxqxxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxqxxxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xqxxxxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$qxxxxxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xqxxxxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxqxxxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxqxxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxxqxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxxxqx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$xxxxxxq\sqcup$$
+}}
+
+
+% BREAK HERE
+\subsection{An easier implementation}
+\frame{
+\huge{
+A slightly easier approach to implement...
+}}
+
+\frame{
+\huge{
+$$q010011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup q10011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$q\sqcup x0011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup qx0011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup xq0011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup q011\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup 0q11\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup q0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup xq\sqcup 0x1\sqcup$$
+}}
+
+
+\frame{
+\huge{
+$$\sqcup x\sqcup q0x1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup \sqcup qx1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup \sqcup xq1\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup \sqcup qxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup q\sqcup xx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup \sqcup qxx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup \sqcup xqx\sqcup$$
+}}
+
+\frame{
+\huge{
+$$\sqcup x\sqcup \sqcup xxq\sqcup$$
+}}
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}

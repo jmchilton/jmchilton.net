@@ -1,0 +1,313 @@
+% Handout Type
+% \documentclass[handout]{beamer}
+% Presentation Type
+\documentclass{beamer}
+\usepackage{amsmath,amsthm,ifthen}
+\usepackage{johnscmds}
+\usepackage{gastex}
+\usepackage{beamerthemesplit}
+\title{Recitation 11 - Homework 5}
+\author{John Chilton}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Housekeeping}
+\subsection{Today}
+\frame{
+\begin{itemize}
+\item Homework 5 Problems
+\item Related Examples
+\end{itemize}
+}
+
+\section{Homework 5 }
+\subsection{Problems 1 and 2}
+
+\frame{
+Problem 1 (Exercise 4.6). Let $\mathcal{B}$ be the set of all infinite sequences of $0$s and $1$s.  Show $\mathcal{B}$ is not countable using a proof by diagnolization.
+}
+
+\frame{
+As an example of the method, consider the similar problem of $A = [0,1) \in \mathcal{R}$. Assume $A$ is countable and let $f$ be some one-to-one mapping from $A$ to $\mathcal{N}$.
+
+\begin{center} 
+\begin{tabular}{c|c}
+$n$   & $f(n)$    \\
+\hline
+$1$ & $0.12301020102030213284...$  \\ 
+$2$ & $0.31415926583343234221...$  \\
+$3$ & $0.72313934273234823293...$  \\
+$4$ & $0.23934293423932323492...$  \\
+$5$ & $0.12093239423429342342...$  \\
+$6$ & $0.19380234802934820312...$  \\
+\vdots & \vdots
+\end{tabular}
+\end{center}
+\pause 
+Since this is a one-to-one mapping each number in $[0,1)$ should appear on the right. We derive a contradiction by showing there is a real number on $[0,1)$ that doesn't appear on the right.
+}
+
+\frame{
+\begin{center} 
+\begin{tabular}{c|c}
+$n$   & $f(n)$    \\
+\hline
+$1$ & $0.\textbf{\underline{1}}2301020102030213284...$  \\ 
+$2$ & $0.3\textbf{\underline{2}}415926583343234221...$  \\
+$3$ & $0.72\textbf{\underline{6}}13934273234823293...$  \\
+$4$ & $0.239\textbf{\underline{9}}4293423932323492...$  \\
+$5$ & $0.1209\textbf{\underline{3}}239423429342342...$  \\
+$6$ & $0.19380\textbf{\underline{1}}34802934820312...$  \\
+\vdots & \vdots
+\end{tabular}
+\end{center}
+Construct a new number $r$ where the $ith$ digit of $r$ differs from the $ith$ digit of the ith number. For instance add one mod 10 to the digit.
+$$r=0.237042...$$
+$r$ differs from every number in the above list even though it is on $[0,1)$, hence no such one-to-one correspondence could exist. Therefore $[0,1)$ is uncountable.
+}
+
+\frame{
+Attack this problem in a similar way. Assume some $f$ exists that is a one-to-one mapping between $\mathcal{B}$ and $\mathcal{N}$.
+\begin{center} 
+\begin{tabular}{c|c}
+$n$   & $f(n)$    \\
+\hline
+$1$ & $\textbf{\underline{0}}01010101...$  \\ 
+$2$ & $1\textbf{\underline{0}}0101001...$  \\
+$3$ & $10\textbf{\underline{1}}111011...$  \\
+$4$ & $001\textbf{\underline{0}}01010...$  \\
+$5$ & $1010\textbf{\underline{1}}1101...$  \\
+$6$ & $11100\textbf{\underline{1}}010...$  \\
+\vdots & \vdots
+\end{tabular}
+\end{center}
+Then construct a new infinite sequence in $\mathcal{B}$ that is not mapped to by any natural number.
+}
+
+
+\frame{
+Problem 2. (Exercise 4.7) Show the following set $T$ is countable.
+$$T = \{(i,j,k) ~|~ i,j,k \in \mathcal{N}\}$$
+}
+
+\subsection{Problems 3-5}
+\frame{
+Problem 3. (Problem 4.10)
+$$INFINITE_{PDA} = \{M~|~ M \text{ is a PDA and $L(M)$ is an infinite language }\} $$
+Show $INFINITE_{PDA}$ is decidable.
+\begin{itemize}
+\item<2-> Would accept a PDA that recognizes $\{0^n1^n\}$
+\item<3-> Would reject a PDA that recognizes $\{0^n1^n ~|~ n \le 100\}$ 
+\item<4-> Would accept a PDA that recognizes syntactically correct C programs.
+\item<5-> Would reject a PDA that recognizes syntactically correct C programs limitted to 100 Kb.
+\end{itemize}
+}
+
+\frame{
+Problem 4. (Problem 4.25)
+$$E = \{M~|~M\text{ is a DFA that accepts some string with more 0s than 1s}\}$$
+Show $E$ is decidable.
+}
+
+\frame{
+Problem 5. (Problem 4.26)
+$C = \{(G,x)~|~G $ is CFG that generates some string $w$ where $x$ is a substring  of $w\}$
+\pause
+~\\
+You are given a CFG and a string $x$. You must decide if the CFG generates any string that has $x$ as a substring. 
+}
+
+\frame{
+Problem 6.
+\begin{itemize}
+\item Remember an enumerator for an infinite language, will never stop and will eventually print each string in the language.
+\item Use an enumerator and try an argument by diagonalization.
+\end{itemize}
+}
+
+\frame{
+Problem 7. (Extra Credit)
+Remember this is an iff, and one direction is fairly simple and everything you need is right there. Try to get at least one direction.
+}
+
+
+\section{Some Examples}
+\subsection{Your Toolkit}
+\frame{
+4011 Standard Library - dfa.h contents
+\begin{itemize}
+\item<1->$A_{DFA}$: Given DFA and string, decides if the string is accepted.
+\item<2->$E_{DFA}$: Given DFA, decides if it accepts the empty language.
+\item<3->$EQ_{DFA}$: Given two DFAs, decides if accept same language.
+\item<4-> Using given DFAs can construct new ones that recognize the union, intersection, star, concatenation, compelement, reverse, drop-out, perfect shuffle.
+\item<5->Can convert between DFAs, NFAs, and regular expressions.
+\item<6->Can also create TMs, CFGs, and PDAs that recognize the same language as a DFA.
+\begin{itemize}
+\item Cannot go in the other direction.
+\end{itemize}
+\item<7->Can determine the pumping length of a DFA.
+\end{itemize}
+}
+
+\frame{
+4011 Standard Libray - cfg.h contents
+\begin{itemize}
+\item<1->$A_{CFG}$: Given CFG and string, decides if the string can be generated.
+\item<2->$E_{CFG}$: Given CFG and decides if it generates empty language.
+\item<3->Can form new CFGs from union, star, concatenation of given CFGs.
+\begin{itemize}
+\item<4-> In general, CANNOT create CFGs by intersecting or complementing other CFGs.
+\end{itemize}
+\item<5->Can convert between CFGs and PDAs.
+\item<6->Can determine the pumping length of a $CFG$.
+\end{itemize}
+}
+
+\frame{
+More tools for DFAs than CFGs.
+\begin{itemize}
+\item<1->$EQ_{CFG}$ is undecidable.
+\item<2->Cannot construct intersection or complement from CFGs in general.
+\end{itemize}
+}
+
+\subsection{$INFINITE_{DFA}$}
+\frame{
+$$INFINITE_{DFA} = \{M~|~ M \text{ is a DFA and $L(M)$ is an infinite language}\}$$
+~\\
+\pause
+Solution Idea: If a DFA doesn't accept any strings of length at least $p$, where $p$ is the pumping length, then it must be finite, and if it accepts even one string of length $p$ then it can be pumped, so the language is infinite. So we just need to test if the DFA accepts even one string of length at least $p$.
+}
+
+\frame{
+$$INFINITE_{DFA} = \{M~|~ M \text{ is a DFA and $L(M)$ is an infinite language}\}$$
+~\\
+\begin{tabular}{ll}
+$T$=& On input $M$ where $M$ is a DFA. \\ 
+& 1. Calculate the pumping length of $L(M)$ call this $p$. \\
+& 2. Construct a DFA, $A$, which accepts a given $w$ iff $|w| \ge p$.\\
+& 3. Construct a DFA, $B$, which recognizes $L(M) \cap L(A)$ \\
+& 4. Run $E_{DFA}$ with $B$ as input. If it rejects, \emph{accept}, else \emph{reject}. \\
+\end{tabular}
+}
+
+\frame{
+Problem 3 asks you to show the same thing PDAs. This is a bit more tricky, but you can use a solution along the same lines. Some problems:
+\begin{itemize}
+\item<2-> 1) Cannot calculate the pumping length from a PDA directly.
+\item<3-> 2) Can construct a PDA that accepts all strings of length at least $p$, but cannot form a PDA by intersecting two.
+\end{itemize}
+\pause\pause\pause
+Use results from cfg.h to address 1. Hopefully next example will illuminate how to deal with 2.
+}
+
+\subsection{$PAL_{DFA}$}
+\frame{
+$$PAL_{DFA} = \{M~|~M\text{ is a DFA and accepts some palindrome.}\}$$
+Show $PAL_{DFA}$ is decidable.
+}
+
+\frame{
+Some possible solutions?
+\begin{tabular}{ll}
+$T_1$=& On input $M$ where $M$ is a DFA. \\ 
+ & 1. Construct DFA $R$ that recognizes $L(M)^R$  \\
+ & 2. Construct DFA $N$ that recognizes $L(M) \cap L(R)$ \\
+ & 3. Run $E_{DFA}$ against $N$. If it rejects, \emph{accept}, else \emph{reject}. \\
+\end{tabular}
+~\\
+~\\
+~\\
+\pause
+\begin{tabular}{ll}
+$T_2$=& On input $M$ where $M$ is a DFA. \\ 
+& 1. Construct DFA $R$ that recognizes $\{w~|~w=w^R\}$. \\
+& 2. Construct DFA $N$ that accepts $L(M) \cap L(R)$ \\
+& 3. Run $E_{DFA}$ against $N$. If it rejects, \emph{accept}, else \emph{reject}. \\
+\end{tabular}
+\pause
+What is wrong with them?
+}
+
+\frame{
+For any alphabet $\Sigma$, can construct CFG that recognizes the set of all palindromes. Start with rule $S \rightarrow \epsilon$, and for each $a \in \Sigma$ add rules $S \rightarrow aSa$ and $S \rightarrow a$.
+~\\
+~\\
+~\\ \pause
+\begin{tabular}{ll}
+$T_3$=& On input $M$ where $M$ is a DFA. \\ 
+& 1. Convert $M$ into PDA $M'$ that recognizes same language.\\
+& 2. Construct PDA $P$ from palindrome CFG created this $\Sigma$ \\
+& 3. Construct PDA $Q$ to recognize $L(M') \cap L(P)$ \\
+& 4. Convert PDA $Q$ into CFG $T$ \\
+& 5. Run $E_{CFG}$ on $T$, if it rejects, \emph{accepts}, else \emph{reject}.
+\end{tabular}
+\pause
+What is wrong with this?
+}
+
+\frame{
+Homework 5 Lemma: Given a PDA $P$ and DFA $D$, one can construct a PDA that recognizes $L(P) \cap L(D)$.
+\begin{itemize}
+\item<1-> Can "intersect" two DFAs, by simulating both DFAs with states. In new DFA, each state represents a pair of states.
+\item<2-> Can't "intersect" two PDAs, because cannot simulate two stacks with one.
+\item<3-> Can "intersect" a PDA and a DFA, by simulating pairs of states and using the new PDA's stack to simulate the original PDAs stack.
+\item<4-> Add this to your toolkit.
+\end{itemize}
+
+}
+
+% \frame{
+% Let $M_P = (Q_P,\Sigma,\Gamma, \delta_P, q_{0P}, F_P)$ be any given PDA, and let $M_D = (Q_D, \Sigma, \delta_D, q_{0D}, F_D)$ be any given DFA. The following PDA recognizes $L(M_P) \cap L(M_D)$.
+% 
+% $$M = (Q_P X Q_D, \Sigma, \Gamma, \delta, (q_{0P}, q_{0D}), F_P X F_D)$$
+% 
+% with $\delta((q_p, q_d), a, b) = \{ ( (r, \delta_D(q_d, a)), s) ~|~ (r,s) \in \delta_P(q_p, a, b) \}$.
+% }
+
+\frame{
+\begin{tabular}{ll}
+$T$=&On input $M$ where $M$ is a DFA. \\ 
+&1.Construct a PDA, P, from the palindrome CFG for this $\Sigma$.  \\
+&2.Use above lemma to build PDA $Q$ to recognizes $L(P)\cap L(M)$ \\
+&3.Run $E_{CFG}$ on $Q$, if it rejects, \emph{accept}, else \emph{reject}. \\
+\end{tabular}
+}
+
+\frame{
+Revisiting Problem 4. Show the following language is decidable.
+$$E = \{M~|~M\text{ is a DFA that accepts some string with more 0s than 1s}\}$$
+This problem is somewhat analogous to the above problem. If you get stuck review the above problem thoroughly.
+}
+
+\frame{
+Problem 5.
+$C = \{(G,x)~|~G $ is CFG that generates some string $w$ where $x$ is a substring  of $w\}$
+~\\
+~\\
+\pause
+Start with some simpler problems and let me know if you need advice on these.
+\begin{itemize}
+\item<2-> $\{D~|~D $ is DFA that generates some string $w$ where $111$ is a substring  of $w\}$
+\item<3-> $\{(D,x)~|~D $ is DFA that generates some string $w$ where $x$ is a substring  of $w\}$
+\item<3-> Now extend this to the CFG case.
+\end{itemize}
+}
+
+
+\end{document}
+
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \State[q]{(3,0)}{B}
+%\Initial{A} \Final{B}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
+
+%\begin{VCPicture}{(-1,1)(4,1)}
+%\State[p]{(0,0)}{A} \FinalState[q]{(3,0)}{B}
+%\Initial{A}
+%\EdgeL{A}{B}{a}
+%\end{VCPicture}
