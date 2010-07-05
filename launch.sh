@@ -6,4 +6,4 @@ do
   THE_CLASSPATH=${THE_CLASSPATH}:${i}
 done
 
-java -Xmx248m -cp "src:${THE_CLASSPATH}" clojure.main src/net/jmchilton/www/launch.clj
+java -Xmx128m -cp "src:${THE_CLASSPATH}" clojure.main src/net/jmchilton/www/launch.clj
