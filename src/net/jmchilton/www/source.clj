@@ -28,8 +28,9 @@
                         ["php" highlight-script source-file source-type])
         process (. process-builder start)
         process-output-stream (. process getInputStream)
+        source (stream->string process-output-stream)
         process-return-value (. process waitFor)]
-    (stream->string process-output-stream)))
+    source))
 
 
 (defn- file-comparator [x y]
