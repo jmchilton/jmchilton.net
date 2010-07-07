@@ -1,8 +1,10 @@
 ; Script for launching site!
 (ns net.jmchilton.www.page
   ;; Cannot be loaded from inside of pages, load it here
-  (:require [com.twinql.clojure.http :as http])
-  (:use (net.jmchilton.www counters id)
+;  (:require (com.twinql.clojure.http))
+  (:use (com.twinql.clojure.http)
+        (clojure.contrib.string)
+        (net.jmchilton.www counters id)
         (hiccup core)))
 
 ;; Thread local constants
@@ -22,9 +24,6 @@
   [:head
     [:title (content->title page)]
     [:link {"rel" "stylesheet" "href" "style.css" "type" "text/css"}]])
-
-(defn implode [seq str]
-  (.join (com.google.common.base.Joiner/on str) seq))
 
 (defn get-menu-list [dir-content-id]
   (let [menu-content-id (if (= "" dir-content-id) "menu" (str dir-content-id ":menu"))
@@ -55,7 +54,7 @@
           (fn [i]
             (let [index (min (- n 1) (+ i 1))
                   cur-path-pieces (rest (take index title-els))
-                  cur-path (implode cur-path-pieces "/")]
+                  cur-path (clojure.contrib.string/join "/" cur-path-pieces)]
               (concat
                 (if (< i (- n 1))
                   (list [:div (str "john@jmchilton.net (~/" cur-path ") % ls")]
@@ -92,30 +91,35 @@
       [:a {"href" "http://www.mongodb.org/"} "MongoDB"]]) 
 
 (defn- get-body [page]
-  (if (valid-content-id? page)
-    [:body 
-      [:div {"id" "page"}
-        (get-header page)
-        (let [content (get-content page)]
-          `[:div {"id" "content"} ~(if (list? content) content (list content))])]
-      [:div {"id" "infoBox"} 
-        [:p "clojure page source: " 
-            (view-source-link page (.substring (content-id->path page) 2)) ]
-        validate-p
-        [:p "created by: John Chilton (jmchilton at gmail dot com)"]
-        [:p "page loaded: " (inc-counter! (content-id->path page)) " times"]
-        [:p "date last modified: " (get-modified-date-string page)]
-        powered-p]]
-    [:body [:p "Server Error"]]))
+  [:body 
+    [:div {"id" "page"}
+      (get-header page)
+      (let [content (get-content page)]
+        `[:div {"id" "content"} ~(if (list? content) content (list content))])]
+    [:div {"id" "infoBox"} 
+      [:p "clojure page source: " 
+          (view-source-link page (.substring (content-id->path page) 2)) ]
+      validate-p
+      [:p "created by: John Chilton (jmchilton at gmail dot com)"]
+      [:p "page loaded: " (inc-counter! (content-id->path page)) " times"]
+      [:p "date last modified: " (get-modified-date-string page)]
+      powered-p]])
+
+
+(defn- get-content-id [params]
+  (let [page-param (:page params)]
+    (cond (valid-content-id? page-param) page-param 
+          (nil? page-param) "index"
+          :else "error")))
 
 (defn- get-html [req]
   (let [params (:params req)
-        page   (:page params)]
+        content-id (get-content-id params)]
     (def *request* req)
-    (def *page* page)
+    (def *page* content-id)
     (xhtml-html-tag 
-      (get-head page) 
-      (get-body page))))
+      (get-head content-id) 
+      (get-body content-id))))
 
 (defn get-document [req]
   (str

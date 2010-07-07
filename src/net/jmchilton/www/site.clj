@@ -21,7 +21,8 @@
            (and (.startsWith name "net.jmchilton.www") 
                 (not 
                   (or (= name "net.jmchilton.www.cache")
-                      (= name "net.jmchilton.www.launch"))))))
+                      (= name "net.jmchilton.www.launch")
+                      (= name "net.jmchilton.www.site"))))))
     (map ns-name (all-ns))))
 
 (def site

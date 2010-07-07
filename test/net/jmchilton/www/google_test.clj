@@ -21,6 +21,8 @@
         subscriptions (list s1 s2 s3 s4 s5)
         label-map (build-label-map subscriptions "*unlabelled*")]
     (is (= (count (keys label-map)) 3))
+    (pr (keys label-map))
+    (pr label-map)
     (is (= (count (get label-map "moo")) 2))
     (is (= (count (get label-map "cow")) 1))
     (is (= (count (get label-map "*unlabelled*")) 2))))

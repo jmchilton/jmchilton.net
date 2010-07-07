@@ -14,10 +14,14 @@
 (def view-url "http://www.google.com/reader/view/")
 
 (defn client-login-response [email password]
-  (let [params {:Email email :Passwd password :service "reader" :source "jmchilton-www-0.1" :accountType "GOOGLE"}]
-    (http/get "https://www.google.com/accounts/ClientLogin" 
+  (let [params {:Email email 
+                :Passwd password 
+                :service "reader" 
+                :source "jmchilton-www-0.1" 
+                :accountType "GOOGLE"}]
+    (com.twinql.clojure.http/get "https://www.google.com/accounts/ClientLogin" 
               :query params
-              :parameters (http/map->params {:use-expect-continue false})
+              :parameters (com.twinql.clojure.http/map->params {:use-expect-continue false})
               :as :string)))
 
 (defn extract-auth [response-str]
@@ -61,7 +65,7 @@
 (defn get-raw-subscriptions [auth]
   (parse-xml
     (:content
-      (http/get subscription-url
+      (com.twinql.clojure.http/get subscription-url
                 :headers {"Authorization" (str "GoogleLogin auth=" auth)}
                 :as :string))))
 

@@ -44,6 +44,7 @@
                (= (.indexOf content-id "\\." dot-pos) -1))))))
 
 (defn valid-content-id? [content-id]
-  (and (valid-content-id-string? content-id) 
+  (and (not (nil? content-id))
+       (valid-content-id-string? content-id) 
        (.exists (content-id->file content-id))))
 

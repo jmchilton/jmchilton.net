@@ -41,9 +41,12 @@
            :else 1)))
 
 (defn- make-directory-tree [file]
-  (if (.isDirectory file)
-      (cons file (map make-directory-tree (sort file-comparator (.listFiles file))))
-      file))
+  (cond (.startsWith (.getName file) ".git") nil
+        (.isDirectory file)
+          (let [contents (sort file-comparator (.listFiles file))
+                contents-trees (map make-directory-tree contents)]
+            (cons file (filter #(not (nil? %)) contents-trees)))
+        :else file))
 
 (defn- tree-walker [tree]
   (if (seq? tree)
