@@ -6,7 +6,6 @@
                  [ring/ring "0.2.5"]
                  [ehcache/ehcache "1.2.3"]
                  [commons-lang/commons-lang "2.5"]
-                 ;[congomongo/congomongo "0.1.2-SNAPSHOT"]
-                 ; The following congomongo port is compatiable with clojure 1.2
-                 [org.clojars.bmabey/congomongo "0.1.2-SNAPSHOT"]
+                 ;Taking too much memory for now, removing this
+                 ;[org.clojars.bmabey/congomongo "0.1.2-SNAPSHOT"]
                  [com.twinql.clojure/clj-apache-http "2.2.0"]])

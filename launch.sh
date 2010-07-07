@@ -6,4 +6,5 @@ do
   THE_CLASSPATH=${THE_CLASSPATH}:${i}
 done
 
-nohup java -XX:ReservedCodeCacheSize=16m -XX:MaxPermSize=32m -Xmx128m -cp "src:${THE_CLASSPATH}" clojure.main src/net/jmchilton/www/launch.clj &
+echo $THE_CLASSPATH
+nohup java -XX:ReservedCodeCacheSize=14m -XX:MaxPermSize=24m -Xms100m -Xmx100m -cp "src:${THE_CLASSPATH}" clojure.main src/net/jmchilton/www/launch.clj &

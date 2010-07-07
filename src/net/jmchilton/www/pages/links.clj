@@ -1,7 +1,7 @@
-(use '(net.jmchilton.www config delicious cache))
+(use '(net.jmchilton.www config delicious cache xml))
 
 (defn- post->link [post]
-  [:li [:a {"href" (:href post)} (org.apache.commons.lang.StringEscapeUtils/escapeXml (:description post))]])
+  [:li [:a {"href" (:href post)} (escape-xml (:description post))]])
 
 (defn- convert-tree [tree]
   (mapcat

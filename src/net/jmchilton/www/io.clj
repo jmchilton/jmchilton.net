@@ -8,3 +8,6 @@
 
 (defn stream->string [stream] 
   (org.apache.commons.io.IOUtils/toString stream))
+
+(defn file->string [file]
+  (org.apache.commons.io.FileUtils/readFileToString file))

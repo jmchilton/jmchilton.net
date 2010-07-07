@@ -1,6 +1,8 @@
 (ns net.jmchilton.www.source)
 
-(use '(net.jmchilton.www id io source))
+(use '(net.jmchilton.www id io source xml))
+
+(def use-genshi false)
 
 ;; Location of Genshi based highlighting script
 (def highlight-script "scripts/highlight.php")
@@ -21,16 +23,18 @@
        (contains? source-extensions (get-content-extension content-id))))
 
 (defn get-highlighted-source [source-file]
-  (let [extension (get-content-extension source-file)
-        source-type (get source-extensions extension)
-        ;; Warning Procedural Code Below!
-        process-builder (new java.lang.ProcessBuilder 
-                        ["php" highlight-script source-file source-type])
-        process (. process-builder start)
-        process-output-stream (. process getInputStream)
-        source (stream->string process-output-stream)
-        process-return-value (. process waitFor)]
+  (if use-genshi
+    (let [extension (get-content-extension source-file)
+          source-type (get source-extensions extension)
+          ;; Warning Procedural Code Below!
+          process-builder (new java.lang.ProcessBuilder 
+                          ["php" highlight-script source-file source-type])
+          process (. process-builder start)
+          process-output-stream (. process getInputStream)
+          source (stream->string process-output-stream)
+          process-return-value (. process waitFor)]
     source))
+    [:pre (escape-xml (file->string (file source-file)))])
 
 
 (defn- file-comparator [x y]

@@ -1,11 +1,15 @@
 ; Script for launching site!
 (ns net.jmchilton.www.page
-  ;; Cannot be loaded from inside of pages, load it here
-;  (:require (com.twinql.clojure.http))
   (:use (com.twinql.clojure.http)
-        (clojure.contrib.string)
-        (net.jmchilton.www counters id)
+        (net.jmchilton.www id)
         (hiccup core)))
+
+;; Contrib seems unstable in some way, many random erros when using
+(defn #^String join
+  "Returns a string of all elements in coll, separated by
+  separator.  Like Perl's join."
+  [#^String separator coll]
+  (apply str (interpose separator coll)))
 
 ;; Thread local constants
 (def *request*)
@@ -54,7 +58,7 @@
           (fn [i]
             (let [index (min (- n 1) (+ i 1))
                   cur-path-pieces (rest (take index title-els))
-                  cur-path (clojure.contrib.string/join "/" cur-path-pieces)]
+                  cur-path (join "/" cur-path-pieces)]
               (concat
                 (if (< i (- n 1))
                   (list [:div (str "john@jmchilton.net (~/" cur-path ") % ls")]
@@ -101,7 +105,8 @@
           (view-source-link page (.substring (content-id->path page) 2)) ]
       validate-p
       [:p "created by: John Chilton (jmchilton at gmail dot com)"]
-      [:p "page loaded: " (inc-counter! (content-id->path page)) " times"]
+      ;; Disabling mongo counter for now
+      ;; [:p "page loaded: " (inc-counter! (content-id->path page)) " times"]
       [:p "date last modified: " (get-modified-date-string page)]
       powered-p]])
 
