@@ -1,0 +1,75 @@
+
+
+(def oauth-key (:key google-config))
+(def oauth-secret (:secret google-config))
+(def reader-access-token (:reader-access-token google-config))
+(def reader-access-secret (:reader-access-secret google-config))
+
+
+
+
+(def google-consumer (make-consumer oauth-key
+                                    oauth-secret
+                                    "https://www.google.com/accounts/OAuthGetRequestToken"
+                                    "https://www.google.com/accounts/OAuthGetAccessToken"
+                                    "https://www.google.com/accounts/OAuthAuthorizeToken"
+                                    :hmac-sha1))
+
+
+;(defn get-subscriptions []
+;  (oauth-get google-consumer
+;             subscription-url
+;             {:oauth_token reader-access-token :oauth_verifier reader-access-secret}))
+
+(defn get-request-token []
+  (oauth-get google-consumer
+             (:request-uri google-consumer)
+             {:scope "http://www.google.com/reader/api/0/" :oauth_callback "oob"}))
+
+(defn get-access-token []
+  (oauth-get google-consumer
+             (:access-uri google-consumer)
+             {:oauth_token reader-access-token :oauth_verifier reader-access-secret}))
+
+
+(ns net.jmchilton.www.oauth
+  (:require [com.twinql.clojure.http :as http])
+  (:use [clojure.contrib.string :only [as-str join split upper-case]]))
+
+(use 'oauth.signature)
+(use 'oauth.digest)
+
+(defn- merge-oauth-params [consumer other-params]
+  (merge
+    (assoc (oauth.signature/oauth-params consumer)
+           :oauth_timestamp (quot (System/currentTimeMillis) 1000))
+    other-params))
+
+;;; This is a fixed up version of base-str from a newer version of the clj-oauth code
+(defn- url-enc
+  "The java.net.URLEncoder class encodes for application/x-www-form-urlencoded, but OAuth requires RFC 3986 encoding."
+  [s]
+  (-> (java.net.URLEncoder/encode s "UTF-8")
+      (.replace "+" "%20")
+      (.replace "*" "%2A")
+      (.replace "%7E" "~")))
+
+(defn- url-form-enc [params]
+  (join "&" (map (fn [[k v]]
+                      (str (url-enc (as-str k)) "=" (url-enc (as-str v)))) params )))
+
+(defn- calc-base-str [method base-url params]
+   (join "&" [method
+               (url-enc base-url)
+               (url-enc (url-form-enc (sort params)))]))
+
+(defn oauth-get [consumer url extra-params]
+  (let [params (merge-oauth-params consumer extra-params)
+        base-str (calc-base-str "GET" url params)
+        osign (oauth.signature/sign consumer base-str)
+        signed-params (assoc params :oauth_signature osign)]
+    (pr signed-params)
+    (http/get url
+              :query signed-params
+              :parameters (http/map->params {:use-expect-continue false})
+              :as :urldecoded)))
