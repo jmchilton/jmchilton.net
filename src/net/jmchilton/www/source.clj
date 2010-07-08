@@ -2,6 +2,8 @@
 
 (use '(net.jmchilton.www id io source xml))
 
+;; If the following variable is true, the markup produced by get-source-markup
+;; is a highlighted version of the specified source file.
 (def use-genshi false)
 
 ;; Location of Genshi based highlighting script
@@ -19,10 +21,12 @@
    "htm" "html"})
 
 (defn valid-source-content-id? [content-id]
+  "Determines if the specified content-id is a valid displayable source code file"
   (and (valid-content-id? content-id)
        (contains? source-extensions (get-content-extension content-id))))
 
-(defn get-highlighted-source [source-file]
+(defn get-source-markup [source-file]
+  "Builds a markup description for the specified source file"
   (if use-genshi
     (let [extension (get-content-extension source-file)
           source-type (get source-extensions extension)
@@ -55,8 +59,8 @@
 (defn- tree-walker [tree]
   (if (seq? tree)
     (if (not (empty? (rest tree)))
-      [:li (str (.getName (first tree)) "/")
-        `[:ul ~@(map tree-walker (rest tree))]])
+      [:li [:div {"class" "collapsable"} (str (.getName (first tree)) "/")]
+           `[:ul ~@(map tree-walker (rest tree))]])
     (let [path (.getPath tree)
           page-link [:a {"href" path} (.getName tree)]
           extension (get-extension path)
@@ -70,6 +74,7 @@
            '(()))])))
 
 (defn get-directory-list-html [path show-root?]
+  "Builds an HTML description of the path specified."
   (let [root-tree (make-directory-tree (file path))]
     `[:ul
       ~@(if show-root?

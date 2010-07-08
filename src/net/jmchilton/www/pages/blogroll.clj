@@ -12,7 +12,7 @@
 (defn build-page-html []
   (let [subscription-list (get-subscription-list)
         label-map (build-label-map subscription-list "*unlabelled*")]
-    `[:div {"class" "treeList"}
+    `[:div {"class" "treeList collapsable"}
        [:ul ~@(map build-label-list-html (sort label-map))]]))
 
 (handle-cache-timed

@@ -61,6 +61,12 @@ pre {
 	padding: 0px;
 }
 
+/* By default this will change the display, if JavaScript is 
+ * enabled the body of this definition will be replaced with 
+ * display:none
+ */  
+.initially-undisplayed {}
+
 /* Menu */
 .menu {
 	color: gray;

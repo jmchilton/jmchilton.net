@@ -35,16 +35,16 @@
 ;; limiting numer . to 1, if more can do .. and mess with path etc.
 (defn- valid-content-id-string? [content-id]
   (let [regexp "[A-Za-z0-9_\\-\\.:\\!]+"
-        dot-pos (.indexOf content-id "\\.")
+        dot-pos (.indexOf content-id ".")
         matched (.matches content-id regexp)]
     (and
       matched
       (or (= dot-pos -1)
           (and (> dot-pos 0)
-               (= (.indexOf content-id "\\." dot-pos) -1))))))
+               (= (.indexOf content-id "." dot-pos) -1))))))
 
 (defn valid-content-id? [content-id]
   (and (not (nil? content-id))
+       (not (.endsWith content-id "menu"))
        (valid-content-id-string? content-id) 
        (.exists (content-id->file content-id))))
-

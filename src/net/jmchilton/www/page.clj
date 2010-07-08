@@ -1,7 +1,7 @@
 ; Script for launching site!
 (ns net.jmchilton.www.page
   (:use (com.twinql.clojure.http)
-        (net.jmchilton.www id)
+        (net.jmchilton.www id context)
         (hiccup core)))
 
 ;; Contrib seems unstable in some way, many random erros when using
@@ -11,9 +11,8 @@
   [#^String separator coll]
   (apply str (interpose separator coll)))
 
-;; Thread local constants
-(def *request*)
-(def *page*)
+
+(def jquery-href "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
 
 (defn- xhtml-html-tag [& rest]
   (html
@@ -27,7 +26,9 @@
 (defn- get-head [page]
   [:head
     [:title (content->title page)]
-    [:link {"rel" "stylesheet" "href" "style.css" "type" "text/css"}]])
+    [:link {"rel" "stylesheet" "href" "style.css" "type" "text/css"}]
+    [:script {"type" "text/javascript" "src" jquery-href}]
+    [:script {"type" "text/javascript" "src" "jmchilton.js"}]])
 
 (defn get-menu-list [dir-content-id]
   (let [menu-content-id (if (= "" dir-content-id) "menu" (str dir-content-id ":menu"))
@@ -36,7 +37,7 @@
 
 (defn- get-menu [dir]
   (let [menu-lst (get-menu-list dir)]
-    `[:ul 
+    `[:ul {"class" "initially-undisplayed"}
       ~@(map
           (fn [entry]
             (let [abs? (= (first entry) 'abs)
@@ -90,9 +91,7 @@
       " | "
       [:a {"href" "http://github.com/mmcgrana/ring"} "Ring"]
       " | "
-      [:a {"href" "http://jetty.codehaus.org/jetty/"} "Jetty"]
-      " | "
-      [:a {"href" "http://www.mongodb.org/"} "MongoDB"]]) 
+      [:a {"href" "http://jetty.codehaus.org/jetty/"} "Jetty"]]) 
 
 (defn- get-body [page]
   [:body 
@@ -120,8 +119,7 @@
 (defn- get-html [req]
   (let [params (:params req)
         content-id (get-content-id params)]
-    (def *request* req)
-    (def *page* content-id)
+    (init-context req content-id)
     (xhtml-html-tag 
       (get-head content-id) 
       (get-body content-id))))
