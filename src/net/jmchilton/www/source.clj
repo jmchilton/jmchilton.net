@@ -20,6 +20,9 @@
    "html" "html"
    "htm" "html"})
 
+(defn view-source-link  [page text]
+  [:a {"href" (str "index.html?page=code_display&source=" page)} text])
+
 (defn valid-source-content-id? [content-id]
   "Determines if the specified content-id is a valid displayable source code file"
   (and (valid-content-id? content-id)
@@ -67,16 +70,15 @@
           source? (contains? source-extensions extension)]
       `[:li [:a {"href" ~path} ~(.getName tree)]
          ~@(if source?
-           `((" [" ~(net.jmchilton.www.page/view-source-link
-                      (file->content-id tree)
-                      "View Source")
+           `((" [" ~(view-source-link (file->content-id tree) "View Source")
               "]"))
            '(()))])))
 
 (defn get-directory-list-html [path show-root?]
   "Builds an HTML description of the path specified."
-  (let [root-tree (make-directory-tree (file path))]
-    `[:ul
-      ~@(if show-root?
-           (tree-walker root-tree)
-           (map tree-walker (rest root-tree)))]))
+  (let [root-tree (make-directory-tree (file path))]    
+    `[:div {"class" "treeList"} 
+       [:ul
+         ~@(if show-root?
+             (tree-walker root-tree)
+             (map tree-walker (rest root-tree)))]]))

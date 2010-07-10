@@ -10,12 +10,12 @@
   (let [abs? (.startsWith content-id ":")
         ;; Need to add an extension if this is a relative
         ;; id and doesn't already have one.
-        need-extension? (not (and abs? (.contains content-id ".")))]
+        has-extension? (or abs? (.contains content-id "."))]
     ;; Make sure path starts with "." so that 
     ;;absolute paths cannot be specified
     (str (if abs? "." path-prefix-for-relative-ids)
          (.replaceAll content-id ":" "/")
-         (if need-extension? default-extension ""))))
+         (if has-extension? "" default-extension))))
 
 (defn content-id->file [content-id]
   "Returns a Java File corresponding to the speicifed content-id."
@@ -39,9 +39,8 @@
         matched (.matches content-id regexp)]
     (and
       matched
-      (or (= dot-pos -1)
-          (and (> dot-pos 0)
-               (= (.indexOf content-id "." dot-pos) -1))))))
+      (not (= dot-pos 0))
+      (< (count (filter #(= \. %) content-id)) 2))))
 
 (defn valid-content-id? [content-id]
   (and (not (nil? content-id))

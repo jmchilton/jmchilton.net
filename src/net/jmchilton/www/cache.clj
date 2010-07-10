@@ -33,3 +33,9 @@
     (fn [last-modified] (> (+ time last-modified) (current-time))) 
     key 
     data-thunk))
+
+(defn handle-cache-indefinitely [key data-thunk]
+  (handle-cache
+    (fn [x] false)
+    key
+    data-thunk))

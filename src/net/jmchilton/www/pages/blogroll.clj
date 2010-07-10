@@ -6,13 +6,13 @@
     [:li [:a {"href" href} title]]))
 
 (defn build-label-list-html [label-map-entry]
-  [:li (first label-map-entry)
+  [:li [:span {"class" "collapsable"} (first label-map-entry)]
     `[:ul ~@(map build-subscription-html (second label-map-entry))]])
 
 (defn build-page-html []
   (let [subscription-list (get-subscription-list)
         label-map (build-label-map subscription-list "*unlabelled*")]
-    `[:div {"class" "treeList collapsable"}
+    `[:div {"class" "treeList"}
        [:ul ~@(map build-label-list-html (sort label-map))]]))
 
 (handle-cache-timed

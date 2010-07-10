@@ -1,19 +1,13 @@
-; A very simple Ring application.
-
+; Ring Configuration for jmchilton.net
 (ns net.jmchilton.www.site
   (:use (ring.handler dump)
         (ring.middleware stacktrace file-info file reload keyword-params params)
         (ring.adapter jetty)
-        (hiccup core)
-        (net.jmchilton.www page)
+        (net.jmchilton.www dispatch)
         (clojure.contrib except)))
 
-(defn handler [req]
-  {:status 200
-   :headers { "Content-Type" "text/html"}
-   :body (get-document req) })
-
-;; Build a list of all net.jmchilton.www packages but exclude launch to prevent the web server from restarting.
+;; Build a list of all net.jmchilton.www packages but exclude launch
+;; to prevent the web server from restarting.
 (def local-packages 
   (filter 
     (fn [symbol] 

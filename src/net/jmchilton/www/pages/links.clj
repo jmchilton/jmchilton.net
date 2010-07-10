@@ -8,7 +8,7 @@
     (fn [entry]
       (if (= (key entry) :posts)
           (map post->link (val entry))
-          `([:li ~(key entry)
+          `([:li [:span {"class" "collapsable"} ~(key entry)]
               [:ul ~@(convert-tree (val entry))]])))
     (seq tree)))
 
@@ -40,7 +40,7 @@
   (handle-cache 
     expired-predicate
     "links"
-    (fn []       
+    (fn []
       (let [posts (delicious-get-posts username password)
             tags (build-tag-map posts)
             post-tree (build-post-tree posts)] 

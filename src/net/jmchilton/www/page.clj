@@ -1,7 +1,7 @@
 ; Script for launching site!
 (ns net.jmchilton.www.page
   (:use (com.twinql.clojure.http)
-        (net.jmchilton.www id context)
+        (net.jmchilton.www id context source)
         (hiccup core)))
 
 ;; Contrib seems unstable in some way, many random erros when using
@@ -26,9 +26,13 @@
 (defn- get-head [page]
   [:head
     [:title (content->title page)]
-    [:link {"rel" "stylesheet" "href" "style.css" "type" "text/css"}]
+    [:link {"rel" "stylesheet" 
+            "href" "http://fonts.googleapis.com/css?family=Inconsolata|Droid+Sans+Mono" 
+            "type" "text/css"}]
+    [:link {"rel" "stylesheet" "href" "jmchilton.css" "type" "text/css"}]
     [:script {"type" "text/javascript" "src" jquery-href}]
-    [:script {"type" "text/javascript" "src" "jmchilton.js"}]])
+    [:script {"type" "text/javascript" "src" "js/jquery.corner.js"}]
+    [:script {"type" "text/javascript" "src" "js/jmchilton.js"}]])
 
 (defn get-menu-list [dir-content-id]
   (let [menu-content-id (if (= "" dir-content-id) "menu" (str dir-content-id ":menu"))
@@ -76,9 +80,6 @@
 (defn- get-content [page]
   (load-file (content-id->path page)))
 
-(defn view-source-link  [page text]
-  [:a {"href" (str "index.html?page=code_display&source=" page)} text])
-
 (def validate-p 
   [:p "validate: " 
       [:a {"href" "http://jigsaw.w3.org/css-validator/check/referer"} "CSS"]
@@ -95,10 +96,13 @@
 
 (defn- get-body [page]
   [:body 
+    [:div {"id" "page-border"}
     [:div {"id" "page"}
       (get-header page)
       (let [content (get-content page)]
-        `[:div {"id" "content"} ~(if (list? content) content (list content))])]
+        `[:div {"id" "content"} ~(if (list? content) content (list content))])]]
+    [:div {"id" "infoBox-container"}
+    [:div {"id" "infoBox-border"}
     [:div {"id" "infoBox"} 
       [:p "clojure page source: " 
           (view-source-link page (.substring (content-id->path page) 2)) ]
@@ -107,7 +111,7 @@
       ;; Disabling mongo counter for now
       ;; [:p "page loaded: " (inc-counter! (content-id->path page)) " times"]
       [:p "date last modified: " (get-modified-date-string page)]
-      powered-p]])
+      powered-p]]]])
 
 
 (defn- get-content-id [params]

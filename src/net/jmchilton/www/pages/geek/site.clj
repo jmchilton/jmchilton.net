@@ -1,3 +1,5 @@
+(use 'net.jmchilton.www.source)
+
 (list
   [:p "The clojure scripts which run in a Jetty server instance that "
       "generate the pages of this website are meant to be completely open "

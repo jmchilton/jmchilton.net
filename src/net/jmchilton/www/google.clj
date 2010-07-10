@@ -1,5 +1,4 @@
 (ns net.jmchilton.www.google
-  (:require [com.twinql.clojure.http :as http])
   (:use [clojure.contrib.string :only [join as-str]]
         (net.jmchilton.www config io http xml)))
 
@@ -19,10 +18,9 @@
                 :service "reader" 
                 :source "jmchilton-www-0.1" 
                 :accountType "GOOGLE"}]
-    (com.twinql.clojure.http/get "https://www.google.com/accounts/ClientLogin" 
-              :query params
-              :parameters (com.twinql.clojure.http/map->params {:use-expect-continue false})
-              :as :string)))
+    (http-get "https://www.google.com/accounts/ClientLogin" 
+              :query params)))
+;              :parameters (map->params {:use-expect-continue false}))))
 
 (defn extract-auth [response-str]
   (let [start (+ 5 (.indexOf response-str "Auth="))
@@ -33,41 +31,35 @@
   (extract-auth
     (:content (client-login-response email password))))
   
-(defn- object->map [object] 
-  (let [flattened-list 
-          (mapcat 
-            (fn [x] 
-              (let [val (first (:content x))
-                    expanded-val (if (map? val) (object->map val) val)]
-                (list (keyword (:name (:attrs x))) expanded-val)))
-            (:content object))]
-    (if (empty? flattened-list) {} (apply assoc {} flattened-list))))
-
+(defn- object->map [object]
+  (zipmap
+    (map #(keyword (:name (:attrs %))) (:content object))
+    (map #(let [val (first (:content %))] 
+            (if (map? val) (object->map val) val)) 
+         (:content object))))
+ 
 (defn extract-subscription-list [raw-subscriptions]
-  (map object->map (:content (first (:content raw-subscriptions)))))
-
+  (let [objects (:content (first (:content raw-subscriptions)))]
+    (map object->map objects)))
 
 (defn- get-label [subscription]
   (let [categories (:categories subscription)]
-    (if (nil? categories) nil (:label categories))))
+    (and categories (:label categories))))
 
 (defn build-label-map [subscriptions unlabelled-string]
   (reduce
     (fn [label-map subscription]
-      (let [label (get-label subscription)
-            singleton-map {(if (nil? label) unlabelled-string label) (list subscription)}]
+      (let [label (or (get-label subscription) unlabelled-string)
+            singleton-map {label (list subscription)}]
         (merge-with concat singleton-map label-map)))
     {}
     subscriptions))
-    
-        
 
 (defn get-raw-subscriptions [auth]
   (parse-xml
     (:content
-      (com.twinql.clojure.http/get subscription-url
-                :headers {"Authorization" (str "GoogleLogin auth=" auth)}
-                :as :string))))
+      (http-get subscription-url
+                :headers {"Authorization" (str "GoogleLogin auth=" auth)}))))
 
 (defn get-subscription-list []
   (let [auth (client-login-auth email password)]

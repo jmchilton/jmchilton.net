@@ -5,11 +5,11 @@
 (def delicious-url-posts  "https://api.del.icio.us/v1/posts/")
 (def delicious-url-bundles "https://api.del.icio.us/v1/tags/bundles/")
 
-(defn delicious-make-url-command [url command opts]
-  (str url command "?" (map->query opts)))
+(defn delicious-make-url-command [url command]
+  (str url command))
 
 (defn delicious-execute-url-command [username password url command opts]
-  (wget-auth-xml (delicious-make-url-command url command opts) username password))
+  (wget-auth-xml (delicious-make-url-command url command) opts username password))
 
 (defn delicious-get-posts [username password]
   (let [result (delicious-execute-url-command
@@ -19,7 +19,6 @@
                     "all"
                     {})]
     (map #(:attrs %) (:content result))))
-
 
 (def pattern "yyyy-MM-dd'T'HH:mm:ssZZ")
 
