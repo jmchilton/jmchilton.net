@@ -1,7 +1,6 @@
 (ns net.jmchilton.www.http
   (:require [com.twinql.clojure.http :as http])
-  (:use (clojure-http client)
-        (net.jmchilton.www xml)))
+  (:use (net.jmchilton.www xml)))
 
 (defn expand-params [arg-seq]
   (let [{:keys [username password]} (apply hash-map arg-seq)]
