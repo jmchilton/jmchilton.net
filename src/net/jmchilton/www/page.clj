@@ -23,16 +23,20 @@
 (defn- content->title [page]
   (str "jmchilton.net / " (.replaceAll page ":" " / ")))
 
+(defn- script [href]
+  [:script {"type" "text/javascript" "src" href}])
+
 (defn- get-head [page]
   [:head
     [:title (content->title page)]
-    [:link {"rel" "stylesheet" 
-            "href" "http://fonts.googleapis.com/css?family=Inconsolata|Droid+Sans+Mono" 
+    [:link {"rel" "stylesheet"
+            "href" "http://fonts.googleapis.com/css?family=Inconsolata|Droid+Sans+Mono"
             "type" "text/css"}]
     [:link {"rel" "stylesheet" "href" "jmchilton.css" "type" "text/css"}]
-    [:script {"type" "text/javascript" "src" jquery-href}]
-    [:script {"type" "text/javascript" "src" "js/jquery.corner.js"}]
-    [:script {"type" "text/javascript" "src" "js/jmchilton.js"}]])
+    (script jquery-href)
+    (script "js/jquery.corner.js")
+    (script "js/jmchilton.js")
+    (script "js/analytics.js")])
 
 (defn get-menu-list [dir-content-id]
   (let [menu-content-id (if (= "" dir-content-id) "menu" (str dir-content-id ":menu"))
