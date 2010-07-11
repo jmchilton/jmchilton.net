@@ -9,6 +9,8 @@
 ;; Location of Genshi based highlighting script
 (def highlight-script "scripts/highlight.php")
 
+(def project-gitweb-prefix "http://jmchilton.net/gitweb?p=jmchilton.net;")
+
 ;; File extensions and the corresponding Genshi type.
 (def source-extensions
   {"clj" "scheme"
@@ -65,13 +67,18 @@
       [:li [:div {"class" "collapsable"} (str (.getName (first tree)) "/")]
            `[:ul ~@(map tree-walker (rest tree))]])
     (let [path (.getPath tree)
+          path-for-gitweb (.substring path 2) ; Peel off ./
           page-link [:a {"href" path} (.getName tree)]
           extension (get-extension path)
           source? (contains? source-extensions extension)]
       `[:li [:a {"href" ~path} ~(.getName tree)]
+         " ["
+         ~[:a {"href" (str project-gitweb-prefix "a=blob;f=" path-for-gitweb)} "View on GitWeb"]
+         "] [" 
+         ~[:a {"href" (str project-gitweb-prefix "a=history;f=" path-for-gitweb)} "Gitweb History"]
+         "]"
          ~@(if source?
-           `((" [" ~(view-source-link (file->content-id tree) "View Source")
-              "]"))
+           `((" [" ~(view-source-link (file->content-id tree) "View as Source Code") "]"))
            '(()))])))
 
 (defn get-directory-list-html [path show-root?]
