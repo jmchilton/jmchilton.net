@@ -5,6 +5,7 @@
   (rel "school:index" "school/")
   (rel "geek:index" "geek/")
   (rel "older:index" "older/")
+  (rel "reading" "reading")
   (rel "contact" "contact")
   (abs "http://www.jmchilton.net/blog" "blog@")
   (abs "http://www.google.com/calendar/embed?src=jmchilton%40gmail.com" "calendar@")
@@ -14,4 +15,3 @@
   (abs "http://foursquare.com/user/-96007" "foursquare@")
   (abs "http://www.google.com/reader/shared/jmchilton" "reader@")
   (rel "sitemap" "sitemap"))
-

@@ -27,16 +27,19 @@
 (defn- script [href]
   [:script {"type" "text/javascript" "src" href}])
 
+(defn- css [href]
+  [:link {"rel" "stylesheet" "href" href "type" "text/css"}])
+
 (defn- get-head [page]
   [:head
     [:title (content->title page)]
-    [:link {"rel" "stylesheet"
-            "href" "http://fonts.googleapis.com/css?family=Inconsolata|Droid+Sans+Mono"
-            "type" "text/css"}]
-    [:link {"rel" "stylesheet" "href" "jmchilton.css" "type" "text/css"}]
+    (css "http://fonts.googleapis.com/css?family=Inconsolata|Droid+Sans+Mono")
+    (css "jmchilton.css")
+    (css "js/fancybox/jquery.fancybox-1.3.1.css")
     (script jquery-href)
     (script "js/jquery.corner.js")
     (script "js/jmchilton.js")
+    (script "js/fancybox/jquery.fancybox-1.3.1.pack.js")
     [:script {"type" "text/javascript"}
       "var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-17389648-1']);
@@ -108,6 +111,7 @@ _gaq.push(['_trackPageview']);
       " | "
       [:a {"href" "http://jetty.codehaus.org/jetty/"} "Jetty"]]) 
 
+
 (defn- get-body [page]
   [:body 
     [:div {"id" "page-border"}
@@ -125,7 +129,17 @@ _gaq.push(['_trackPageview']);
       ;; Disabling mongo counter for now
       ;; [:p "page loaded: " (inc-counter! (content-id->path page)) " times"]
       [:p "date last modified: " (get-modified-date-string page)]
-      powered-p]]]])
+      powered-p
+
+;      [:iframe {"src" (str "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.jmchilton.net%26page%3D" (.replaceAll page ":") "&layout=button_count&show_faces=true&width=30&action=like&colorscheme=light&height=21")
+;                "scrolling" "no" 
+;                "frameborder" "0" 
+;                "allowTransparency" "true" 
+;                "style" "border:none; overflow:hidden; width:50px; height:20px"}
+;      (get-link page)
+
+
+]]]])
 
 
 (defn- get-content-id [params]

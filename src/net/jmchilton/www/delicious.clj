@@ -9,7 +9,10 @@
   (str url command))
 
 (defn delicious-execute-url-command [username password url command opts]
-  (wget-auth-xml (delicious-make-url-command url command) opts username password))
+  (http-get-xml (delicious-make-url-command url command) 
+                :query opts 
+                :username username 
+                :password password))
 
 (defn delicious-get-posts [username password]
   (let [result (delicious-execute-url-command

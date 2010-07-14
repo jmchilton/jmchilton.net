@@ -5,3 +5,7 @@ FILL OUT INDEX
 Add Facebook Integration
 
 Add Books
+
+Looks like str converts more to str then I knew, replace stream->string like stuff?
+
+Fix XSS vul. on source code error.

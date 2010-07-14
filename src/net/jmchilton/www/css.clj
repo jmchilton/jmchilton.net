@@ -153,6 +153,37 @@
       :padding-right (px 13)
       :padding-top (px 3)
       :float :left)
+    (rule ".review"
+;      :border [(px 1) :dashed border-color]
+      :padding (px 5)
+      :overflow :hidden
+      :padding-bottom (px 10))
+    (rule ".review-odd"
+      :text-align :left)
+    (rule ".review-even"
+      :background-color other-text-color
+      :text-align :right)
+    (rule ".review-odd > img"
+      :float :left)
+    (rule ".review-even > img"
+      :float :right)
+    (rule ".review img"
+      :padding (px 5))
+    ;; Fix from page 93 of CSS Cookbox
+    (rule ".review:after"
+      :clear :both
+      :display :block
+      :content "\".\""
+      :height (px 0)
+      :visibility :hidden)       
+    (rule ".review-title"
+      :display :block
+      :padding (px 0)
+      :margin (px 0))
+    (rule ".review-rating"
+      :display :block
+      :padding (px 0)
+      :margin (px 0))
     (rule ".code"
       :margin (px 10)
       :border [(px 1) :dashed border-color]

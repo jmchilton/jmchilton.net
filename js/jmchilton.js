@@ -18,6 +18,17 @@ $(document).ready(function() {
   $("#page-border").corner("6px");
   $("#infoBox").corner("tl bl 6px");
   $("#infoBox-border").corner("tl bl 10px");
+
+
+  $("#social").fancybox({
+          'width': '75%',
+              'height': '75%',
+              'autoScale'     : false,
+              'transitionIn': 'none',
+              'transitionOut': 'none',
+              'type': 'iframe'
+              });
+
 });
 
 // Technique found @ http://snippets.dzone.com/posts/show/3737

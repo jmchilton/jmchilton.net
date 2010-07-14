@@ -12,6 +12,6 @@
 (defn http-get [url & args]
   (apply http/get url (expand-params args)))
 
-(defn wget-auth-xml [url params username password]
-  (let [content-string (http-get url :query params :username username :password password)]
+(defn http-get-xml [url & args]
+  (let [content-string (apply http-get (cons url args))]
     (parse-xml (:content content-string))))
