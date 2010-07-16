@@ -1,4 +1,5 @@
-(ns net.jmchilton.www.cache)
+(ns net.jmchilton.www.cache
+  (:use (net.jmchilton.www utils)))
 
 (def cache-manager (new net.sf.ehcache.CacheManager "ehcache.xml"))
 
@@ -13,8 +14,6 @@
 (defn- element [key data] (new net.sf.ehcache.Element key data))
 
 (defn- last-modified [element] (.getLastUpdateTime element))
-
-(defn current-time [] (.getTime (new java.util.Date)))
 
 (defn- put [key data]
   (.put (get-cache) (element key data))

@@ -15,7 +15,6 @@
 (def page-color :white)
 (def infoBox-color :#FF5B00)
 
-
 (def background-color-str (.substring (name background-color) 1))
 (def border-color-str (.substring (name border-color) 1))
 (def infoBox-border-color-str (.substring (name infoBox-border-color) 1))
@@ -65,7 +64,9 @@
       :background-color page-color
       :margin-left :auto
       :margin-right :auto       
-      :text-align :left)
+      :text-align :left
+			:overflow :hidden
+			)
     (rule "#infoBox-container"
       :margin-top (px 0)
       :margin-bottom (px 10)
@@ -184,6 +185,42 @@
       :display :block
       :padding (px 0)
       :margin (px 0))
+    (rule "#updates"
+      :border-left [(px 2) :solid border-color]
+      :border-bottom [(px 1) :solid border-color]
+      :border-top [(px 1) :dashed border-color]
+      :border-right [(px 1) :dashed border-color]
+			:float :right
+			:width (% 50)
+			:padding (px 5)
+			:font-size (em 0.85)
+	  )
+    (rule "#updates > p"
+			:text-align :right
+			:color background-color
+			:padding (px 0)
+			:margin (px 0))
+
+    (rule ".update > a"
+			:display :block
+			:text-align :left
+			:padding (px 0)
+			:padding-left (px 18)
+			:margin (px 0))
+    (rule ".update > p"
+			:display :block
+			:text-align :left
+			:padding (px 0)
+			:margin (px 0))
+	  (rule ".update-date"
+		  :font-style :italic
+		  :display :block
+		  :text-align :right
+		  :color other-text-color
+			:padding (px 0)
+		  :padding-bottom (px 15)
+			:font-size (em 0.90)
+			:margin (px 0))
     (rule ".code"
       :margin (px 10)
       :border [(px 1) :dashed border-color]

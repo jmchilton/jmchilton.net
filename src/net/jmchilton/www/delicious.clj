@@ -1,5 +1,5 @@
 (ns net.jmchilton.www.delicious
-  (:use (net.jmchilton.www http)))
+  (:use (net.jmchilton.www http utils)))
 
 (def delicious-url-tags   "https://api.del.icio.us/v1/tags/")
 (def delicious-url-posts  "https://api.del.icio.us/v1/posts/")
@@ -14,6 +14,19 @@
                 :username username 
                 :password password))
 
+(def pattern "yyyy-MM-dd'T'HH:mm:ssZZ")
+
+(defn- parse-date [date-str]
+  (let [iso-date-str (.replace date-str "Z" "+00:00")]
+		(parse-date-str iso-date-str pattern)))
+
+(defn- parse-post [post-xml]
+	(let [attrs (:attrs post-xml)
+	      description (:description attrs)
+			  href (:href attrs)
+			  date (parse-date (:time attrs))]
+	  {:description description :link href :date date :source :delicious}))
+
 (defn delicious-get-posts [username password]
   (let [result (delicious-execute-url-command
                     username
@@ -21,13 +34,7 @@
                     delicious-url-posts
                     "all"
                     {})]
-    (map #(:attrs %) (:content result))))
-
-(def pattern "yyyy-MM-dd'T'HH:mm:ssZZ")
-
-(defn parse-date [date-str]
-  (let [iso-date-str (.replace date-str "Z" "+00:00")]
-    (org.apache.commons.lang.time.DateUtils/parseDate iso-date-str (into-array [pattern]))))
+    (map parse-post (:content result))))
 
 (defn delicious-update-time [username password]
   (let [result (delicious-execute-url-command
@@ -36,7 +43,7 @@
                  delicious-url-posts
                  "update"
                  {})]
-    (.getTime (parse-date (:time (:attrs result))))))
+    (.getTimeInMillis (parse-date (:time (:attrs result))))))
 
 (defn get-tags [post]
   (let [tag (:tag post)]
@@ -71,4 +78,3 @@
 (defn build-tag-map [posts]
   (let [tag-maps (mapcat post->tag-map posts)]
     (reduce #(merge-with + %1 %2) {} tag-maps)))
-

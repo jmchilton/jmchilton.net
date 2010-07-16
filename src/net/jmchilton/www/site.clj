@@ -4,7 +4,8 @@
         (ring.middleware stacktrace file-info file reload keyword-params params)
         (ring.adapter jetty)
         (net.jmchilton.www dispatch)
-        (clojure.contrib except)))
+        (clojure.contrib except))
+	(:require (net.jmchilton.www.data goodreads-data google-reader-data delicious-data twitter-data)))
 
 ;; Build a list of all net.jmchilton.www packages but exclude launch
 ;; to prevent the web server from restarting.
@@ -14,7 +15,8 @@
       (let [name (.getName symbol)]  
            (and (.startsWith name "net.jmchilton.www") 
                 (not 
-                  (or (= name "net.jmchilton.www.cache")
+                  (or (not (= (.indexOf name "data") -1))
+                      (= name "net.jmchilton.www.cache")
                       (= name "net.jmchilton.www.launch")
                       (= name "net.jmchilton.www.site"))))))
     (map ns-name (all-ns))))

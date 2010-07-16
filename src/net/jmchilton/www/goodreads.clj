@@ -1,31 +1,28 @@
 (ns net.jmchilton.www.goodreads
-  (:use (net.jmchilton.www utils)))
+  (:use (net.jmchilton.www utils http xml)))
+
+(def shelf "highly-recommended")
+(def id "3983175")
+
+(def list-url "http://www.goodreads.com/review/list")
 
 (defn- extract-raw-reviews-list [raw-list-response]
-  (:content (second (:content raw-list-response))))
-
-(defn- get-content-with-tag [raw-object tag]
-  (some #(and (= (:tag %) tag) %) (:content raw-object)))
-
-(defn- get-simple-content-with-tag [raw-object tag]
-  (let [raw-content (get-content-with-tag raw-object tag)
-        content (first (:content raw-content))]
-    (and content (.trim content))))
+  (get-child-content-with-tag raw-list-response :reviews))
 
 (defn- extract-book [raw-book]
-  (let [title (get-simple-content-with-tag raw-book :title)
-        isbn  (get-simple-content-with-tag raw-book :isbn)
-        image (get-simple-content-with-tag raw-book :image_url)
-        link  (get-simple-content-with-tag raw-book :link)]
+  (let [title (get-trimmed-child-text-with-tag raw-book :title)
+        isbn  (get-trimmed-child-text-with-tag raw-book :isbn)
+        image (get-trimmed-child-text-with-tag raw-book :image_url)
+        link  (get-trimmed-child-text-with-tag raw-book :link)]
     {:title title 
      :isbn isbn
      :image image
      :link link}))
 
 (defn- extract-review [raw-review]
-  (let [rating   (get-simple-content-with-tag raw-review :rating)
-        body     (get-simple-content-with-tag raw-review :body)
-        raw-book (get-content-with-tag raw-review :book)
+  (let [rating   (get-trimmed-child-text-with-tag raw-review :rating)
+        body     (get-trimmed-child-text-with-tag raw-review :body)
+        raw-book (get-child-with-tag raw-review :book)
         book     (extract-book raw-book)]
     {:rating rating
      :body body
@@ -34,3 +31,12 @@
 (defn extract-reviews [raw-reviews-list]
   (sort-by #(* -1 (as-int (:rating %)))
     (map extract-review (extract-raw-reviews-list raw-reviews-list))))
+
+(defn get-reviews [goodreads-config]
+  (let [params {"format" "xml"
+                "v" "2"
+                "key" (:api-key goodreads-config)
+                "shelf" shelf
+                "id" id}
+      xml (http-get-xml list-url :query params)]
+    (extract-reviews xml)))

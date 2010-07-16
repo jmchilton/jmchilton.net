@@ -1,7 +1,8 @@
 (use '(net.jmchilton.www config delicious cache xml))
+(use '(net.jmchilton.www.data delicious-data))
 
 (defn- post->link [post]
-  [:li [:a {"href" (:href post)} (escape-xml (:description post))]])
+  [:li [:a {"href" (:link post)} (escape-xml (:description post))]])
 
 (defn- convert-tree [tree]
   (mapcat
@@ -29,19 +30,7 @@
     [:div {"class" "treeList"}
       [:ul ~@(convert-tree post-tree)]]))
 
-(let [config (get-config "delicious")
-      username (:username config)
-      password (:password config)
-      expired-predicate
-        (fn [cache-time]
-          (let [time-since-cache (- (current-time) cache-time)]
-            (and (> time-since-cache (* 1000 60 5))
-                 (> (delicious-update-time username password) cache-time))))]
-  (handle-cache 
-    expired-predicate
-    "links"
-    (fn []
-      (let [posts (delicious-get-posts username password)
-            tags (build-tag-map posts)
-            post-tree (build-post-tree posts)] 
-        (build-page username tags post-tree)))))
+(let [posts (:content @delicious-cache)
+      tags (build-tag-map posts)
+      post-tree (build-post-tree posts)] 
+  (build-page delicious-username tags post-tree))

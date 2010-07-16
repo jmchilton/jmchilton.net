@@ -1,4 +1,7 @@
-(use '(net.jmchilton.www cache google))
+(use '(net.jmchilton.www cache google-reader))
+(use '(net.jmchilton.www.data google-reader-data))
+
+(def view-url "http://www.google.com/reader/view/")
 
 (defn build-subscription-html [subscription]
   (let [href (str view-url (:id subscription))
@@ -10,12 +13,9 @@
     `[:ul ~@(map build-subscription-html (second label-map-entry))]])
 
 (defn build-page-html []
-  (let [subscription-list (get-subscription-list)
+  (let [subscription-list @google-reader-agent
         label-map (build-label-map subscription-list "*unlabelled*")]
     `[:div {"class" "treeList"}
        [:ul ~@(map build-label-list-html (sort label-map))]]))
 
-(handle-cache-timed
-  (* 1000 60 60 4)
-  "blogroll"
-  build-page-html)
+(build-page-html)
