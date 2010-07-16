@@ -24,8 +24,9 @@
 	(let [attrs (:attrs post-xml)
 	      description (:description attrs)
 			  href (:href attrs)
+        tag (:tag attrs)
 			  date (parse-date (:time attrs))]
-	  {:description description :link href :date date :source :delicious}))
+	  {:description description :link href :date date :source :delicious :tag tag}))
 
 (defn delicious-get-posts [username password]
   (let [result (delicious-execute-url-command

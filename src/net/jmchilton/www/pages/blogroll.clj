@@ -13,7 +13,7 @@
     `[:ul ~@(map build-subscription-html (second label-map-entry))]])
 
 (defn build-page-html []
-  (let [subscription-list @google-reader-agent
+  (let [subscription-list (extract-subscription-list @google-reader-agent)
         label-map (build-label-map subscription-list "*unlabelled*")]
     `[:div {"class" "treeList"}
        [:ul ~@(map build-label-list-html (sort label-map))]]))
