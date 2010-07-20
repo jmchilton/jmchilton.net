@@ -20,7 +20,8 @@ $(document).ready(function() {
   $("#infoBox-border").corner("tl bl 10px");
 
 
-  $("#social").fancybox({
+  /*	
+	   $("#social").fancybox({
           'width': '75%',
               'height': '75%',
               'autoScale'     : false,
@@ -28,6 +29,14 @@ $(document).ready(function() {
               'transitionOut': 'none',
               'type': 'iframe'
               });
+  */
+
+
+  $(".initially-undisplayed").ticker({
+ 		cursorList:  " ",
+ 		rate:        20,
+ 		delay:       0
+	}).trigger("play"); //.trigger("play").trigger("stop");
 
 });
 
@@ -40,8 +49,10 @@ if(!document.styleSheets) {
 } else {
   thecss = document.styleSheets[0].rules;  // IE
 }
+/*
 for (i=0;i<thecss.length;i++) {
   if(thecss[i].selectorText.toLowerCase()=='.initially-undisplayed') {
     //thecss[i].style.cssText="display:none;";
   }
 }
+*/

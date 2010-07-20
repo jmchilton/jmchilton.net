@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?> 
+
+
+<rss version="2.0">
+	<channel>
+		<title>Movie Reviews by John</title>
+		<description>Recent reviews by John</description>
+		<link>http://www.flixster.com/api/v1/users/jmchilton/ratings.rss</link>
+		<image>
+			<url>http://static.flixstercdn.com/static/images/logo.flixster.png</url>
+			<link>http://www.flixster.com</link> 
+			<title>Flixster</title> 
+			<width>120</width>
+			<height>47</height>
+		</image>
+		<userProfileUrl>http://www.flixster.com/user/jmchilton</userProfileUrl>
+		
+		<item>
+			<title>District 9</title>
+			<link>http://www.flixster.com/movie/district-9</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/district-9</guid>
+			<rating>4 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content8.flixster.com/movie/10/94/46/10944698_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/4stars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:47:22 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>Harry Potter and the Half-Blood Prince</title>
+			<link>http://www.flixster.com/movie/harry-potter-and-the-halfblood-prince</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/harry-potter-and-the-halfblood-prince</guid>
+			<rating>4 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content9.flixster.com/movie/10/93/29/10932979_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/4stars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:46:33 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>Transformers: Revenge of the Fallen</title>
+			<link>http://www.flixster.com/movie/transformers-revenge-of-the-fallen</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/transformers-revenge-of-the-fallen</guid>
+			<rating>3 1/2 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content6.flixster.com/movie/10/93/29/10932980_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/3_halfstars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:45:49 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>Funny People</title>
+			<link>http://www.flixster.com/movie/funny-people</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/funny-people</guid>
+			<rating>4 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content7.flixster.com/movie/11/13/81/11138177_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/4stars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:45:20 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>Brüno (Bruno)</title>
+			<link>http://www.flixster.com/movie/bruno</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/bruno</guid>
+			<rating>4 1/2 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content6.flixster.com/movie/10/88/76/10887688_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/4_halfstars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:44:41 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>(500) Days of Summer</title>
+			<link>http://www.flixster.com/movie/500-days-of-summer</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/500-days-of-summer</guid>
+			<rating>4 1/2 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content9.flixster.com/movie/10/89/13/10891315_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/4_halfstars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:43:47 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>The Incredibles</title>
+			<link>http://www.flixster.com/movie/the-incredibles</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/the-incredibles</guid>
+			<rating>0 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content9.flixster.com/movie/10/93/90/10939047_tmb.jpg" />
+					 
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:42:53 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>Cloudy With a Chance of Meatballs</title>
+			<link>http://www.flixster.com/movie/cloudy-with-a-chance-of-meatballs</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/cloudy-with-a-chance-of-meatballs</guid>
+			<rating>5 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content8.flixster.com/movie/10/88/88/10888822_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/5stars.gif' />
+					<p>
+						Movie of the year. Scrubs humor with pixarish animation and storytelling.
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:42:18 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>Capitalism: A Love Story</title>
+			<link>http://www.flixster.com/movie/capitalism-a-love-story</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/capitalism-a-love-story</guid>
+			<rating>3 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content6.flixster.com/movie/10/89/82/10898292_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/3stars.gif' />
+					<p>
+						Some funny and insightful moments, but ultimately the facts are so much more compelling and infuriating then this propaganda piece.
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:41:16 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>Zombieland</title>
+			<link>http://www.flixster.com/movie/zombieland</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/zombieland</guid>
+			<rating>3 1/2 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content9.flixster.com/movie/10/89/28/10892807_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/3_halfstars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:40:08 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>The Invention of Lying</title>
+			<link>http://www.flixster.com/movie/the-invention-of-lying</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/the-invention-of-lying</guid>
+			<rating>3 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content9.flixster.com/movie/10/91/35/10913523_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/3stars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:39:22 PDT</pubDate>
+		</item>
+		
+		<item>
+			<title>The Informant!</title>
+			<link>http://www.flixster.com/movie/the-informant</link>
+			<guid isPermaLink="true">http://www.flixster.com/movie/the-informant</guid>
+			<rating>4 stars</rating>
+			<description>
+				<![CDATA[
+					<img src="http://content6.flixster.com/movie/10/89/42/10894228_tmb.jpg" />
+					<img align='absmiddle' src='http://static.flixstercdn.com/static/images/4stars.gif' />
+					<p>
+						
+					</p>
+				]]>
+			</description>
+			<pubDate>Mon, 19 Jul 2010 16:38:47 PDT</pubDate>
+		</item>
+		
+	</channel>
+</rss>

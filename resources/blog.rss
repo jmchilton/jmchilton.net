@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>jmchilton.net/blog</title>
+	<atom:link href="http://jmchilton.net/blog/feed/" rel="self" type="application/rss+xml" />
+	<link>http://jmchilton.net/blog</link>
+	<description>My thoughts on politics, programming, and my life</description>
+	<lastBuildDate>Tue, 06 Jul 2010 00:51:41 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.0</generator>
+		<item>
+		<title>Tweeter &#8211; SQL Injection Practice</title>
+		<link>http://jmchilton.net/blog/2010/06/26/sqlinject/</link>
+		<comments>http://jmchilton.net/blog/2010/06/26/sqlinject/#comments</comments>
+		<pubDate>Sun, 27 Jun 2010 01:18:34 +0000</pubDate>
+		<dc:creator>john</dc:creator>
+				<category><![CDATA[Programming]]></category>
+
+		<guid isPermaLink="false">http://jmchilton.net/blog/?p=23</guid>
+		<description><![CDATA[I put together a microblogging site called Tweeter for the web security workshop at work to practice SQL injection attacks against. Everyone seemed to have fun with it, so I refactored the code base so anyone can give it a go. The goal is to exploit SQL injection vulnerabilities to post something embarrassing (anything you [...]]]></description>
+			<content:encoded><![CDATA[<p>I put together a microblogging site called Tweeter for the web security workshop at work to practice SQL injection attacks against. Everyone seemed to have fun with it, so I refactored the code base so anyone can give it a go.</p>
+<p>The goal is to exploit SQL injection vulnerabilities to post something embarrassing (anything you want) on Tweeter as the user &#8216;<code>agentgill</code>&#8216;. Once you have successfully hacked one version of Tweeter, you will be given a link to an improved version of the site. There are four versions of the site in total, each containing new features and improved security.</p>
+<p>Once you click the create link below to start, you will be given your own instance of the four Tweeter sites to hack against. This instance will be deleted after two hours. At any time you can create a fresh instance of Tweeter by reclicking the create link below.</p>
+<p><a href="http://jmchilton.net/sqlinject/create.php" target="_blank">Create a Tweeter instance.</a></p>
+<p>If you would like to download the Tweeter source code, either to cheat or to deploy on your own machine, it can be found <a href="http://jmchilton.net/sqlinject/tweeter_sites.zip">here</a>. To run Tweeter locally you will need PHP 5 (with magic quotes turned off), PDO, and SQLite.</p>
+<p>If you have any questions or advice feel free to comment on this post or get in touch with me some other way (my username on Twitter, Facebook, and GMail is jmchilton).</p>
+<a class="a2a_dd addtoany_share_save" href="http://www.addtoany.com/share_save?&amp;linkurl=http%3A%2F%2Fjmchilton.net%2Fblog%2F2010%2F06%2F26%2Fsqlinject%2F&amp;linkname=Tweeter%20%26%238211%3B%20SQL%20Injection%20Practice">Share/Save</a>]]></content:encoded>
+			<wfw:commentRss>http://jmchilton.net/blog/2010/06/26/sqlinject/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		</item>
+		<item>
+		<title>My Top 9 and Bottom 3 Movies of 2009</title>
+		<link>http://jmchilton.net/blog/2010/01/01/my-top-9-and-bottom-3-movies-of-2009/</link>
+		<comments>http://jmchilton.net/blog/2010/01/01/my-top-9-and-bottom-3-movies-of-2009/#comments</comments>
+		<pubDate>Fri, 01 Jan 2010 06:55:36 +0000</pubDate>
+		<dc:creator>john</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://jmchilton.net/blog/?p=12</guid>
+		<description><![CDATA[Below is a list of my favorite movies of 2009. If you care about the pool these movies were drawn from, at the bottom of this post is a list of the 37 movies that reached wide release in 2009 that I saw. The Hangover &#8211; Brilliant comedy. This movie is both filled with ridicules [...]]]></description>
+			<content:encoded><![CDATA[<p>Below is a list of my favorite movies of 2009. If you care about the pool these movies were drawn from, at the bottom of this post is a list of the 37 movies that reached wide release in 2009 that I saw.</p>
+<ol>
+<li>The Hangover &#8211; Brilliant comedy. This movie is both filled with ridicules gags but also some fairly good character and story arcs. Zach Galifianakis steals the show with several amazing one liners.</li>
+<li>Cloudy with a Chance of Meatballs &#8211; Obviously this movie has a different sort of humor than The Hangover, but it is just as funny. I put The Hangover above this movie because I think The Hangover was generally more ambitious (non-linear story telling, live animals, etc&#8230;).</li>
+<li>I Love You Man &#8211; Another truly great comedy. Of these top three comedies this has the most soul and the most to say. The reason it falls below The Hangover and Cloudy is the awkward moments (ala The Office). I know some people really like that kind of comedy, I am just not a fan.</li>
+<li>Avatar &#8211; This movie was the very definition of epic. I like to compare this movie to the Lord of the Rings movies, because those movies are my gold standard for epic adventure movies. 85% of Avatar is better than 85% of any of those movies (though just barely), but those movies are great and epic 100% of the time. Avatar completely fails 15% of the time, the dialog can be just so awful and the casting choices so curious. If they had spent 2% of the effort they spent on animation on the screen play this movie would be number 1.</li>
+<li>Watchmen &#8211; I am going to say it, I liked the movie better than the graphic novel. It is really fine story telling,  with a unique and adult take on the comic book movie genre that I captured the soul of the graphic novel well.</li>
+<li>Harry Potter and the Half-Blood Prince &#8211; Another really solid Harry Potter movie. I think this is only the second movie that I thought was better than the corresponding book (the other being Chamber of Secrets). Unfortunately the ending really fell flat though, everything happened so fast that you didn&#8217;t get the same sense of panic and desperation depicted in the book.</li>
+<li>Transformers Revenge of the Fallen &#8211; I don&#8217;t need to defend myself! Robots fighting each other rock. As does Megan Fox running in slow motion while explosions happen behind her. This movie has both of those things in abundance.</li>
+<li>Funny People &#8211; Another really good comedy with a lot of soul. The story telling, while personal and touching, just wasn&#8217;t as tight as it should have been.</li>
+<li>500 Days of Summer &#8211; This is really well put together movie. The visual style is crisp and vibrant. The story telling was as good as any movie on this list, I am just not sure the actual story was.</li>
+</ol>
+<p>Honorable Mentions &#8211; Bruno, The Informant, District 9, Up</p>
+<p>My least favorite movies of 2009.</p>
+<ol>
+<li>Paul Blart: Mall Cop &#8211; Brutally awkward, I could not watch more than 20 minutes of this movie.</li>
+<li>Star Trek &#8211; Wonderful performances, awe inspiring moments that brought back all of the best emotions Star Trek has ever inspired. The first 15 minutes are truly great. Ultimately though the movie is emblematic of everything I hate about J J Abrams. He always must do the craziest, biggest thing to elicit an emotional reaction that is completely undeserved. Trust me I don&#8217;t need much subtlety Transformers is on my list after all, but J J Abrams never meets my very low bar.</li>
+<li>Where the Wild Things Are &#8211; Truly and profoundly boring. Beautiful visuals need to be backed up by a story, and this movie just did not have one. I really regret falling asleep during The Fantastic Mr. Fox, but I equally regret not sleeping through more of this movie.</li>
+</ol>
+<p>Paul Blart: Mall Cop<br />
+Taken<br />
+Coraline<br />
+Confessions of a Shopaholic<br />
+Watchmen<br />
+Duplicity<br />
+I Love You, Man<br />
+Monsters vs. Aliens<br />
+Adventureland<br />
+State of Play<br />
+Star Trek<br />
+The Brothers Bloom<br />
+Up<br />
+The Hangover<br />
+Away We Go<br />
+Transformers: Revenge of the Fallen<br />
+Brüno<br />
+Harry Potter and the Half-Blood Prince<br />
+(500) Days of Summer<br />
+Funny People<br />
+District 9<br />
+The Time Traveler&#8217;s Wife<br />
+9<br />
+The Informant!<br />
+Jennifer&#8217;s Body<br />
+Capitalism: A Love Story<br />
+The Invention of Lying<br />
+Whip It<br />
+Zombieland<br />
+Cloudy with a Chance of Meatballs<br />
+Couples Retreat<br />
+Where the Wild Things Are<br />
+Fantastic Mr. Fox<br />
+Up in the Air<br />
+Avatar<br />
+Sherlock Holmes</p>
+<a class="a2a_dd addtoany_share_save" href="http://www.addtoany.com/share_save?&amp;linkurl=http%3A%2F%2Fjmchilton.net%2Fblog%2F2010%2F01%2F01%2Fmy-top-9-and-bottom-3-movies-of-2009%2F&amp;linkname=My%20Top%209%20and%20Bottom%203%20Movies%20of%202009">Share/Save</a>]]></content:encoded>
+			<wfw:commentRss>http://jmchilton.net/blog/2010/01/01/my-top-9-and-bottom-3-movies-of-2009/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Letter to Congressman Keith Ellison on Health Care Reform</title>
+		<link>http://jmchilton.net/blog/2009/08/16/letter-to-congressman-keith-ellison-on-health-care-reform/</link>
+		<comments>http://jmchilton.net/blog/2009/08/16/letter-to-congressman-keith-ellison-on-health-care-reform/#comments</comments>
+		<pubDate>Mon, 17 Aug 2009 03:12:55 +0000</pubDate>
+		<dc:creator>john</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://jmchilton.net/blog/?p=10</guid>
+		<description><![CDATA[Congressman Keith Ellison, I am a liberal Democrat from Columbia Heights, who proudly voted for you in 2006 and 2008. I gave money to your campaign when I was a struggling college student. Like you, I support universal single payer health care. Nonetheless, the current debate could result in a health care system that is [...]]]></description>
+			<content:encoded><![CDATA[<p><!-- 		@page { margin: 0.79in } 		P { margin-bottom: 0.08in } --></p>
+<p style="margin-bottom: 0in; page-break-before: always;">Congressman Keith Ellison,</p>
+<p style="margin-bottom: 0in;">I am a liberal Democrat from Columbia Heights, who proudly voted for you in 2006 and 2008. I gave money to your campaign when I was a struggling college student. Like you, I support universal single payer health care. Nonetheless, the current debate could result in a health care system that is either better or worse than the one we have right now.</p>
+<p style="margin-bottom: 0in;">Health care reform that includes an individual mandate but not a public option amounts to a new regressive tax that Americans must pay to the worst corporations, either directly or through their taxes. If history is any indication, this new tax promises to increase every year and out pace inflation dramatically. The American people are struggling right now and do not deserve to have to suffer more. The health insurance companies are making ridicules profits on the back of sick Americans and they do not deserve to make more. This outcome is entirely unacceptable. If the Democrats pass legislation in that form, I believe that lower and middle income families and wealthy liberals will have to seriously question which party better represents their interests. Doing nothing (the Republican plan) is better than an individual mandate without a public option.</p>
+<p style="margin-bottom: 0in;">If you were to come out and state strongly and unequivocally that you will not vote for health care reform that includes a mandate but does not include a public option, you will have a powerful affect on the debate and you will be doing what is right. If house Democrats like you are strong enough, you can win this fight with the Senate or at very least scuttle a bad bill.</p>
+<p style="margin-bottom: 0in;">If you vote for compromise legislation that includes no mandate and no public option, but that does include common sense measures like barring recision and preventing access to care based on preexisting conditions that is great. But if you vote for health care reform that includes a mandate but does not include the public option, I will give money to a primary challenger I am sure will surface against you in 2010, and if you win that primary I will vote for a candidate from another party for the first time in my life.</p>
+<p style="margin-bottom: 0in;">John Chilton</p>
+<a class="a2a_dd addtoany_share_save" href="http://www.addtoany.com/share_save?&amp;linkurl=http%3A%2F%2Fjmchilton.net%2Fblog%2F2009%2F08%2F16%2Fletter-to-congressman-keith-ellison-on-health-care-reform%2F&amp;linkname=Letter%20to%20Congressman%20Keith%20Ellison%20on%20Health%20Care%20Reform">Share/Save</a>]]></content:encoded>
+			<wfw:commentRss>http://jmchilton.net/blog/2009/08/16/letter-to-congressman-keith-ellison-on-health-care-reform/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Letter to Senator Amy Klobachar on Health Care Reform</title>
+		<link>http://jmchilton.net/blog/2009/08/16/letter-to-senator-amy-klobachar-on-health-care-reform/</link>
+		<comments>http://jmchilton.net/blog/2009/08/16/letter-to-senator-amy-klobachar-on-health-care-reform/#comments</comments>
+		<pubDate>Mon, 17 Aug 2009 03:11:01 +0000</pubDate>
+		<dc:creator>john</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://jmchilton.net/blog/?p=7</guid>
+		<description><![CDATA[Senator Amy Klobachar, I am a liberal Democrat from Minnesota, who voted for you in 2006. I am somewhat disappointed by the current health care debate because I am strongly believe in universal single payer health care. That said I believe a strong public option, as the one passed by the house Democrats could be [...]]]></description>
+			<content:encoded><![CDATA[<p><!-- 		@page { margin: 0.79in } 		P { margin-bottom: 0.08in } 		A:link { so-language: zxx } --></p>
+<p style="margin-bottom: 0in; page-break-before: always;">Senator Amy Klobachar,</p>
+<p style="margin-bottom: 0in;">I am a liberal Democrat from Minnesota, who voted for you in 2006. I am somewhat disappointed by the current health care debate because I am strongly believe in universal single payer health care. That said I believe a strong public option, as the one passed by the house Democrats could be a huge step forward.</p>
+<p style="margin-bottom: 0in;">That said, health care reform that includes an individual mandate but not a public option amounts to a new regressive tax that Americans must pay to the worst corporations, either directly or through their taxes. If history is any indication, this new tax promises to increase every year and out pace inflation dramatically. The American people are struggling right now and do not deserve to have to suffer more. The health insurance companies are making ridicules profits on the back of sick Americans and they do not deserve to make more. This outcome is entirely unacceptable. If the Democrats pass legislation in that form, I believe that lower and middle income families and wealthy liberals will have to seriously question which party better represents their interests. Doing nothing (the Republican plan) is better than an individual mandate without a public option.</p>
+<p style="margin-bottom: 0in;">If you were to come out and state strongly and unequivocally that you will not vote for health care reform that includes a mandate but does not include a public option, you will have a powerful affect on the debate and you will be doing what is right. If the Democrats continue to insist on needing 60 votes to past this reform, your vote is necessary and you can have as much sway as Senator Conrad on this issue. Even if the Democrats decide to pass this legislation with 51 votes, all it takes is a few Democrats in the Senate to demand the public option or no mandate and you guys win. Hence, the American people win.</p>
+<p style="margin-bottom: 0in;">If you vote for legislation that includes no mandate and no public option, but that does include common sense measures like barring recision and preventing access to care based on preexisting conditions that is great. But if you vote for health care reform that includes a mandate but does not include the public option, I will give money to a primary challenger I am sure will surface against you in 2012, and if you win that primary I will vote for a Republican for the first time in my life.</p>
+<p style="margin-bottom: 0in;">John Chilton</p>
+<a class="a2a_dd addtoany_share_save" href="http://www.addtoany.com/share_save?&amp;linkurl=http%3A%2F%2Fjmchilton.net%2Fblog%2F2009%2F08%2F16%2Fletter-to-senator-amy-klobachar-on-health-care-reform%2F&amp;linkname=Letter%20to%20Senator%20Amy%20Klobachar%20on%20Health%20Care%20Reform">Share/Save</a>]]></content:encoded>
+			<wfw:commentRss>http://jmchilton.net/blog/2009/08/16/letter-to-senator-amy-klobachar-on-health-care-reform/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Letter to Senator Al Franken on Health Care Reform</title>
+		<link>http://jmchilton.net/blog/2009/08/16/3/</link>
+		<comments>http://jmchilton.net/blog/2009/08/16/3/#comments</comments>
+		<pubDate>Mon, 17 Aug 2009 03:05:34 +0000</pubDate>
+		<dc:creator>john</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://jmchilton.net/blog/?p=3</guid>
+		<description><![CDATA[Senator Al Franken, I was very excited when you took office. I listened to show your show religiously on Air America and my wife and I contributed to your campaign. I am writing you because you have said repeatedly that you want to be a senator in mold of Paul Wellstone, who represented the Democratic [...]]]></description>
+			<content:encoded><![CDATA[<p><!-- 		@page { margin: 0.79in } 		P { margin-bottom: 0.08in } 		A:link { so-language: zxx } --></p>
+<p style="margin-bottom: 0in;">Senator Al Franken,</p>
+<p style="margin-bottom: 0in;">I was very excited when you took office. I listened to show your show religiously on Air America and my wife and I contributed to your campaign. I am writing you because you have said repeatedly that you want to be a senator in mold of Paul Wellstone, who represented the Democratic Wing of the Democratic Party. That wing and the American people need a strong voice in Senate right now, I think you can and should be that voice.</p>
+<p style="margin-bottom: 0in;">Health care reform that includes an individual mandate but not a public option amounts to a new regressive tax that Americans must pay to the worst corporations, either directly or through their taxes. If history is any indication, this new tax promises to increase every year and out pace inflation dramatically. The American people are struggling right now and do not deserve to have to suffer more. The health insurance companies are making ridicules profits on the back of sick Americans and they do not deserve to make more. This outcome is entirely unacceptable. If the Democrats pass legislation in that form, I believe that lower and middle income families and wealthy liberals will have to seriously question which party better represents their interests. Doing nothing (the Republican plan) is better than an individual mandate without a public option.</p>
+<p style="margin-bottom: 0in;">If you were to come out and state strongly and unequivocally that you will not vote for health care reform that includes a mandate but does not include a public option, you will have a powerful affect on the debate and you will be doing what is right. If the Democrats continue to insist on needing 60 votes to past this reform, your vote is necessary and you can have as much sway as Senator Conrad on this issue. Even if the Democrats decide to pass this legislation with 51 votes, all it takes is a few Democrats in the Senate to demand the public option or no mandate and you guys win. Hence, the American people win.</p>
+<p style="margin-bottom: 0in;">John Chilton</p>
+<a class="a2a_dd addtoany_share_save" href="http://www.addtoany.com/share_save?&amp;linkurl=http%3A%2F%2Fjmchilton.net%2Fblog%2F2009%2F08%2F16%2F3%2F&amp;linkname=Letter%20to%20Senator%20Al%20Franken%20on%20Health%20Care%20Reform">Share/Save</a>]]></content:encoded>
+			<wfw:commentRss>http://jmchilton.net/blog/2009/08/16/3/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Hello world!</title>
+		<link>http://jmchilton.net/blog/2009/06/14/hello-world/</link>
+		<comments>http://jmchilton.net/blog/2009/06/14/hello-world/#comments</comments>
+		<pubDate>Mon, 15 Jun 2009 02:52:33 +0000</pubDate>
+		<dc:creator>john</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://jmchilton.net/blog/?p=1</guid>
+		<description><![CDATA[Welcome to WordPress. This is your first post. Edit or delete it, then start blogging! Share/Save]]></description>
+			<content:encoded><![CDATA[<p>Welcome to WordPress. This is your first post. Edit or delete it, then start blogging!</p>
+<a class="a2a_dd addtoany_share_save" href="http://www.addtoany.com/share_save?&amp;linkurl=http%3A%2F%2Fjmchilton.net%2Fblog%2F2009%2F06%2F14%2Fhello-world%2F&amp;linkname=Hello%20world%21">Share/Save</a>]]></content:encoded>
+			<wfw:commentRss>http://jmchilton.net/blog/2009/06/14/hello-world/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

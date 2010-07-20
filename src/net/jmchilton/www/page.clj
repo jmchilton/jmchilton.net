@@ -11,8 +11,6 @@
   [#^String separator coll]
   (apply str (interpose separator coll)))
 
-
-
 (def jquery-href "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
 
 (defn- xhtml-html-tag [& rest]
@@ -35,11 +33,12 @@
     [:title (content->title page)]
     (css "http://fonts.googleapis.com/css?family=Inconsolata|Droid+Sans+Mono")
     (css "jmchilton.css")
-    (css "js/fancybox/jquery.fancybox-1.3.1.css")
     (script jquery-href)
     (script "js/jquery.corner.js")
+;	  (script "js/jquery.jticker.js")
     (script "js/jmchilton.js")
-    (script "js/fancybox/jquery.fancybox-1.3.1.pack.js")
+;    (css "js/fancybox/jquery.fancybox-1.3.1.css")
+;    (script "js/fancybox/jquery.fancybox-1.3.1.pack.js")
     [:script {"type" "text/javascript"}
       "var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-17389648-1']);
@@ -58,7 +57,7 @@ _gaq.push(['_trackPageview']);
 
 (defn- get-menu [dir]
   (let [menu-lst (get-menu-list dir)]
-    `[:ul {"class" "initially-undisplayed"}
+    `[:ul
       ~@(map
           (fn [entry]
             (let [abs? (= (first entry) 'abs)
@@ -75,7 +74,7 @@ _gaq.push(['_trackPageview']);
 (defn- get-header [page]
   (let [title-els (cons "jmchilton.net" (seq (.split page ":")))
         n (count title-els)]
-    `[:div {"class" "menu"} 
+    `[:div {"class" "menu"}
       ~@(mapcat
           (fn [i]
             (let [index (min (- n 1) (+ i 1))
@@ -83,14 +82,14 @@ _gaq.push(['_trackPageview']);
                   cur-path (join "/" cur-path-pieces)]
               (concat
                 (if (< i (- n 1))
-                  (list [:div (str "john@jmchilton.net (~/" cur-path ") % ls")]
-                        [:div (get-menu cur-path)])
+                  (list [:span (str "john@jmchilton.net (~/" cur-path ") % ls")]
+                        [:span (get-menu cur-path)])
                   (list))
                 (if (< i (- n 2))
-                  (list [:div (str "john@jmchilton.net (~/" cur-path ") % cd " (nth title-els (+ 1 i)))])
+                  (list [:span (str "john@jmchilton.net (~/" cur-path ") % cd " (nth title-els (+ 1 i)))])
                   (list))
                 (if (= i (- n 1 ))
-                  (list [:div (str "john@jmchilton.net (~/" cur-path ") % cat " (nth title-els i))])
+                  (list [:span (str "john@jmchilton.net (~/" cur-path ") % cat " (nth title-els i))])
                   (list)))))
           (range n))]))
 

@@ -1,4 +1,5 @@
 '((rel "geek:index" "index")
+  (rel "geek:amorai" "amorai")
   (rel "geek:art" "digital_art")
   (rel "geek:scheme:index" "scheme/")
   (rel "geek:template_haskell" "template_haskell")

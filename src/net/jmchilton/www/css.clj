@@ -65,8 +65,9 @@
       :margin-left :auto
       :margin-right :auto       
       :text-align :left
-			:overflow :hidden
-			)
+			:overflow :hidden)
+    (rule "#content"
+      :margin-top (px 5))
     (rule "#infoBox-container"
       :margin-top (px 0)
       :margin-bottom (px 10)
@@ -96,9 +97,9 @@
       :color infoBox-color
       :margin (px 0)
       :padding (px 0))
-    (rule "initially-undisplayed")
     (rule ".menu"
-      :color other-text-color)
+      :color other-text-color
+      :overflow :hidden)
     (rule ".menu div"
       :color other-text-color)
     (rule ".menu ul"
@@ -106,7 +107,7 @@
       :margin (px 0)
       :list-style :none
       :width (% 100)
-      :float :left)
+      :overflow :hidden)
     (rule ".menu li"
       :position :relative
       :width (% 20)
@@ -186,13 +187,11 @@
       :padding (px 0)
       :margin (px 0))
     (rule "#updates"
-      :border-left [(px 2) :solid border-color]
-      :border-bottom [(px 1) :solid border-color]
-      :border-top [(px 1) :dashed border-color]
-      :border-right [(px 1) :dashed border-color]
+      :border-left [(px 1) :dashed border-color]
 			:float :right
 			:width (% 50)
 			:padding (px 5)
+      :padding-left (px 15)
 			:font-size (em 0.85)
 	  )
     (rule "#updates > p"
@@ -200,7 +199,6 @@
 			:color background-color
 			:padding (px 0)
 			:margin (px 0))
-
     (rule ".update > a"
 			:display :block
 			:text-align :left

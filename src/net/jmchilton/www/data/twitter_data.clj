@@ -3,4 +3,4 @@
 
 (def twitter-cache (agent-cache []))
 
-(periodically-update twitter-cache (every 5 minutes) (fn [] (get-parsed-twitter-rss)))
+(periodically-update twitter-cache (every 5 minutes) get-parsed-twitter-rss)

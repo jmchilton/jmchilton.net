@@ -5,6 +5,9 @@
 
 (def join string/join)
 
+(defn list-contains? [seq x]
+  (some #(= x %) seq))
+
 (defn as-int 
   ([x] (as-int x 10)) 
   ([x radix]
@@ -14,8 +17,8 @@
 
 (defn constant [x] (fn [& args] x)) ; cannot do this with # lambdas as far I can tell.
 
-(defn parse-date-str [date-str date-format]
+(defn parse-date-str [date-str & date-formats]
 	(let [cal (java.util.Calendar/getInstance)]
-	  (.setTime cal (org.apache.commons.lang.time.DateUtils/parseDate date-str (into-array [date-format])))
+	  (.setTime cal (org.apache.commons.lang.time.DateUtils/parseDate date-str (into-array date-formats)))
 	  cal))
 

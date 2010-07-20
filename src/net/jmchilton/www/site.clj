@@ -5,7 +5,16 @@
         (ring.adapter jetty)
         (net.jmchilton.www dispatch)
         (clojure.contrib except))
-	(:require (net.jmchilton.www.data goodreads-data google-reader-data delicious-data twitter-data)))
+	(:require (net.jmchilton.www.data goodreads-data 
+                                    google-reader-data 
+                                    delicious-data 
+                                    shared-items-data
+                                    facebook-data
+                                    goodreads-rss-data
+                                    blog-data
+                                    foursquare-data
+                                    flixster-data
+                                    twitter-data)))
 
 ;; Build a list of all net.jmchilton.www packages but exclude launch
 ;; to prevent the web server from restarting.

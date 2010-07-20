@@ -1,5 +1,6 @@
 (ns net.jmchilton.www.scheduling
-  (:use (net.jmchilton.www utils)))
+  (:use clojure.stacktrace
+        (net.jmchilton.www utils)))
 
 (import 'java.util.Timer)
 (import 'java.util.TimerTask)
@@ -29,8 +30,9 @@
       (fn [agent-value]
         (let [content (:content agent-value)
               updated (:updated agent-value)]
-          (if (predicate updated)
-              {:content (thunk) :updated (current-time)}
+          (if (or (nil? content) (predicate updated))
+              {:content (try (thunk) (catch Exception e (print-stack-trace e)))
+               :updated (current-time)}
               agent-value))))))
 
 
