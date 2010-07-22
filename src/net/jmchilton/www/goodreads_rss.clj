@@ -5,11 +5,9 @@
   (http-get-xml "http://www.goodreads.com/user/updates_rss/3983175"))
 
 (defn- parse-item [rss-item-hash]
-  (let [title (:title rss-item-hash)]
-    (assoc 
-      (assoc rss-item-hash :source :goodreads)
-      ;; RSS Description field a bit lengthy
-      :description title)))
+  (assoc (swap-key rss-item-hash :title :description)
+         :source
+         :goodreads))
 
 (def parse-items #(map-rss-items parse-item %))
 

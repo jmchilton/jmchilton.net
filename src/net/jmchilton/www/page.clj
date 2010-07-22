@@ -1,23 +1,10 @@
 ; Script for launching site!
 (ns net.jmchilton.www.page
   (:use (com.twinql.clojure.http)
-        (net.jmchilton.www id context source)
-        (hiccup core)))
-
-;; Contrib seems unstable in some way, many random erros when using
-(defn #^String join
-  "Returns a string of all elements in coll, separated by
-  separator.  Like Perl's join."
-  [#^String separator coll]
-  (apply str (interpose separator coll)))
+        (net.jmchilton.www id context source display-utils utils)
+        (hiccup core page-helpers)))
 
 (def jquery-href "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
-
-(defn- xhtml-html-tag [& rest]
-  (html
-    [:html {:xmlns "http://www.w3.org/1999/xhtml"
-            :xml:lang "en"}
-      rest]))
 
 (defn- content->title [page]
   (str "jmchilton.net / " (.replaceAll page ":" " / ")))
@@ -63,34 +50,25 @@ _gaq.push(['_trackPageview']);
             (let [abs? (= (first entry) 'abs)
                   target (nth entry 1)
                   href (if abs? target (str "index.html?page=" target))]
-              [:li [:a {"href" href} (nth entry 2)]]))
+              [:li (link-to href (nth entry 2))]))
           menu-lst)]))
 
 (defn get-modified-date-string [page]
-  (let [last-modified-timestamp (.lastModified (content-id->file page))
-        formatter org.apache.commons.lang.time.DateFormatUtils/ISO_DATETIME_FORMAT]
-    (.format formatter last-modified-timestamp)))
+  (let [last-modified-timestamp (.lastModified (content-id->file page))]
+    (format-date last-modified-timestamp)))
 
 (defn- get-header [page]
-  (let [title-els (cons "jmchilton.net" (seq (.split page ":")))
+  (let [title-els (seq (.split page ":"))
         n (count title-els)]
     `[:div {"class" "menu"}
       ~@(mapcat
           (fn [i]
-            (let [index (min (- n 1) (+ i 1))
-                  cur-path-pieces (rest (take index title-els))
-                  cur-path (join "/" cur-path-pieces)]
-              (concat
-                (if (< i (- n 1))
-                  (list [:span (str "john@jmchilton.net (~/" cur-path ") % ls")]
-                        [:span (get-menu cur-path)])
-                  (list))
-                (if (< i (- n 2))
-                  (list [:span (str "john@jmchilton.net (~/" cur-path ") % cd " (nth title-els (+ 1 i)))])
-                  (list))
-                (if (= i (- n 1 ))
-                  (list [:span (str "john@jmchilton.net (~/" cur-path ") % cat " (nth title-els i))])
-                  (list)))))
+            (let [cur-path (join "/" (take i title-els))
+                  cur-prefix (str "john@jmchilton.net (~/" cur-path ") % ")     
+                  cmd (if (< i (- n 1)) "cd " "cat ")]
+              [[:span cur-prefix "ls"]
+               [:span (get-menu cur-path)]
+               [:span cur-prefix cmd (nth title-els i)]]))
           (range n))]))
 
 (defn- get-content [page]
@@ -98,18 +76,20 @@ _gaq.push(['_trackPageview']);
 
 (def validate-p 
   [:p "validate: " 
-      [:a {"href" "http://jigsaw.w3.org/css-validator/check/referer"} "CSS"]
+      (link-to "http://jigsaw.w3.org/css-validator/check/referer" "CSS")
       " "
-      [:a {"href" "http://validator.w3.org/check/referer"} "XHTML"]])
+      (link-to "http://validator.w3.org/check/referer" "XHTML")])
 
 (def powered-p
   [:p "powered by: "
-      [:a {"href" "http://clojure.org/"} "Clojure"]
+      (link-to "http://clojure.org/" "Clojure")
       " | "
-      [:a {"href" "http://github.com/mmcgrana/ring"} "Ring"]
+      (link-to "http://github.com/mmcgrana/ring" "Ring")
       " | "
-      [:a {"href" "http://jetty.codehaus.org/jetty/"} "Jetty"]]) 
+      (link-to "http://jetty.codehaus.org/jetty/" "Jetty")])
 
+(defn- get-url [page] (url-encode (str "http://jmchilton.net/index.html?page=" page)))
+(defn- get-title [page] (url-encode (content->title page)))
 
 (defn- get-body [page]
   [:body 
@@ -118,9 +98,9 @@ _gaq.push(['_trackPageview']);
       (get-header page)
       (let [content (get-content page)]
         `[:div {"id" "content"} ~(if (list? content) content (list content))])]]
-    [:div {"id" "infoBox-container"}
-    [:div {"id" "infoBox-border"}
-    [:div {"id" "infoBox"} 
+    [:div {"id" "infoBox"}
+    [:div {"class" "border"}
+    [:div {"class" "content"} 
       [:p "clojure page source: " 
           (view-source-link page (.substring (content-id->path page) 2)) ]
       validate-p
@@ -128,18 +108,51 @@ _gaq.push(['_trackPageview']);
       ;; Disabling mongo counter for now
       ;; [:p "page loaded: " (inc-counter! (content-id->path page)) " times"]
       [:p "date last modified: " (get-modified-date-string page)]
-      powered-p
-
-;      [:iframe {"src" (str "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.jmchilton.net%26page%3D" (.replaceAll page ":") "&layout=button_count&show_faces=true&width=30&action=like&colorscheme=light&height=21")
-;                "scrolling" "no" 
-;                "frameborder" "0" 
-;                "allowTransparency" "true" 
-;                "style" "border:none; overflow:hidden; width:50px; height:20px"}
-;      (get-link page)
-
-
-]]]])
-
+      powered-p]]]
+    [:div {"id" "shareBox"}
+      [:div {"class" "border"}      
+        [:div {"class" "content"}
+          [:div {"class" "line"}
+          (link-to (str "http://delicious.com/save?url=" (get-url page)
+                         "&title=" (get-title page))
+            [:img {"src" "http://delicious.com/favicon.ico"
+                   "alt" "submit to delicious"
+                   "width" "21"
+                   "height" "21"
+                   "border" "1"}])
+          (link-to (str "http://digg.com/submit?url=" (get-url page)
+                        "&title=" (get-title page))
+            [:img {"src" "http://digg.com/favicon.ico"
+                   "alt" "submit to digg"
+                   "width" "22"
+                   "height" "22"
+                   "border" "0"}])
+          (link-to (str "http://www.tumblr.com/share?v=3&u=" (get-url page)
+                        "&t=" (get-title page))
+            [:img {"src" "http://www.tumblr.com/favicon.ico"
+                   "alt" "submit to tumblr"
+                   "width" "22"
+                   "height" "22"
+                   "border" "0"}])
+          (link-to (str "http://reddit.com/submit?url=" (get-url page) 
+                        "&title=" (get-title page))
+            [:img {"src" "http://reddit.com/static/spreddit1.gif" 
+                   "alt" "submit to reddit" 
+                   "width" "22"
+                   "height" "22"
+                   "border" "0"}])
+          (link-to (str "http://twitter.com/home?status=" (get-url page))
+            [:img {"src" "http://twitter-badges.s3.amazonaws.com/t_small-a.png" 
+                   "border" "0"
+                   "width" "22"
+                   "height" "22"
+                   "alt" "submit to twitter"}])           
+          [:iframe {"src" (str "http://www.facebook.com/plugins/like.php?href=" (url-encode (str "http://jmchilton.net/index.html=" page)) "&layout=button_count&show_faces=true&width=90&action=like&colorscheme=light&height=20")
+                   "scrolling" "no" 
+                   "frameborder" "0" 
+                   "allowTransparency" "true" 
+                   "style" "overflow:hidden; width:90px; height:20px;"}
+            (link-to (str "http://www.facebook.com/sharer.php?u=" (get-url page)) "Share on Facebook")]]]]]])
 
 (defn- get-content-id [params]
   (let [page-param (:page params)]
@@ -151,12 +164,14 @@ _gaq.push(['_trackPageview']);
   (let [params (:params req)
         content-id (get-content-id params)]
     (init-context req content-id)
-    (xhtml-html-tag 
-      (get-head content-id) 
-      (get-body content-id))))
+    (html 
+      (xhtml-tag 
+        "en" 
+        (get-head content-id) 
+        (get-body content-id)))))
 
 (defn get-document [req]
   (str
     "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>"
-    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
+    (doctype :xhtml-strict) "\n"
     (get-html req)))

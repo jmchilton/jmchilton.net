@@ -72,10 +72,10 @@
           extension (get-extension path)
           source? (contains? source-extensions extension)]
       `[:li [:a {"href" ~path} ~(.getName tree)]
-         " ["
-         ~[:a {"href" (str project-gitweb-prefix "a=blob;f=" path-for-gitweb)} "View on GitWeb"]
-         "] [" 
-         ~[:a {"href" (str project-gitweb-prefix "a=history;f=" path-for-gitweb)} "Gitweb History"]
+         " [Gitweb "
+         ~[:a {"href" (str project-gitweb-prefix "a=blob;f=" path-for-gitweb)} "View"]
+         " / " 
+         ~[:a {"href" (str project-gitweb-prefix "a=history;f=" path-for-gitweb)} "History"]
          "]"
          ~@(if source?
            `((" [" ~(view-source-link (file->content-id tree) "View as Source Code") "]"))

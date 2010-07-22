@@ -1,3 +1,4 @@
+(use 'net.jmchilton.www.display-utils)
 (use '(net.jmchilton.www.data twitter-data 
                               facebook-data
                               shared-items-data
@@ -16,12 +17,6 @@
         (= source :foursquare) "foursquare checkin"
         (= source :flixster) "flixster review"
         (= source :facebook) "facebook update"))
-
-
-(def update-date-formatter (java.text.SimpleDateFormat. "EEE, dd-MMM-yyyy HH:mm"))
-
-(defn- format-date [calendar]
-	(.format update-date-formatter (.getTime calendar)))
 
 (defn- format-item [{link :link source :source date :date description :description}]
   [:span {"class" "update"}

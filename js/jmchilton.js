@@ -16,11 +16,14 @@ $(document).ready(function() {
   $('.collapsable').addClass('uncollapsed');
 
   $("#page-border").corner("6px");
-  $("#infoBox").corner("tl bl 6px");
-  $("#infoBox-border").corner("tl bl 10px");
+  $("#infoBox .content").corner("tl bl 6px");
+  $("#infoBox .border").corner("tl bl 10px");
+
+  $("#shareBox .content").corner("tr br 5px");
+  $("#shareBox .border").corner("tr br 8px");
 
 
-  /*	
+  /*
 	   $("#social").fancybox({
           'width': '75%',
               'height': '75%',

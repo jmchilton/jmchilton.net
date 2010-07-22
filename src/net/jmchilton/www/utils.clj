@@ -22,3 +22,8 @@
 	  (.setTime cal (org.apache.commons.lang.time.DateUtils/parseDate date-str (into-array date-formats)))
 	  cal))
 
+(defn url-encode [str] (java.net.URLEncoder/encode str "UTF-8"))
+
+(defn swap-key [map from to]
+  (let [val (get map from)]
+    (assoc (dissoc map from) to val)))
