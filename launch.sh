@@ -7,5 +7,5 @@ do
 done
 
 echo "Starting clojure with classpath $THE_CLASSPATH"
-nohup java -XX:ReservedCodeCacheSize=24m -XX:MaxPermSize=35m -Xms150m -Xmx150m -cp "src:${THE_CLASSPATH}" clojure.main src/net/jmchilton/www/launch.clj &
+nohup java -XX:ReservedCodeCacheSize=50m -XX:MaxPermSize=50m -Xms250m -Xmx250m -cp "src:${THE_CLASSPATH}" clojure.main src/net/jmchilton/www/launch.clj &
 tail -f nohup.out
