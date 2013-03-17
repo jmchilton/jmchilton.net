@@ -2,7 +2,7 @@
   (:use (net.jmchilton.www http xml utils)))
 
 (defn- get-twitter-rss []
-  (http-get-xml "http://twitter.com/statuses/user_timeline/6434632.rss"))
+  (http-get-xml "http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=jmchilton"))
 
 (defn parse-items [rss-xml]
   (map-rss-items #(assoc % :source :twitter) rss-xml))
