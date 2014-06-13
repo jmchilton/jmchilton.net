@@ -10,5 +10,4 @@
   (is (= (as-int "B" 16) 11)))
         
 (deftest test-as-str
-  (is (= (as-str 5) "5")))
-
+  (is (= (.toString 5) "5")))

@@ -1,7 +1,5 @@
 (ns net.jmchilton.www.utils
-  (:require [clojure.contrib.string :as string]))
-
-(def as-str string/as-str)
+  (:require [clojure.string :as string]))
 
 (def join string/join)
 
@@ -11,7 +9,7 @@
 (defn as-int 
   ([x] (as-int x 10)) 
   ([x radix]
-    (Integer/parseInt (as-str x) radix)))
+    (Integer/parseInt (.toString x) radix)))
 
 (defn current-time [] (.getTime (new java.util.Date)))
 

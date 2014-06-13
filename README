@@ -1,13 +1,18 @@
 # www
 
-jmchilton.net
+Source code jmchilton.net.
 
-lein test
+## Testing
+
+To fetch dependencies and run tests, install [lein] and run::
+
+    lein test
 
 ## Usage
 
 ## License
 
-Copyright (C) 2010 John Chilton
+Copyright (C) 2013 John Chilton
 
 Distributed under the Eclipse Public License, the same as Clojure.
+

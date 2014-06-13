@@ -4,12 +4,10 @@
         (ring.middleware stacktrace file-info file reload keyword-params params)
         (ring.adapter jetty)
         (net.jmchilton.www dispatch)
-        (clojure.contrib except))
+  )
 	(:require (net.jmchilton.www.data goodreads-data 
-                                    google-reader-data 
                                     delicious-data 
                                     shared-items-data
-                                    facebook-data
                                     goodreads-rss-data
                                     blog-data
                                     foursquare-data

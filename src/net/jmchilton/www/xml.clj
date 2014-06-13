@@ -1,5 +1,6 @@
 (ns net.jmchilton.www.xml
-  (:use net.jmchilton.www.utils))
+  (:use net.jmchilton.www.utils)
+  (:use clojure.xml))
 
 (defn parse-xml [str]
   (clojure.xml/parse (new java.io.ByteArrayInputStream (.getBytes str))))

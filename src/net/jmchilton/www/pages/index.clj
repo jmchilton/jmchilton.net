@@ -1,6 +1,5 @@
 (use 'net.jmchilton.www.display-utils)
 (use '(net.jmchilton.www.data twitter-data 
-                              facebook-data
                               shared-items-data
                               blog-data
                               foursquare-data

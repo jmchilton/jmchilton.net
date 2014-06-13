@@ -2,7 +2,7 @@
 (ns net.jmchilton.www.page
   (:use (com.twinql.clojure.http)
         (net.jmchilton.www id context source display-utils utils)
-        (hiccup core page-helpers)))
+        (hiccup core page element)))
 
 (def jquery-href "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
 
